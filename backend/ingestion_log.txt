@@ -1,0 +1,131 @@
+INFO 2025-12-12 18:57:35,304 tasks Starting ingestion: Plan General de Contabilidad (PGC)
+INFO 2025-12-12 18:57:35,307 boe_connector Fetching BOE document: https://www.boe.es/buscar/pdf/2007/BOE-A-2007-19884-consolidado.pdf
+WARNING 2025-12-12 18:57:35,308 boe_connector PDF URL detected: https://www.boe.es/buscar/pdf/2007/BOE-A-2007-19884-consolidado.pdf
+WARNING 2025-12-12 18:57:35,309 boe_connector PDF parsing not yet implemented. Converting to HTML URL...
+INFO 2025-12-12 18:57:35,310 boe_connector Converted PDF URL to HTML: https://www.boe.es/buscar/pdf/2007/BOE-A-2007-19884-consolidado.pdf -> https://www.boe.es/buscar/doc.php?id=BOE-A-2007-19884
+INFO 2025-12-12 18:57:35,311 boe_connector Converted to HTML URL: https://www.boe.es/buscar/doc.php?id=BOE-A-2007-19884
+INFO 2025-12-12 18:57:50,902 tasks Fetched 87 chunks
+INFO 2025-12-12 18:57:50,903 normalizer Normalizing document: Plan General de Contabilidad (PGC)
+INFO 2025-12-12 18:57:51,978 tasks Created document: d531f6e9-5187-4cce-be4d-8e2021518cd5
+INFO 2025-12-12 18:57:53,069 tasks Created chunk 1: Artículo 2. Obligatoriedad del Plan.
+INFO 2025-12-12 18:57:53,747 tasks Created chunk 2: Disposición adicional única. Ajustes derivados de la aplicación del Plan General de Contabilidad.
+INFO 2025-12-12 18:57:54,143 tasks Created chunk 3: Disposición transitoria primera. Reglas generales para la aplicación del Plan General de Contabilidad en el primer ejercicio que se inicie a partir de 1 de enero de 2008.
+INFO 2025-12-12 18:57:54,461 tasks Created chunk 4: Disposición transitoria segunda. Excepciones a la regla general de primera aplicación.
+INFO 2025-12-12 18:57:55,018 tasks Created chunk 5: Disposición transitoria tercera. Reglas específicas en relación con las combinaciones de negocios.
+INFO 2025-12-12 18:57:55,936 tasks Created chunk 6: Disposición transitoria cuarta. Información a incluir en las cuentas anuales del primer ejercicio que se inicie a partir de 1 de enero de 2008.
+INFO 2025-12-12 18:57:56,294 tasks Created chunk 7: Disposición transitoria quinta. Desarrollos normativos en materia contable.
+INFO 2025-12-12 18:57:56,657 tasks Created chunk 8: Disposición transitoria sexta. Empresas que se hayan incluido en cuentas anuales consolidadas de acuerdo con las normas internacionales de información financiera adoptadas en la Unión Europea.
+WARNING 2025-12-12 18:57:56,658 embedding_service Text truncated from 69961 to 8000 chars
+INFO 2025-12-12 18:57:57,062 tasks Created chunk 9: Disposición final sexta. Entrada en vigor.
+INFO 2025-12-12 18:57:57,416 tasks Created chunk 10: 1.º Cuentas anuales. Imagen fiel
+INFO 2025-12-12 18:57:57,775 tasks Created chunk 11: 2.º Requisitos de la información a incluir en las cuentas anuales
+INFO 2025-12-12 18:57:58,094 tasks Created chunk 12: 3.º Principios contables
+INFO 2025-12-12 18:57:58,440 tasks Created chunk 13: 4.º Elementos de las cuentas anuales
+INFO 2025-12-12 18:57:58,804 tasks Created chunk 14: 5.º Criterios de registro o reconocimiento contable de los elementos de las cuentas anuales
+INFO 2025-12-12 18:57:59,162 tasks Created chunk 15: 6.º Criterios de valoración
+INFO 2025-12-12 18:57:59,519 tasks Created chunk 16: 7.º Principios y normas de contabilidad generalmente aceptados
+INFO 2025-12-12 18:57:59,879 tasks Created chunk 17: 1.ª Desarrollo del Marco Conceptual de la Contabilidad
+INFO 2025-12-12 18:58:00,238 tasks Created chunk 18: 2.ª Inmovilizado material
+INFO 2025-12-12 18:58:00,558 tasks Created chunk 19: 3.ª Normas particulares sobre inmovilizado material
+INFO 2025-12-12 18:58:01,105 tasks Created chunk 20: 5.ª Inmovilizado intangible
+INFO 2025-12-12 18:58:01,473 tasks Created chunk 21: 6.ª Normas particulares sobre el inmovilizado intangible
+INFO 2025-12-12 18:58:01,822 tasks Created chunk 22: 7.ª Activos no corrientes y grupos enajenables de elementos, mantenidos para la venta
+INFO 2025-12-12 18:58:02,189 tasks Created chunk 23: 8.ª Arrendamientos y otras operaciones de naturaleza similar
+WARNING 2025-12-12 18:58:02,190 embedding_service Text truncated from 34394 to 8000 chars
+INFO 2025-12-12 18:58:02,595 tasks Created chunk 24: 9.ª Instrumentos financieros
+INFO 2025-12-12 18:58:03,005 tasks Created chunk 25: 10.ª Existencias
+INFO 2025-12-12 18:58:03,412 tasks Created chunk 26: 11.ª Moneda extranjera
+INFO 2025-12-12 18:58:03,776 tasks Created chunk 27: 12.ª Impuesto sobre el Valor Añadido (IVA), Impuesto General Indirecto Canario (IGIC) y otros Impuestos indirectos
+INFO 2025-12-12 18:58:04,131 tasks Created chunk 28: 13.ª Impuestos sobre beneficios
+INFO 2025-12-12 18:58:04,494 tasks Created chunk 29: 14.ª Ingresos por ventas y prestación de servicios
+INFO 2025-12-12 18:58:04,804 tasks Created chunk 30: 15.ª Provisiones y contingencias
+INFO 2025-12-12 18:58:05,212 tasks Created chunk 31: 16.ª Pasivos por retribuciones a largo plazo al personal
+INFO 2025-12-12 18:58:05,615 tasks Created chunk 32: 17.ª Transacciones con pagos basados en instrumentos de patrimonio
+INFO 2025-12-12 18:58:05,971 tasks Created chunk 33: 18.ª Subvenciones, donaciones y legados recibidos
+WARNING 2025-12-12 18:58:05,971 embedding_service Text truncated from 8993 to 8000 chars
+INFO 2025-12-12 18:58:06,330 tasks Created chunk 34: 19.ª Combinaciones de negocios
+INFO 2025-12-12 18:58:06,689 tasks Created chunk 35: 20.ª Negocios conjuntos
+INFO 2025-12-12 18:58:07,053 tasks Created chunk 36: 21.ª Operaciones entre empresas del grupo
+INFO 2025-12-12 18:58:07,404 tasks Created chunk 37: 22.ª Cambios en criterios contables, errores y estimaciones contables
+INFO 2025-12-12 18:58:07,763 tasks Created chunk 38: 23.ª Hechos posteriores al cierre del ejercicio
+INFO 2025-12-12 18:58:08,078 tasks Created chunk 39: 1.ª Documentos que integran las cuentas anuales
+INFO 2025-12-12 18:58:08,437 tasks Created chunk 40: 2.ª Formulación de cuentas anuales
+INFO 2025-12-12 18:58:08,790 tasks Created chunk 41: 4.ª Cuentas anuales abreviadas
+INFO 2025-12-12 18:58:09,145 tasks Created chunk 42: 5.ª Normas comunes al balance, la cuenta de pérdidas y ganancias, el estado de cambios en el patrimonio neto y el estado de flujos de efectivo
+WARNING 2025-12-12 18:58:09,146 embedding_service Text truncated from 8819 to 8000 chars
+INFO 2025-12-12 18:58:09,506 tasks Created chunk 43: 6.ª Balance
+INFO 2025-12-12 18:58:09,873 tasks Created chunk 44: 7.ª Cuenta de pérdidas y ganancias
+INFO 2025-12-12 18:58:10,272 tasks Created chunk 45: 8.ª Estado de cambios en el patrimonio neto
+INFO 2025-12-12 18:58:10,784 tasks Created chunk 46: 9.ª Estado de flujos de efectivo
+INFO 2025-12-12 18:58:11,398 tasks Created chunk 47: 10.ª Memoria
+INFO 2025-12-12 18:58:11,911 tasks Created chunk 48: 13.ª Empresas del grupo, multigrupo y asociadas
+INFO 2025-12-12 18:58:12,266 tasks Created chunk 49: 15.ª Partes vinculadas
+INFO 2025-12-12 18:58:12,643 tasks Created chunk 50: 1. Actividad de la empresa
+INFO 2025-12-12 18:58:13,037 tasks Created chunk 51: 2. Bases de presentación de las cuentas anuales
+INFO 2025-12-12 18:58:13,353 tasks Created chunk 52: 3. Aplicación de resultados
+INFO 2025-12-12 18:58:13,754 tasks Created chunk 53: 4. Normas de registro y valoración
+INFO 2025-12-12 18:58:14,116 tasks Created chunk 54: 5. Inmovilizado material
+INFO 2025-12-12 18:58:14,470 tasks Created chunk 55: 6. Inversiones inmobiliarias
+INFO 2025-12-12 18:58:14,835 tasks Created chunk 56: 7. Inmovilizado intangible
+INFO 2025-12-12 18:58:15,189 tasks Created chunk 57: 8. Arrendamientos y otras operaciones de naturaleza similar
+WARNING 2025-12-12 18:58:15,191 embedding_service Text truncated from 10195 to 8000 chars
+INFO 2025-12-12 18:58:15,597 tasks Created chunk 58: 9. Instrumentos financieros
+INFO 2025-12-12 18:58:15,910 tasks Created chunk 59: 10. Existencias
+INFO 2025-12-12 18:58:16,363 tasks Created chunk 60: 11. Moneda extranjera
+INFO 2025-12-12 18:58:16,723 tasks Created chunk 61: 12. Situación fiscal
+INFO 2025-12-12 18:58:17,132 tasks Created chunk 62: 13. Ingresos y Gastos
+INFO 2025-12-12 18:58:17,489 tasks Created chunk 63: 14. Provisiones y contingencias
+INFO 2025-12-12 18:58:17,908 tasks Created chunk 64: 15. Información sobre medio ambiente
+INFO 2025-12-12 18:58:18,259 tasks Created chunk 65: 16. Retribuciones a largo plazo al personal
+INFO 2025-12-12 18:58:18,569 tasks Created chunk 66: 17. Transacciones con pagos basados en instrumentos de patrimonio
+INFO 2025-12-12 18:58:19,080 tasks Created chunk 67: 18. Subvenciones, donaciones y legados
+INFO 2025-12-12 18:58:19,603 tasks Created chunk 68: 19. Combinaciones de negocios
+INFO 2025-12-12 18:58:20,102 tasks Created chunk 69: 20. Negocios conjuntos
+INFO 2025-12-12 18:58:20,469 tasks Created chunk 70: 21. Activos no corrientes mantenidos para la venta y operaciones interrumpidas
+INFO 2025-12-12 18:58:20,826 tasks Created chunk 71: 22. Hechos posteriores al cierre
+INFO 2025-12-12 18:58:21,225 tasks Created chunk 72: 23. Operaciones con partes vinculadas
+INFO 2025-12-12 18:58:21,582 tasks Created chunk 73: 24. Otra información
+INFO 2025-12-12 18:58:21,950 tasks Created chunk 74: 25. Información segmentada
+INFO 2025-12-12 18:58:22,363 tasks Created chunk 75: 1. Actividad de la empresa
+INFO 2025-12-12 18:58:22,821 tasks Created chunk 76: 2. Bases de presentación de las cuentas anuales
+INFO 2025-12-12 18:58:23,278 tasks Created chunk 77: 3. Aplicación de resultados
+INFO 2025-12-12 18:58:23,792 tasks Created chunk 78: 4. Normas de registro y valoración
+INFO 2025-12-12 18:58:24,148 tasks Created chunk 79: 5. Inmovilizado material, intangible e inversiones inmobiliarias
+INFO 2025-12-12 18:58:24,507 tasks Created chunk 80: 6. Activos financieros
+INFO 2025-12-12 18:58:24,831 tasks Created chunk 81: 7. Pasivos financieros
+INFO 2025-12-12 18:58:25,223 tasks Created chunk 82: 8. Fondos propios
+INFO 2025-12-12 18:58:25,595 tasks Created chunk 83: 9. Situación fiscal
+INFO 2025-12-12 18:58:26,000 tasks Created chunk 84: 10. Ingresos y Gastos
+INFO 2025-12-12 18:58:26,456 tasks Created chunk 85: 11. Subvenciones, donaciones y legados
+INFO 2025-12-12 18:58:27,475 tasks Created chunk 86: 12. Operaciones con partes vinculadas
+WARNING 2025-12-12 18:58:27,475 embedding_service Text truncated from 117077 to 8000 chars
+INFO 2025-12-12 18:58:27,891 tasks Created chunk 87: 13. Otra información
+INFO 2025-12-12 18:58:27,943 tasks \u2713 Ingestion complete: Plan General de Contabilidad (PGC) (87 chunks)
+
+======================================================================
+STARTING INGESTION OF 26 P1 SOURCES
+======================================================================
+
+
+[1/26] Processing: Plan General de Contabilidad (PGC)
+         URL: https://www.boe.es/buscar/pdf/2007/BOE-A-2007-19884-consolidado.pdf
+         ID: BOE-A-2007-19884
+Traceback (most recent call last):
+  File "D:\IT workspace\Legal GraphRAG\backend\ingest_p1_sync.py", line 56, in main
+    print(f"         \u2713 SUCCESS - {chunks} chunks created")
+  File "C:\Python312\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 9: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\IT workspace\Legal GraphRAG\backend\ingest_p1_sync.py", line 86, in <module>
+    main()
+  File "D:\IT workspace\Legal GraphRAG\backend\ingest_p1_sync.py", line 61, in main
+    print(f"         \u2717 ERROR - {str(e)[:100]}")
+  File "C:\Python312\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2717' in position 9: character maps to <undefined>

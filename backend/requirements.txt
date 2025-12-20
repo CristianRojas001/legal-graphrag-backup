@@ -1,0 +1,39 @@
+# Legal GraphRAG Backend Requirements
+
+# Django core
+Django==5.2.6
+djangorestframework==3.16.1
+
+# Database
+psycopg[binary]==3.2.3
+pgvector==0.4.1
+
+# Environment & Config
+python-dotenv==1.1.1
+
+# CORS
+django-cors-headers==4.7.0
+
+# Celery & Redis
+celery==5.5.3
+redis==6.4.0
+
+# API clients
+requests==2.32.5
+httpx==0.28.1
+
+# AI/LLM
+google-generativeai==0.8.3
+
+# Document processing
+beautifulsoup4==4.13.5
+lxml==6.0.1
+
+# Data processing
+pandas==2.2.3
+openpyxl==3.1.5
+
+# Development
+black==25.1.0
+pytest==8.4.2
+pytest-django==4.11.1

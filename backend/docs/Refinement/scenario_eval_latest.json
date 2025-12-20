@@ -1,0 +1,682 @@
+[
+  {
+    "query": "¿Puedo deducir gastos de home studio en IRPF como músico autónomo?",
+    "latency_ms": 10280,
+    "answer": "- **Normativa aplicable**:\n\nLa Ley 35/2006 del IRPF, en su artículo 98, regula el borrador de declaración [Fuente: Ley 35/2006 del IRPF - Artículo 98]. Este artículo indica qué tipos de rentas permiten solicitar el borrador, pero no especifica qué gastos son deducibles para autónomos.\n\nPara determinar si puedes deducir los gastos de tu home studio, hay que considerar que como autónomo, puedes deducir aquellos gastos que estén directamente relacionados con tu actividad económica. Si tu home studio es el lugar donde desarrollas tu actividad musical, y los gastos son necesarios para ello (materiales, equipos, etc.), podrían ser deducibles.\n\nSin embargo, no tengo información específica sobre qué artículos de la Ley 35/2006 del IRPF o de otra normativa regulan específicamente la deducción de gastos de home studio para autónomos.\n\n- **Criterios administrativos**:\nNo se encontraron fuentes relevantes en esta categoría.\n\n- **Jurisprudencia relevante**:\nNo se encontraron fuentes relevantes en esta categoría.\n\n- **Requisitos y notas**:\n\nPara deducir gastos, debes poder justificarlos adecuadamente con facturas y documentación que demuestre la relación directa con tu actividad profesional. Te recomiendo consultar con un asesor fiscal para que te indique qué gastos específicos puedes deducir en tu caso particular y cómo debes hacerlo correctamente.\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-1992-28740",
+        "title": "Ley 37/1992 del IVA",
+        "url": "https://www.boe.es/buscar/pdf/1992/BOE-A-1992-28740-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.6931076125678199,
+        "excerpt": "Se considerarán operaciones asimiladas a las prestaciones de servicios a título oneroso los autoconsumos de servicios.\n\nA efectos de este impuesto serán autoconsumos de servicios las siguientes operaciones realizadas sin contraprestación:\n\n2.º La aplicación total o parcial al uso particular del suje",
+        "label": "Artículo 12. Operaciones asimiladas a las prestaciones de servicios.",
+        "source_title": "Ley 37/1992 del IVA",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1992-28740",
+        "title": "Ley 37/1992 del IVA",
+        "url": "https://www.boe.es/buscar/pdf/1992/BOE-A-1992-28740-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.665397670112404,
+        "excerpt": "La regularización de las deducciones a que se refiere el artículo 107 de esta Ley se realizará del siguiente modo:\n\n2.º Dicho importe se restará del de la deducción efectuada en el año en que tuvo lugar la repercusión.\n\n3.º La diferencia positiva o negativa se dividirá por cinco o, tratándose de ter",
+        "label": "Artículo 109. Procedimiento para practicar la regularización de deducciones por bienes de inversión.",
+        "source_title": "Ley 37/1992 del IVA",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2014-12328",
+        "title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "url": "https://www.boe.es/buscar/pdf/2014/BOE-A-2014-12328-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.665210631602029,
+        "excerpt": "1. Los contribuyentes, al tiempo de presentar su declaración, deberán determinar la deuda correspondiente e ingresarla en el lugar y en la forma determinados por el Ministro de Hacienda y Administraciones Públicas.\n\n2. El pago de la deuda tributaria podrá realizarse mediante entrega de bienes integr",
+        "label": "Artículo 125. Autoliquidación e ingreso de la deuda tributaria.",
+        "source_title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2014-12328",
+        "title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "url": "https://www.boe.es/buscar/pdf/2014/BOE-A-2014-12328-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.658272254540526,
+        "excerpt": "1. La distribución de beneficios obtenidos en ejercicios en los que haya sido de aplicación el régimen especial de las sociedades patrimoniales establecido en el texto refundido de la Ley del Impuesto sobre Sociedades, aprobado por el Real Decreto Legislativo 4/2004, de 5 de marzo, recibirá el sigui",
+        "label": "Disposición transitoria décima. Régimen fiscal de las participaciones en entidades que hayan aplicado el régimen especial de sociedades patrimoniales establecido en el texto refundido de la Ley del Impuesto sobre Sociedades, aprobado por el Real Decreto Legislativo 4/2004, de 5 de marzo.",
+        "source_title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2006-20764",
+        "title": "Ley 35/2006 del IRPF",
+        "url": "https://www.boe.es/buscar/pdf/2006/BOE-A-2006-20764-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.655104499020059,
+        "excerpt": "1. Los contribuyentes podrán solicitar que la Administración tributaria les remita, a efectos meramente informativos, un borrador de declaración, sin perjuicio del cumplimiento de lo dispuesto en el apartado 1 del artículo 97 de esta Ley, siempre que obtengan rentas procedentes exclusivamente de las",
+        "label": "Artículo 98. Borrador de declaración.",
+        "source_title": "Ley 35/2006 del IRPF",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  },
+  {
+    "query": "¿Qué retención de IRPF aplica a facturas por actuaciones en directo?",
+    "latency_ms": 8927,
+    "answer": "Para determinar la retención de IRPF aplicable a facturas por actuaciones en directo, necesitamos identificar la normativa específica que regula este tipo de rendimientos.\n\n**Normativa aplicable**:\n\nNo tengo información específica sobre esto en las fuentes legales disponibles. Sin embargo, de manera general, las retenciones de IRPF aplicables a los rendimientos del trabajo profesional (como podrían ser las actuaciones en directo) están reguladas en la Ley del IRPF y su Reglamento. Para conocer el porcentaje exacto aplicable, deberías consultar estas normativas o contactar con un asesor fiscal.\n\n**Criterios administrativos**:\n\nNo se encontraron fuentes relevantes en esta categoría.\n\n**Jurisprudencia relevante**:\n\nNo se encontraron fuentes relevantes en esta categoría.\n\n**Requisitos y notas**:\n\n1.  **Identifica el tipo de rendimiento**: Determina si tu actividad se considera un rendimiento del trabajo (asalariado) o un rendimiento de actividades económicas (autónomo). Esto influirá en la retención aplicable.\n2.  **Consulta la Ley del IRPF y su Reglamento**: Busca los artículos que regulan las retenciones aplicables a los rendimientos que has identificado en el punto anterior.\n3.  **Considera las reducciones y bonificaciones**: Podrían existir reducciones o bonificaciones aplicables a tu situación particular, como por inicio de actividad.\n4.  **Asesoramiento profesional**: Debido a la complejidad de la normativa fiscal, es recomendable buscar el asesoramiento de un profesional para asegurar el correcto cumplimiento de tus obligaciones.\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-1992-28740",
+        "title": "Ley 37/1992 del IVA",
+        "url": "https://www.boe.es/buscar/pdf/1992/BOE-A-1992-28740-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.7436489433946329,
+        "excerpt": "La base imponible del recargo de equivalencia será la misma que resulte para el Impuesto sobre el Valor Añadido.",
+        "label": "Artículo 160. Base imponible.",
+        "source_title": "Ley 37/1992 del IVA",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2003-23186",
+        "title": "Ley 58/2003, General Tributaria",
+        "url": "https://www.boe.es/buscar/pdf/2003/BOE-A-2003-23186-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.743267294213757,
+        "excerpt": "Uno. El apartado 2 del artículo 18 de la Ley 29/1987, de 18 de diciembre, del Impuesto sobre Sucesiones y Donaciones, quedará redactado de la siguiente forma:",
+        "label": "Disposición final cuarta. Modificación de la Ley 29/1987, de 18 de diciembre, del Impuesto sobre Sucesiones y Donaciones.",
+        "source_title": "Ley 58/2003, General Tributaria",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2014-12328",
+        "title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "url": "https://www.boe.es/buscar/pdf/2014/BOE-A-2014-12328-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.7381464395556641,
+        "excerpt": "Las eliminaciones se realizarán de acuerdo con los criterios establecidos en las Normas para la Formulación de Cuentas Anuales Consolidadas, aprobadas por el Real Decreto 1159/2010, de 17 de septiembre, siempre que afecten a las bases imponibles individuales y con las especificidades previstas en es",
+        "label": "Artículo 64. Eliminaciones.",
+        "source_title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1885-6627",
+        "title": "Código de comercio",
+        "url": "https://www.boe.es/buscar/pdf/1885/BOE-A-1885-6627-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.732610851661445,
+        "excerpt": "Interpuesta una demanda, no podrá hacerse la acumulación de interés al capital para exigir mayores réditos.",
+        "label": "Art. 319.",
+        "source_title": "Código de comercio",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2003-23186",
+        "title": "Ley 58/2003, General Tributaria",
+        "url": "https://www.boe.es/buscar/pdf/2003/BOE-A-2003-23186-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.731871579955919,
+        "excerpt": "1. La reclamación deberá iniciarse mediante escrito que necesariamente deberá incluir el siguiente contenido:\n\nEn los casos de reclamaciones relativas a retenciones, ingresos a cuenta, repercusiones, obligación de expedir y entregar factura o relaciones entre el sustituto y el contribuyente, el escr",
+        "label": "Artículo 246. Iniciación.",
+        "source_title": "Ley 58/2003, General Tributaria",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  },
+  {
+    "query": "¿Qué IVA corresponde a entradas de un concierto pequeño?",
+    "latency_ms": 9277,
+    "answer": "**Normativa aplicable**:\n\nEn cuanto al IVA aplicable a las entradas de un concierto, la Ley 37/1992 del IVA [Fuente: Ley 37/1992 del IVA] establece en su Artículo 90 [Fuente: Ley 37/1992 del IVA, Artículo 90] un tipo impositivo general. Específicamente, el Artículo 90.Uno [Fuente: Ley 37/1992 del IVA, Artículo 90.Uno] indica que \"El impuesto se exigirá al tipo del 15 por 100, salvo lo dispuesto en el artículo siguiente\". Sin embargo, es crucial revisar el artículo siguiente (y otros artículos relacionados en la Ley del IVA) para determinar si existe un tipo impositivo reducido o superreducido aplicable a eventos culturales como conciertos pequeños.  Sin esa revisión, no puedo confirmar el tipo exacto.\n\n**Criterios administrativos**:\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Jurisprudencia relevante**:\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Requisitos y notas**:\nPara determinar el IVA correcto, necesitas revisar la Ley 37/1992 del IVA completa, incluyendo las posibles exenciones, reducciones o regímenes especiales que podrían ser aplicables a los conciertos pequeños. Consulta con un asesor fiscal para asegurar el cumplimiento de las regulaciones vigentes.\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-2014-12328",
+        "title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "url": "https://www.boe.es/buscar/pdf/2014/BOE-A-2014-12328-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.739170199058256,
+        "excerpt": "Si en virtud de las normas aplicables para la determinación de la base imponible del grupo fiscal ésta resultase negativa, su importe podrá ser compensado con las bases imponibles positivas del grupo fiscal en los términos previstos en el artículo 26 de esta Ley.",
+        "label": "Artículo 66. Compensación de bases imponibles negativas.",
+        "source_title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2010-10544",
+        "title": "TR Ley de sociedades de capital (RDL 1/2010)",
+        "url": "https://www.boe.es/buscar/pdf/2010/BOE-A-2010-10544-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.737753984572738,
+        "excerpt": "Quienes hayan asumido las nuevas participaciones o suscrito las nuevas acciones quedan obligados a hacer su aportación desde el momento mismo de la suscripción.",
+        "label": "Artículo 312. El desembolso en los aumentos del capital social.",
+        "source_title": "TR Ley de sociedades de capital (RDL 1/2010)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2014-12328",
+        "title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "url": "https://www.boe.es/buscar/pdf/2014/BOE-A-2014-12328-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.706358820585296,
+        "excerpt": "Se entenderá por cuota íntegra del grupo fiscal la cuantía resultante de aplicar el tipo de gravamen que corresponda, de acuerdo con el artículo anterior, a la base imponible del grupo fiscal.\n\nEn el supuesto de un grupo fiscal que aplique lo dispuesto en el artículo 105 de esta Ley, la cuota íntegr",
+        "label": "Artículo 70. Cuota íntegra del grupo fiscal.",
+        "source_title": "Ley 27/2014 del Impuesto sobre sociedades",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1992-28740",
+        "title": "Ley 37/1992 del IVA",
+        "url": "https://www.boe.es/buscar/pdf/1992/BOE-A-1992-28740-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.7045317622691509,
+        "excerpt": "Uno. El impuesto se exigirá al tipo del 15 por 100, salvo lo dispuesto en el artículo siguiente.\n\nDos. El tipo impositivo aplicable a cada operación será el vigente en el momento del devengo.\n\nTres. En las reimportaciones de bienes que hayan sido exportados temporalmente fuera de la Comunidad y que ",
+        "label": "Artículo 90. Tipo impositivo general.",
+        "source_title": "Ley 37/1992 del IVA",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2007-19884",
+        "title": "Plan General de Contabilidad (PGC)",
+        "url": "https://www.boe.es/buscar/pdf/2007/BOE-A-2007-19884-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.703018231424446,
+        "excerpt": "Las empresas que puedan formular cuenta de pérdidas y ganancias abreviada podrán omitir esta información.\n\n* Su signo puede ser positivo o negativo.",
+        "label": "25. Información segmentada",
+        "source_title": "Plan General de Contabilidad (PGC)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  },
+  {
+    "query": "¿Cuánto dura la protección de derechos de autor de una canción en España?",
+    "latency_ms": 9364,
+    "answer": "¡Hola! Veamos cómo se regula la duración de los derechos de autor de una canción en España.\n\n- **Normativa aplicable**:\n    *   La propiedad intelectual de una obra musical corresponde al autor por el mero hecho de su creación [Fuente: Ley de Propiedad Intelectual (RDL 1/1996), Artículo 1]. Esta propiedad intelectual incluye tanto derechos de carácter personal como patrimonial, que otorgan al autor la plena disposición y el derecho exclusivo a la explotación de la obra [Fuente: Ley de Propiedad Intelectual (RDL 1/1996), Artículo 2].\n    *   En cuanto a la duración de los derechos de explotación para los artistas intérpretes o ejecutantes (como músicos), estos duran 50 años, contados desde el 1 de enero del año siguiente al de la interpretación o ejecución [Fuente: Ley de Propiedad Intelectual (RDL 1/1996), Artículo 112].  Sin embargo, si se divulga lícitamente una grabación de la interpretación dentro de esos 50 años, los derechos expirarán 50 años después de la divulgación, contados desde el 1 de enero del año siguiente a dicha divulgación [Fuente: Ley de Propiedad Intelectual (RDL 1/1996), Artículo 112].\n\n- **Requisitos y notas**:\n\nEs crucial distinguir entre los derechos del autor de la composición musical (letra y música) y los derechos de los artistas intérpretes o ejecutantes (músicos que interpretan la canción).  La duración de la protección puede variar dependiendo de si se trata de una obra publicada por partes [Fuente: Ley de Propiedad Intelectual (RDL 1/1996), Artículo 29].\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.827668671176461,
+        "excerpt": "La propiedad intelectual de una obra literaria, artística o científica corresponde al autor por el solo hecho de su creación.",
+        "label": "Artículo 1. Hecho generador.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.825965644902121,
+        "excerpt": "La propiedad intelectual está integrada por derechos de carácter personal y patrimonial, que atribuyen al autor la plena disposición y el derecho exclusivo a la explotación de la obra, sin más limitaciones que las establecidas en la Ley.",
+        "label": "Artículo 2. Contenido.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.824425312873629,
+        "excerpt": "Los derechos de explotación reconocidos a los artistas intérpretes o ejecutantes tendrán una duración de cincuenta años, computados desde el día 1 de enero del año siguiente al de la interpretación o ejecución.\n\nNo obstante, si, dentro de dicho período, se divulga lícitamente una grabación de la int",
+        "label": "Artículo 112. Duración de los derechos de explotación.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.820147025087838,
+        "excerpt": "El contrato de representación que tenga por objeto la ejecución pública de una composición musical se regirá por las disposiciones de este capítulo, siempre que lo permita la naturaleza de la obra y la modalidad de la comunicación autorizada.",
+        "label": "Artículo 83. Ejecución pública de composiciones musicales.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.819297255654422,
+        "excerpt": "En el caso de obras divulgadas por partes, volúmenes, entregas o fascículos, que no sean independientes y cuyo plazo de protección comience a transcurrir cuando la obra haya sido divulgada de forma lícita, dicho plazo se computará por separado para cada elemento.",
+        "label": "Artículo 29. Obras publicadas por partes.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  },
+  {
+    "query": "¿Cómo debo ceder derechos de uso de una obra musical en un contrato?",
+    "latency_ms": 9557,
+    "answer": "¡Claro! Vamos a ver cómo funciona la cesión de derechos de una obra musical en un contrato.\n\n- **Normativa aplicable**:\n   *   El **artículo 74** de la Ley de Propiedad Intelectual [Fuente: RDL 1/1996, Artículo 74] define el contrato de representación o ejecución pública, donde el autor cede a otra persona el derecho a representar o ejecutar públicamente su obra (literaria, dramática, musical, etc.) a cambio de una compensación económica. El cesionario se obliga a comunicar la obra según las condiciones acordadas.\n   *   El **artículo 83** de la misma ley [Fuente: RDL 1/1996, Artículo 83] especifica que el contrato de representación para la ejecución pública de composiciones musicales se regirá por las disposiciones del capítulo correspondiente, siempre que la naturaleza de la obra y la modalidad de la comunicación autorizada lo permitan.\n   *   Según el **artículo 77**, el autor tiene obligaciones como entregar el texto y la partitura de la obra (si no está publicada) y garantizar la autoría, originalidad y el ejercicio pacífico de los derechos cedidos al cesionario [Fuente: RDL 1/1996, Artículo 77].\n   *   El **artículo 80** establece reglas sobre la ejecución del contrato, como que el cesionario obtendrá las copias necesarias para la comunicación pública, que deberán ser visadas por el autor. Autor y cesionario elegirán de mutuo acuerdo a los intérpretes principales y al director (si aplica), y convendrán la redacción de la publicidad [Fuente: RDL 1/1996, Artículo 80].\n   *   El **artículo 38** indica que, para actos oficiales del Estado, administraciones públicas y ceremonias religiosas con asistencia gratuita y sin remuneración específica para los artistas, no se requiere autorización para la ejecución de obras musicales [Fuente: RDL 1/1996, Artículo 38].\n\n- **Criterios administrativos**: No tengo información específica sobre esto en las fuentes legales disponibles.\n\n- **Jurisprudencia relevante**: No tengo información específica sobre esto en las fuentes legales disponibles.\n\n- **Requisitos y notas**:\n    *   Asegúrate de definir claramente qué derechos estás cediendo (ejecución pública, reproducción, etc.) y en qué ámbito (geográfico, temporal, etc.).\n    *   Establece una compensación económica justa y acorde al uso que se hará de la obra.\n    *   Redacta un contrato detallado que contemple todas las condiciones acordadas.\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.882805623083826,
+        "excerpt": "El contrato de representación que tenga por objeto la ejecución pública de una composición musical se regirá por las disposiciones de este capítulo, siempre que lo permita la naturaleza de la obra y la modalidad de la comunicación autorizada.",
+        "label": "Artículo 83. Ejecución pública de composiciones musicales.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.858478543793117,
+        "excerpt": "Por el contrato regulado en este capítulo, el autor o sus derechohabientes ceden a una persona natural o jurídica el derecho de representar o ejecutar públicamente una obra literaria, dramática, musical, dramático-musical, pantomímica o coreográfica, mediante compensación económica. El cesionario se",
+        "label": "Artículo 74. Concepto.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.848722681672825,
+        "excerpt": "Son obligaciones del autor:\n\n1.º Entregar al empresario el texto de la obra con la partitura, en su caso, completamente instrumentada, cuando no se hubiese publicado en forma impresa.\n\n2.º Responder ante el cesionario de la autoría y originalidad de la obra y del ejercicio pacífico de los derechos q",
+        "label": "Artículo 77. Obligaciones del autor.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.841481767957293,
+        "excerpt": "La ejecución de obras musicales en el curso de actos oficiales del Estado, de las Administraciones públicas y ceremonias religiosas no requerirá autorización de los titulares de los derechos, siempre que el público pueda asistir a ellas gratuitamente y los artistas que en las mismas intervengan no p",
+        "label": "Artículo 38. Actos oficiales y ceremonias religiosas.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.841253024066329,
+        "excerpt": "Salvo que las partes hubieran convenido otra cosa, se sujetarán en la ejecución del contrato a las siguientes reglas:\n\n1.ª Correrá a cargo del cesionario la obtención de las copias necesarias para la comunicación pública de la obra. Estas deberán ser visadas por el autor.\n\n2.ª El autor y el cesionar",
+        "label": "Artículo 80. Ejecución del contrato.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  },
+  {
+    "query": "¿Puedo deducir gastos de desplazamiento y dietas en una gira?",
+    "latency_ms": 10245,
+    "answer": "Para determinar si puedes deducir gastos de desplazamiento y dietas en una gira, necesitamos examinar la normativa fiscal aplicable en España.  En este contexto, no hay información específica en las fuentes legales disponibles sobre la deducibilidad de gastos de desplazamiento y dietas en el contexto específico de una gira artística.\n\n**Normativa aplicable**:\nAunque no hay artículos específicos que aborden directamente los gastos de desplazamiento y dietas en giras, es importante tener en cuenta que:\n\n*   En el caso de agencias de viaje, la Ley del IVA [Fuente: Ley 37/1992 del IVA - Artículo 144] establece reglas sobre el lugar de realización del hecho imponible en la prestación de servicios únicos en el marco de un viaje.\n*   Respecto a los préstamos, el Código de Comercio indica que estos no devengarán interés si no se ha pactado por escrito [Fuente: Código de comercio - Art. 314].\n*   En el ámbito de las sociedades de capital, toda aportación se entiende realizada a título de propiedad, salvo que expresamente se estipule lo contrario [Fuente: TR Ley de sociedades de capital (RDL 1/2010) - Artículo 60].\n*   En las operaciones a las que resulte aplicable un régimen especial, los sujetos pasivos no están obligados a consignar en factura separadamente la cuota repercutida, debiendo entenderse, en su caso, comprendida en el precio de la operación [Fuente: Ley 37/1992 del IVA - Artículo 142].\n\n**Criterios administrativos**:\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Jurisprudencia relevante**:\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Requisitos y notas**:\nPara determinar la deducibilidad de los gastos de desplazamiento y dietas en tu gira, es fundamental:\n\n1.  **Identificar tu régimen fiscal**: Determinar si estás dado de alta como autónomo, si operas a través de una sociedad, o si estás sujeto a algún régimen especial.\n2.  **Documentación**: Conservar todas las facturas y justificantes de los gastos incurridos.\n3.  **Vinculación con la actividad**: Demostrar que los gastos son necesarios y están directamente relacionados con la actividad de la gira.\n4.  **Límites y requisitos**: Verificar si existen límites específicos para la deducción de gastos de desplazamiento y dietas según tu régimen fiscal (por ejemplo, límites diarios para dietas).\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-1992-28740",
+        "title": "Ley 37/1992 del IVA",
+        "url": "https://www.boe.es/buscar/pdf/1992/BOE-A-1992-28740-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.797368063123345,
+        "excerpt": "Las operaciones efectuadas por las agencias respecto de cada viajero para la realización de un viaje tendrán la consideración de prestación de servicios única, aunque se le proporcionen varias entregas o servicios en el marco del citado viaje.\n\nDicha prestación se entenderá realizada en el lugar don",
+        "label": "Artículo 144. Lugar de realización del hecho imponible.",
+        "source_title": "Ley 37/1992 del IVA",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1885-6627",
+        "title": "Código de comercio",
+        "url": "https://www.boe.es/buscar/pdf/1885/BOE-A-1885-6627-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.794913793413789,
+        "excerpt": "Si el importe total del préstamo para cargar el buque no se empleare en la carga, el sobrante se devolverá antes de la expedición.\n\nSe procederá de igual manera con los efectos tomados a préstamo, si no se hubieren podido cargar.",
+        "label": "Art. 727.",
+        "source_title": "Código de comercio",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1885-6627",
+        "title": "Código de comercio",
+        "url": "https://www.boe.es/buscar/pdf/1885/BOE-A-1885-6627-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.787966083576093,
+        "excerpt": "Los préstamos no devengarán interés si no se hubiere pactado por escrito.",
+        "label": "Art. 314.",
+        "source_title": "Código de comercio",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2010-10544",
+        "title": "TR Ley de sociedades de capital (RDL 1/2010)",
+        "url": "https://www.boe.es/buscar/pdf/2010/BOE-A-2010-10544-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.785180009278402,
+        "excerpt": "Toda aportación se entiende realizada a título de propiedad, salvo que expresamente se estipule de otro modo.",
+        "label": "Artículo 60. Título de la aportación.",
+        "source_title": "TR Ley de sociedades de capital (RDL 1/2010)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1992-28740",
+        "title": "Ley 37/1992 del IVA",
+        "url": "https://www.boe.es/buscar/pdf/1992/BOE-A-1992-28740-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.7804152714425681,
+        "excerpt": "En las operaciones a las que resulte aplicable este régimen en especial los sujetos pasivos no estarán obligados a consignar en factura separadamente la cuota repercutida, debiendo entenderse, en su caso, comprendida en el precio de la operación.",
+        "label": "Artículo 142. Repercusión del impuesto",
+        "source_title": "Ley 37/1992 del IVA",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  },
+  {
+    "query": "¿Cómo facturo un bolo a un cliente de otro país de la UE? ¿IVA o inversión del sujeto pasivo?",
+    "latency_ms": 7110,
+    "answer": "Para facturar un bolo a un cliente de otro país de la UE, hay que considerar el IVA y la posible aplicación de la inversión del sujeto pasivo.\n\n- **Normativa aplicable**: No tengo información específica sobre la normativa del IVA en este contexto en las fuentes legales disponibles.\n\n- **Criterios administrativos**: No tengo información específica sobre esto en las fuentes legales disponibles.\n\n- **Jurisprudencia relevante**: No tengo información específica sobre esto en las fuentes legales disponibles.\n\n- **Requisitos y notas**: Dado que no tengo acceso a la normativa específica sobre el IVA, lo más recomendable es que consultes con un asesor fiscal para determinar si debes aplicar IVA o la regla de inversión del sujeto pasivo en tu factura.\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-2022-11311",
+        "title": "Ley 13/2022, General de comunicación audiovisual",
+        "url": "https://www.boe.es/buscar/pdf/2002/BOE-A-2002-13758-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.752751901936773,
+        "excerpt": "El órgano administrativo competente para resolver el procedimiento sancionador podrá imponer multas coercitivas por importe que no exceda de 6.000 euros por cada día que transcurra sin cumplir las medidas provisionales que hubieran sido acordadas.",
+        "label": "Artículo 42. Multa coercitiva.",
+        "source_title": "Ley 13/2022, General de comunicación audiovisual",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2002-13758",
+        "title": "Ley 34/2002, LSSI-CE",
+        "url": "https://www.boe.es/buscar/pdf/2002/BOE-A-2002-13758-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.752751901936773,
+        "excerpt": "El órgano administrativo competente para resolver el procedimiento sancionador podrá imponer multas coercitivas por importe que no exceda de 6.000 euros por cada día que transcurra sin cumplir las medidas provisionales que hubieran sido acordadas.",
+        "label": "Artículo 42. Multa coercitiva.",
+        "source_title": "Ley 34/2002, LSSI-CE",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1885-6627",
+        "title": "Código de comercio",
+        "url": "https://www.boe.es/buscar/pdf/1885/BOE-A-1885-6627-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.752676503563407,
+        "excerpt": "El comprador que no haya hecho reclamación alguna fundada en los vicios internos de la cosa vendida, dentro de los treinta días siguientes a su entrega, perderá toda acción y derecho a repetir por esta causa contra el vendedor.",
+        "label": "Art. 342.",
+        "source_title": "Código de comercio",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.752144747341299,
+        "excerpt": "Se entiende por reproducción la fijación de la obra en un medio que permita su comunicación y la obtención de copias de toda o parte de ella.",
+        "label": "Artículo 18. Reproducción.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1885-6627",
+        "title": "Código de comercio",
+        "url": "https://www.boe.es/buscar/pdf/1885/BOE-A-1885-6627-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.74729730950188,
+        "excerpt": "Los contratos y pólizas de seguro que autoricen los agentes consulares en el extranjero, siendo españoles los contratantes o alguno de ellos, tendrán igual valor legal que si se hubieren verificado con intervención de corredor.",
+        "label": "Art. 739.",
+        "source_title": "Código de comercio",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  },
+  {
+    "query": "¿Qué obligaciones tengo al vender merchandising online como artista?",
+    "latency_ms": 9381,
+    "answer": "Para poder ofrecerte una respuesta precisa sobre tus obligaciones al vender merchandising online como artista, necesito más información sobre tu situación específica. Aspectos como tu forma jurídica (autónomo, sociedad, etc.), el tipo de productos que vendes, y el volumen de tus ventas son cruciales para determinar las obligaciones fiscales y legales que te corresponden.\n\n**Normativa aplicable**:\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Criterios administrativos**:\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Jurisprudencia relevante**:\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Requisitos y notas**:\n\n1.  **Determina tu forma jurídica**: Si eres autónomo, tendrás obligaciones distintas que si operas a través de una sociedad.\n2.  **Impuestos**: Deberás cumplir con las obligaciones fiscales correspondientes al IVA (Impuesto sobre el Valor Añadido) y al IRPF (Impuesto sobre la Renta de las Personas Físicas) o Impuesto de Sociedades, según tu forma jurídica.\n3.  **Protección de datos**: Si recopilas datos de tus clientes (direcciones, emails, etc.), debes cumplir con la normativa de protección de datos (RGPD y LOPDGDD).\n4.  **Condiciones de venta**: Debes ofrecer información clara sobre las condiciones de venta, envío, devoluciones y garantías de tus productos.\n5.  **Propiedad intelectual**: Asegúrate de tener los derechos necesarios sobre los diseños que utilizas en tu merchandising.\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-1885-6627",
+        "title": "Código de comercio",
+        "url": "https://www.boe.es/buscar/pdf/1885/BOE-A-1885-6627-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.6736497024105861,
+        "excerpt": "En defecto de carta de porte, se estará al resultado de las pruebas jurídicas que haga cada parte en apoyo de sus respectivas pretensiones, conforme a las disposiciones generales establecidas en este Código para los contratos de comercio.",
+        "label": "Art. 354.",
+        "source_title": "Código de comercio",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1885-6627",
+        "title": "Código de comercio",
+        "url": "https://www.boe.es/buscar/pdf/1885/BOE-A-1885-6627-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.6617324122889989,
+        "excerpt": "Si, por conveniencia del asegurado, las mercaderías se descargaren en un puerto más próximo que el designado para rendir el viaje, el asegurador hará suyo sin rebaja alguna el premio contratado.",
+        "label": "Art. 763.",
+        "source_title": "Código de comercio",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2011-18458",
+        "title": "Adaptación PGC a entidades sin fines lucrativos",
+        "url": "https://www.boe.es/buscar/pdf/2011/BOE-A-2011-18458-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.006557377049180328,
+        "excerpt": "Tras la aprobación del Real Decreto 1514/2007, de 16 de noviembre, por el que se aprueba el Plan General de Contabilidad, así como del Real Decreto 1515/2007, de 16 de noviembre, por el que se aprueba el Plan General de Contabilidad de Pequeñas y Medianas Empresas y los criterios contables específic",
+        "label": "Disposición final tercera. Entrada en vigor.",
+        "source_title": "Adaptación PGC a entidades sin fines lucrativos",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2007-19884",
+        "title": "Plan General de Contabilidad (PGC)",
+        "url": "https://www.boe.es/buscar/pdf/2007/BOE-A-2007-19884-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.0064516129032258064,
+        "excerpt": "Posteriormente, la incorporación de España a la hoy Unión Europea trajo consigo la armonización de las normas contables vigentes en aquel momento con el Derecho comunitario derivado en materia contable, en adelante Directivas contables (la Cuarta Directiva 78/660/CEE del Consejo, de 25 de julio de 1",
+        "label": "Disposición final sexta. Entrada en vigor.",
+        "source_title": "Plan General de Contabilidad (PGC)",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2007-19966",
+        "title": "PGC PYMES",
+        "url": "https://www.boe.es/buscar/pdf/2007/BOE-A-2007-19966-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.006349206349206349,
+        "excerpt": "Posteriormente, la incorporación de España a la hoy Unión Europea trajo consigo la armonización de las normas contables vigentes en aquel momento con el Derecho comunitario derivado en materia contable, en adelante Directivas contables (la Cuarta Directiva 78/660/CEE del Consejo, de 25 de julio de 1",
+        "label": "Disposición final tercera. Entrada en vigor.",
+        "source_title": "PGC PYMES",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  },
+  {
+    "query": "¿Necesito darme de alta en autónomos para actuar esporádicamente?",
+    "latency_ms": 7469,
+    "answer": "**Normativa aplicable**:\n\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Criterios administrativos**:\nNo se encontraron fuentes relevantes en esta categoría.\n\n**Jurisprudencia relevante**:\nNo se encontraron fuentes relevantes en esta categoría.\n\n**Requisitos y notas**:\nLa obligación de darse de alta como autónomo para actividades esporádicas depende de la habitualidad y de si la actividad se realiza de forma regular [Fuente: No hay información específica sobre esto en las fuentes legales disponibles]. Es crucial evaluar cada caso individualmente.\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-1885-6627",
+        "title": "Código de comercio",
+        "url": "https://www.boe.es/buscar/pdf/1885/BOE-A-1885-6627-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.682251362626318,
+        "excerpt": "El dador de una carta de crédito podrá anularla, poniéndolo en conocimiento del portador y de aquel a quien fuere dirigida.",
+        "label": "Art. 570.",
+        "source_title": "Código de comercio",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1885-6627",
+        "title": "Código de comercio",
+        "url": "https://www.boe.es/buscar/pdf/1885/BOE-A-1885-6627-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.624797774784282,
+        "excerpt": "Serán causas especiales para que los comerciantes puedan despedir a sus dependientes, no obstante no haber cumplido el plazo del empeño:\n\n2.ª Hacer alguna negociación de comercio por cuenta propia sin conocimiento expreso y licencia del principal.\n\n3.ª Faltar gravemente al respeto y consideración de",
+        "label": "Art. 300.",
+        "source_title": "Código de comercio",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1978-31229",
+        "title": "Constitución española",
+        "url": "https://www.boe.es/boe/dias/1978/12/29/pdfs/A29313-29424.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.006557377049180328,
+        "excerpt": "1. No será preciso dejar transcurrir el plazo de cinco años, a que se refiere el apartado 2 del artículo 148, cuando la iniciativa del proceso autonómico sea acordada dentro del plazo del artículo 143.2, además de por las Diputaciones o los órganos interinsulares correspondientes, por las tres cuart",
+        "label": "Artículo 151",
+        "source_title": "Constitución española",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1978-31229",
+        "title": "Constitución española",
+        "url": "https://www.boe.es/boe/dias/1978/12/29/pdfs/A29313-29424.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.0064516129032258064,
+        "excerpt": "1. En los Estatutos aprobados por el procedimiento a que se refiere el artículo anterior, la organización institucional autonómica se basará en una Asamblea Legislativa, elegida por sufragio universal, con arreglo a un sistema de representación proporcional que asegure, además, la representación de ",
+        "label": "Artículo 152",
+        "source_title": "Constitución española",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1978-31229",
+        "title": "Constitución española",
+        "url": "https://www.boe.es/boe/dias/1978/12/29/pdfs/A29313-29424.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.006349206349206349,
+        "excerpt": "1. El Estado tiene competencia exclusiva sobre las siguientes materias:\n\n2.ª Nacionalidad, inmigración, emigración, extranjería y derecho de asilo.\n\n3.ª Relaciones internacionales.\n\n4.ª Defensa y Fuerzas Armadas.\n\n5.ª Administración de Justicia.\n\n6.ª Legislación mercantil, penal y penitenciaria; leg",
+        "label": "Artículo 149",
+        "source_title": "Constitución española",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  },
+  {
+    "query": "¿Qué pasa con el IVA en servicios culturales prestados a una ONG?",
+    "latency_ms": 9833,
+    "answer": "Okay, te explico sobre el IVA en servicios culturales prestados a una ONG.\n\n**Normativa aplicable**:\n\nEn la Ley 37/1992 del IVA, el artículo 160 establece que la base imponible del recargo de equivalencia será la misma que resulte para el Impuesto sobre el Valor Añadido [Fuente: Ley 37/1992, Artículo 160]. Sin embargo, este artículo se refiere al recargo de equivalencia, que no es directamente aplicable a los servicios culturales prestados a una ONG. Para determinar si un servicio cultural prestado a una ONG está sujeto, exento o no sujeto a IVA, es necesario analizar la actividad específica, la naturaleza de la ONG y si se cumplen los requisitos para alguna exención prevista en la Ley del IVA.\n\nAdicionalmente, la Ley 49/2002 [Fuente: Ley 49/2002, Artículo 16] proporciona información sobre las entidades beneficiarias del mecenazgo, lo que podría ser relevante si la prestación del servicio cultural se considera una donación o aportación a la ONG.\n\n**Criterios administrativos**:\n\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Jurisprudencia relevante**:\n\nNo tengo información específica sobre esto en las fuentes legales disponibles.\n\n**Requisitos y notas**:\n\nPara saber si el servicio cultural que prestas a la ONG lleva IVA o no, debes analizar:\n\n1.  **El tipo de servicio cultural:** Determinar la naturaleza exacta del servicio que se presta.\n2.  **La actividad de la ONG:** Verificar si la actividad de la ONG se encuentra dentro de los supuestos de exención del IVA.\n3.  **Exenciones específicas:** Investigar si hay alguna exención específica en la Ley del IVA que se aplique a este tipo de servicios prestados a ONGs.\n\n⚠️ **Importante**: Esta información es orientativa y basada en fuentes oficiales. Para decisiones específicas sobre tu situación particular, consulta siempre con un asesor fiscal o legal colegiado.\n",
+    "sources": [
+      {
+        "id": "BOE-A-2003-23186",
+        "title": "Ley 58/2003, General Tributaria",
+        "url": "https://www.boe.es/buscar/pdf/2003/BOE-A-2003-23186-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.782118238200068,
+        "excerpt": "Uno. El apartado 2 del artículo 18 de la Ley 29/1987, de 18 de diciembre, del Impuesto sobre Sucesiones y Donaciones, quedará redactado de la siguiente forma:",
+        "label": "Disposición final cuarta. Modificación de la Ley 29/1987, de 18 de diciembre, del Impuesto sobre Sucesiones y Donaciones.",
+        "source_title": "Ley 58/2003, General Tributaria",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-1992-28740",
+        "title": "Ley 37/1992 del IVA",
+        "url": "https://www.boe.es/buscar/pdf/1992/BOE-A-1992-28740-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.756252269639824,
+        "excerpt": "La base imponible del recargo de equivalencia será la misma que resulte para el Impuesto sobre el Valor Añadido.",
+        "label": "Artículo 160. Base imponible.",
+        "source_title": "Ley 37/1992 del IVA",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2002-25039",
+        "title": "Ley 49/2002 de entidades sin fines lucrativos y mecenazgo",
+        "url": "https://www.boe.es/buscar/pdf/2002/BOE-A-2002-25039-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.74508234546345,
+        "excerpt": "Los incentivos fiscales previstos en este Título serán aplicables a los donativos, donaciones y aportaciones que, cumpliendo los requisitos establecidos en este Título, se hagan en favor de las siguientes entidades:\n\na) Las entidades sin fines lucrativos a las que sea de aplicación el régimen fiscal",
+        "label": "Artículo 16. Entidades beneficiarias del mecenazgo.",
+        "source_title": "Ley 49/2002 de entidades sin fines lucrativos y mecenazgo",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2007-22439",
+        "title": "Ley 55/2007, del cine",
+        "url": "https://www.boe.es/buscar/pdf/2007/BOE-A-2007-22439-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.7175565275543649,
+        "excerpt": "Las Administraciones Públicas, en el ámbito de sus respectivas competencias, promoverán la accesibilidad de los productos cinematográficos y audiovisuales al sistema educativo a través de programas de formación, de manera que sus contenidos puedan también quedar integrados en aquél.",
+        "label": "Disposición adicional séptima. Acceso de los productos cinematográficos y audiovisuales al sistema educativo.",
+        "source_title": "Ley 55/2007, del cine",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      },
+      {
+        "id": "BOE-A-2003-20977",
+        "title": "Ley 38/2003, General de subvenciones",
+        "url": "https://www.boe.es/buscar/pdf/2003/BOE-A-2003-20977-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.7160673437704961,
+        "excerpt": "1. El órgano concedente comprobará la adecuada justificación de la subvención, así como la realización de la actividad y el cumplimiento de la finalidad que determinen la concesión o disfrute de la subvención.\n\n2. La entidad colaboradora, en su caso, realizará, en nombre y por cuenta del órgano conc",
+        "label": "Artículo 32. Comprobación de subvenciones.",
+        "source_title": "Ley 38/2003, General de subvenciones",
+        "source_priority": "P1",
+        "chunk_type": "article"
+      }
+    ],
+    "error": null
+  }
+]

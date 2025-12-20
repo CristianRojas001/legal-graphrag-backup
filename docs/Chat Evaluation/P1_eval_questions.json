@@ -1,0 +1,584 @@
+[
+  {
+    "query": "Que regula Ley 55/2007, del cine?",
+    "expected_id": "BOE-A-2007-22439",
+    "title": "Ley 55/2007, del cine",
+    "area": "Audiovisual \u2013 cine"
+  },
+  {
+    "query": "Cual es el objeto de Ley 55/2007, del cine?",
+    "expected_id": "BOE-A-2007-22439",
+    "title": "Ley 55/2007, del cine",
+    "area": "Audiovisual \u2013 cine"
+  },
+  {
+    "query": "Que establece Ley 55/2007?",
+    "expected_id": "BOE-A-2007-22439",
+    "title": "Ley 55/2007, del cine",
+    "area": "Audiovisual \u2013 cine"
+  },
+  {
+    "query": "BOE BOE-A-2007-22439",
+    "expected_id": "BOE-A-2007-22439",
+    "title": "Ley 55/2007, del cine",
+    "area": "Audiovisual \u2013 cine"
+  },
+  {
+    "query": "Que regula Ley 13/2022, General de comunicacion audiovisual?",
+    "expected_id": "BOE-A-2022-11311",
+    "title": "Ley 13/2022, General de comunicacion audiovisual",
+    "area": "Audiovisual / plataformas"
+  },
+  {
+    "query": "Cual es el objeto de Ley 13/2022, General de comunicacion audiovisual?",
+    "expected_id": "BOE-A-2022-11311",
+    "title": "Ley 13/2022, General de comunicacion audiovisual",
+    "area": "Audiovisual / plataformas"
+  },
+  {
+    "query": "Que establece Ley 13/2022?",
+    "expected_id": "BOE-A-2022-11311",
+    "title": "Ley 13/2022, General de comunicacion audiovisual",
+    "area": "Audiovisual / plataformas"
+  },
+  {
+    "query": "BOE BOE-A-2022-11311",
+    "expected_id": "BOE-A-2022-11311",
+    "title": "Ley 13/2022, General de comunicacion audiovisual",
+    "area": "Audiovisual / plataformas"
+  },
+  {
+    "query": "Que regula Codigo de comercio?",
+    "expected_id": "BOE-A-1885-6627",
+    "title": "Codigo de comercio",
+    "area": "Contabilidad"
+  },
+  {
+    "query": "Cual es el objeto de Codigo de comercio?",
+    "expected_id": "BOE-A-1885-6627",
+    "title": "Codigo de comercio",
+    "area": "Contabilidad"
+  },
+  {
+    "query": "Que regula PGC PYMES?",
+    "expected_id": "BOE-A-2007-19966",
+    "title": "PGC PYMES",
+    "area": "Contabilidad"
+  },
+  {
+    "query": "Cual es el objeto de PGC PYMES?",
+    "expected_id": "BOE-A-2007-19966",
+    "title": "PGC PYMES",
+    "area": "Contabilidad"
+  },
+  {
+    "query": "Que regula Plan General de Contabilidad (PGC)?",
+    "expected_id": "BOE-A-2007-19884",
+    "title": "Plan General de Contabilidad (PGC)",
+    "area": "Contabilidad"
+  },
+  {
+    "query": "Cual es el objeto de Plan General de Contabilidad (PGC)?",
+    "expected_id": "BOE-A-2007-19884",
+    "title": "Plan General de Contabilidad (PGC)",
+    "area": "Contabilidad"
+  },
+  {
+    "query": "Que regula Adaptacion PGC a entidades sin fines lucrativos?",
+    "expected_id": "BOE-A-2011-18458",
+    "title": "Adaptacion PGC a entidades sin fines lucrativos",
+    "area": "Contabilidad / tercer sector"
+  },
+  {
+    "query": "Cual es el objeto de Adaptacion PGC a entidades sin fines lucrativos?",
+    "expected_id": "BOE-A-2011-18458",
+    "title": "Adaptacion PGC a entidades sin fines lucrativos",
+    "area": "Contabilidad / tercer sector"
+  },
+  {
+    "query": "Que regula Ley 34/2002, LSSI-CE?",
+    "expected_id": "BOE-A-2002-13758",
+    "title": "Ley 34/2002, LSSI-CE",
+    "area": "Digital / comercio electr\u00f3nico"
+  },
+  {
+    "query": "Cual es el objeto de Ley 34/2002, LSSI-CE?",
+    "expected_id": "BOE-A-2002-13758",
+    "title": "Ley 34/2002, LSSI-CE",
+    "area": "Digital / comercio electr\u00f3nico"
+  },
+  {
+    "query": "Que establece Ley 34/2002?",
+    "expected_id": "BOE-A-2002-13758",
+    "title": "Ley 34/2002, LSSI-CE",
+    "area": "Digital / comercio electr\u00f3nico"
+  },
+  {
+    "query": "BOE BOE-A-2002-13758",
+    "expected_id": "BOE-A-2002-13758",
+    "title": "Ley 34/2002, LSSI-CE",
+    "area": "Digital / comercio electr\u00f3nico"
+  },
+  {
+    "query": "Que regula Ley 27/2014 del Impuesto sobre sociedades?",
+    "expected_id": "BOE-A-2014-12328",
+    "title": "Ley 27/2014 del Impuesto sobre sociedades",
+    "area": "Fiscal \u2013 Impuesto sobre sociedades"
+  },
+  {
+    "query": "Cual es el objeto de Ley 27/2014 del Impuesto sobre sociedades?",
+    "expected_id": "BOE-A-2014-12328",
+    "title": "Ley 27/2014 del Impuesto sobre sociedades",
+    "area": "Fiscal \u2013 Impuesto sobre sociedades"
+  },
+  {
+    "query": "Que establece Ley 27/2014?",
+    "expected_id": "BOE-A-2014-12328",
+    "title": "Ley 27/2014 del Impuesto sobre sociedades",
+    "area": "Fiscal \u2013 Impuesto sobre sociedades"
+  },
+  {
+    "query": "BOE BOE-A-2014-12328",
+    "expected_id": "BOE-A-2014-12328",
+    "title": "Ley 27/2014 del Impuesto sobre sociedades",
+    "area": "Fiscal \u2013 Impuesto sobre sociedades"
+  },
+  {
+    "query": "Que regula Ley 35/2006 del IRPF?",
+    "expected_id": "BOE-A-2006-20764",
+    "title": "Ley 35/2006 del IRPF",
+    "area": "Fiscal \u2013 IRPF"
+  },
+  {
+    "query": "Cual es el objeto de Ley 35/2006 del IRPF?",
+    "expected_id": "BOE-A-2006-20764",
+    "title": "Ley 35/2006 del IRPF",
+    "area": "Fiscal \u2013 IRPF"
+  },
+  {
+    "query": "Que establece Ley 35/2006?",
+    "expected_id": "BOE-A-2006-20764",
+    "title": "Ley 35/2006 del IRPF",
+    "area": "Fiscal \u2013 IRPF"
+  },
+  {
+    "query": "BOE BOE-A-2006-20764",
+    "expected_id": "BOE-A-2006-20764",
+    "title": "Ley 35/2006 del IRPF",
+    "area": "Fiscal \u2013 IRPF"
+  },
+  {
+    "query": "Que regula Ley 37/1992 del IVA?",
+    "expected_id": "BOE-A-1992-28740",
+    "title": "Ley 37/1992 del IVA",
+    "area": "Fiscal \u2013 IVA"
+  },
+  {
+    "query": "Cual es el objeto de Ley 37/1992 del IVA?",
+    "expected_id": "BOE-A-1992-28740",
+    "title": "Ley 37/1992 del IVA",
+    "area": "Fiscal \u2013 IVA"
+  },
+  {
+    "query": "Que establece Ley 37/1992?",
+    "expected_id": "BOE-A-1992-28740",
+    "title": "Ley 37/1992 del IVA",
+    "area": "Fiscal \u2013 IVA"
+  },
+  {
+    "query": "BOE BOE-A-1992-28740",
+    "expected_id": "BOE-A-1992-28740",
+    "title": "Ley 37/1992 del IVA",
+    "area": "Fiscal \u2013 IVA"
+  },
+  {
+    "query": "Que regula Ley 49/2002 de entidades sin fines lucrativos y mecenazgo?",
+    "expected_id": "BOE-A-2002-25039",
+    "title": "Ley 49/2002 de entidades sin fines lucrativos y mecenazgo",
+    "area": "Fiscal \u2013 mecenazgo / ESFL"
+  },
+  {
+    "query": "Cual es el objeto de Ley 49/2002 de entidades sin fines lucrativos y mecenazgo?",
+    "expected_id": "BOE-A-2002-25039",
+    "title": "Ley 49/2002 de entidades sin fines lucrativos y mecenazgo",
+    "area": "Fiscal \u2013 mecenazgo / ESFL"
+  },
+  {
+    "query": "Que establece Ley 49/2002?",
+    "expected_id": "BOE-A-2002-25039",
+    "title": "Ley 49/2002 de entidades sin fines lucrativos y mecenazgo",
+    "area": "Fiscal \u2013 mecenazgo / ESFL"
+  },
+  {
+    "query": "BOE BOE-A-2002-25039",
+    "expected_id": "BOE-A-2002-25039",
+    "title": "Ley 49/2002 de entidades sin fines lucrativos y mecenazgo",
+    "area": "Fiscal \u2013 mecenazgo / ESFL"
+  },
+  {
+    "query": "Que regula Ley 58/2003, General Tributaria?",
+    "expected_id": "BOE-A-2003-23186",
+    "title": "Ley 58/2003, General Tributaria",
+    "area": "Fiscal general"
+  },
+  {
+    "query": "Cual es el objeto de Ley 58/2003, General Tributaria?",
+    "expected_id": "BOE-A-2003-23186",
+    "title": "Ley 58/2003, General Tributaria",
+    "area": "Fiscal general"
+  },
+  {
+    "query": "Que establece Ley 58/2003?",
+    "expected_id": "BOE-A-2003-23186",
+    "title": "Ley 58/2003, General Tributaria",
+    "area": "Fiscal general"
+  },
+  {
+    "query": "BOE BOE-A-2003-23186",
+    "expected_id": "BOE-A-2003-23186",
+    "title": "Ley 58/2003, General Tributaria",
+    "area": "Fiscal general"
+  },
+  {
+    "query": "Que regula Real Decreto 1435/1985, relacion laboral especial de artistas?",
+    "expected_id": "BOE-A-1985-17303",
+    "title": "Real Decreto 1435/1985, relacion laboral especial de artistas",
+    "area": "Laboral \u2013 artistas"
+  },
+  {
+    "query": "Cual es el objeto de Real Decreto 1435/1985, relacion laboral especial de artistas?",
+    "expected_id": "BOE-A-1985-17303",
+    "title": "Real Decreto 1435/1985, relacion laboral especial de artistas",
+    "area": "Laboral \u2013 artistas"
+  },
+  {
+    "query": "Que establece Real Decreto 1435/1985?",
+    "expected_id": "BOE-A-1985-17303",
+    "title": "Real Decreto 1435/1985, relacion laboral especial de artistas",
+    "area": "Laboral \u2013 artistas"
+  },
+  {
+    "query": "BOE BOE-A-1985-17303",
+    "expected_id": "BOE-A-1985-17303",
+    "title": "Real Decreto 1435/1985, relacion laboral especial de artistas",
+    "area": "Laboral \u2013 artistas"
+  },
+  {
+    "query": "Que regula Real Decreto-ley 5/2022, de mejora de la proteccion del colectivo artistico?",
+    "expected_id": "BOE-A-2022-4583",
+    "title": "Real Decreto-ley 5/2022, de mejora de la proteccion del colectivo artistico",
+    "area": "Laboral \u2013 artistas (reforma)"
+  },
+  {
+    "query": "Cual es el objeto de Real Decreto-ley 5/2022, de mejora de la proteccion del colectivo artistico?",
+    "expected_id": "BOE-A-2022-4583",
+    "title": "Real Decreto-ley 5/2022, de mejora de la proteccion del colectivo artistico",
+    "area": "Laboral \u2013 artistas (reforma)"
+  },
+  {
+    "query": "Que establece ley 5/2022?",
+    "expected_id": "BOE-A-2022-4583",
+    "title": "Real Decreto-ley 5/2022, de mejora de la proteccion del colectivo artistico",
+    "area": "Laboral \u2013 artistas (reforma)"
+  },
+  {
+    "query": "BOE BOE-A-2022-4583",
+    "expected_id": "BOE-A-2022-4583",
+    "title": "Real Decreto-ley 5/2022, de mejora de la proteccion del colectivo artistico",
+    "area": "Laboral \u2013 artistas (reforma)"
+  },
+  {
+    "query": "Que regula Ley 20/2007, Estatuto del trabajo autonomo?",
+    "expected_id": "BOE-A-2007-13409",
+    "title": "Ley 20/2007, Estatuto del trabajo autonomo",
+    "area": "Laboral \u2013 aut\u00f3nomos"
+  },
+  {
+    "query": "Cual es el objeto de Ley 20/2007, Estatuto del trabajo autonomo?",
+    "expected_id": "BOE-A-2007-13409",
+    "title": "Ley 20/2007, Estatuto del trabajo autonomo",
+    "area": "Laboral \u2013 aut\u00f3nomos"
+  },
+  {
+    "query": "Que establece Ley 20/2007?",
+    "expected_id": "BOE-A-2007-13409",
+    "title": "Ley 20/2007, Estatuto del trabajo autonomo",
+    "area": "Laboral \u2013 aut\u00f3nomos"
+  },
+  {
+    "query": "BOE BOE-A-2007-13409",
+    "expected_id": "BOE-A-2007-13409",
+    "title": "Ley 20/2007, Estatuto del trabajo autonomo",
+    "area": "Laboral \u2013 aut\u00f3nomos"
+  },
+  {
+    "query": "Que regula Estatuto de los trabajadores (RDL 2/2015)?",
+    "expected_id": "BOE-A-2015-11430",
+    "title": "Estatuto de los trabajadores (RDL 2/2015)",
+    "area": "Laboral general"
+  },
+  {
+    "query": "Cual es el objeto de Estatuto de los trabajadores (RDL 2/2015)?",
+    "expected_id": "BOE-A-2015-11430",
+    "title": "Estatuto de los trabajadores (RDL 2/2015)",
+    "area": "Laboral general"
+  },
+  {
+    "query": "Que regula Constitucion espanola?",
+    "expected_id": "BOE-A-1978-31229",
+    "title": "Constitucion espanola",
+    "area": "Marco general"
+  },
+  {
+    "query": "Cual es el objeto de Constitucion espanola?",
+    "expected_id": "BOE-A-1978-31229",
+    "title": "Constitucion espanola",
+    "area": "Marco general"
+  },
+  {
+    "query": "Que regula TR Ley de sociedades de capital (RDL 1/2010)?",
+    "expected_id": "BOE-A-2010-10544",
+    "title": "TR Ley de sociedades de capital (RDL 1/2010)",
+    "area": "Mercantil \u2013 sociedades"
+  },
+  {
+    "query": "Cual es el objeto de TR Ley de sociedades de capital (RDL 1/2010)?",
+    "expected_id": "BOE-A-2010-10544",
+    "title": "TR Ley de sociedades de capital (RDL 1/2010)",
+    "area": "Mercantil \u2013 sociedades"
+  },
+  {
+    "query": "Que regula Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)?",
+    "expected_id": "BOE-A-1996-8930",
+    "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+    "area": "Propiedad intelectual"
+  },
+  {
+    "query": "Cual es el objeto de Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)?",
+    "expected_id": "BOE-A-1996-8930",
+    "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+    "area": "Propiedad intelectual"
+  },
+  {
+    "query": "Que regula Ley Organica 3/2018 (LOPDGDD)?",
+    "expected_id": "BOE-A-2018-16673",
+    "title": "Ley Organica 3/2018 (LOPDGDD)",
+    "area": "Protecci\u00f3n de datos"
+  },
+  {
+    "query": "Cual es el objeto de Ley Organica 3/2018 (LOPDGDD)?",
+    "expected_id": "BOE-A-2018-16673",
+    "title": "Ley Organica 3/2018 (LOPDGDD)",
+    "area": "Protecci\u00f3n de datos"
+  },
+  {
+    "query": "Que establece Ley Organica 3/2018?",
+    "expected_id": "BOE-A-2018-16673",
+    "title": "Ley Organica 3/2018 (LOPDGDD)",
+    "area": "Protecci\u00f3n de datos"
+  },
+  {
+    "query": "BOE BOE-A-2018-16673",
+    "expected_id": "BOE-A-2018-16673",
+    "title": "Ley Organica 3/2018 (LOPDGDD)",
+    "area": "Protecci\u00f3n de datos"
+  },
+  {
+    "query": "Que regula Ley General de la Seguridad Social (RDL 8/2015)?",
+    "expected_id": "BOE-A-2015-11724",
+    "title": "Ley General de la Seguridad Social (RDL 8/2015)",
+    "area": "Seguridad Social"
+  },
+  {
+    "query": "Cual es el objeto de Ley General de la Seguridad Social (RDL 8/2015)?",
+    "expected_id": "BOE-A-2015-11724",
+    "title": "Ley General de la Seguridad Social (RDL 8/2015)",
+    "area": "Seguridad Social"
+  },
+  {
+    "query": "Que regula Ley 38/2003, General de subvenciones?",
+    "expected_id": "BOE-A-2003-20977",
+    "title": "Ley 38/2003, General de subvenciones",
+    "area": "Subvenciones"
+  },
+  {
+    "query": "Cual es el objeto de Ley 38/2003, General de subvenciones?",
+    "expected_id": "BOE-A-2003-20977",
+    "title": "Ley 38/2003, General de subvenciones",
+    "area": "Subvenciones"
+  },
+  {
+    "query": "Que establece Ley 38/2003?",
+    "expected_id": "BOE-A-2003-20977",
+    "title": "Ley 38/2003, General de subvenciones",
+    "area": "Subvenciones"
+  },
+  {
+    "query": "BOE BOE-A-2003-20977",
+    "expected_id": "BOE-A-2003-20977",
+    "title": "Ley 38/2003, General de subvenciones",
+    "area": "Subvenciones"
+  },
+  {
+    "query": "Que regula Real Decreto 887/2006, Reglamento de la Ley General de subvenciones?",
+    "expected_id": "BOE-A-2006-13371",
+    "title": "Real Decreto 887/2006, Reglamento de la Ley General de subvenciones",
+    "area": "Subvenciones (reglamento)"
+  },
+  {
+    "query": "Cual es el objeto de Real Decreto 887/2006, Reglamento de la Ley General de subvenciones?",
+    "expected_id": "BOE-A-2006-13371",
+    "title": "Real Decreto 887/2006, Reglamento de la Ley General de subvenciones",
+    "area": "Subvenciones (reglamento)"
+  },
+  {
+    "query": "Que establece Real Decreto 887/2006?",
+    "expected_id": "BOE-A-2006-13371",
+    "title": "Real Decreto 887/2006, Reglamento de la Ley General de subvenciones",
+    "area": "Subvenciones (reglamento)"
+  },
+  {
+    "query": "BOE BOE-A-2006-13371",
+    "expected_id": "BOE-A-2006-13371",
+    "title": "Real Decreto 887/2006, Reglamento de la Ley General de subvenciones",
+    "area": "Subvenciones (reglamento)"
+  },
+  {
+    "query": "Resumen rapido de Ley 55/2007, del cine.",
+    "expected_id": "BOE-A-2007-22439",
+    "title": "Ley 55/2007, del cine",
+    "area": "Audiovisual \u2013 cine"
+  },
+  {
+    "query": "Resumen rapido de Ley 13/2022, General de comunicacion audiovisual.",
+    "expected_id": "BOE-A-2022-11311",
+    "title": "Ley 13/2022, General de comunicacion audiovisual",
+    "area": "Audiovisual / plataformas"
+  },
+  {
+    "query": "Resumen rapido de Codigo de comercio.",
+    "expected_id": "BOE-A-1885-6627",
+    "title": "Codigo de comercio",
+    "area": "Contabilidad"
+  },
+  {
+    "query": "Resumen rapido de PGC PYMES.",
+    "expected_id": "BOE-A-2007-19966",
+    "title": "PGC PYMES",
+    "area": "Contabilidad"
+  },
+  {
+    "query": "Resumen rapido de Plan General de Contabilidad (PGC).",
+    "expected_id": "BOE-A-2007-19884",
+    "title": "Plan General de Contabilidad (PGC)",
+    "area": "Contabilidad"
+  },
+  {
+    "query": "Resumen rapido de Adaptacion PGC a entidades sin fines lucrativos.",
+    "expected_id": "BOE-A-2011-18458",
+    "title": "Adaptacion PGC a entidades sin fines lucrativos",
+    "area": "Contabilidad / tercer sector"
+  },
+  {
+    "query": "Resumen rapido de Ley 34/2002, LSSI-CE.",
+    "expected_id": "BOE-A-2002-13758",
+    "title": "Ley 34/2002, LSSI-CE",
+    "area": "Digital / comercio electr\u00f3nico"
+  },
+  {
+    "query": "Resumen rapido de Ley 27/2014 del Impuesto sobre sociedades.",
+    "expected_id": "BOE-A-2014-12328",
+    "title": "Ley 27/2014 del Impuesto sobre sociedades",
+    "area": "Fiscal \u2013 Impuesto sobre sociedades"
+  },
+  {
+    "query": "Resumen rapido de Ley 35/2006 del IRPF.",
+    "expected_id": "BOE-A-2006-20764",
+    "title": "Ley 35/2006 del IRPF",
+    "area": "Fiscal \u2013 IRPF"
+  },
+  {
+    "query": "Resumen rapido de Ley 37/1992 del IVA.",
+    "expected_id": "BOE-A-1992-28740",
+    "title": "Ley 37/1992 del IVA",
+    "area": "Fiscal \u2013 IVA"
+  },
+  {
+    "query": "Resumen rapido de Ley 49/2002 de entidades sin fines lucrativos y mecenazgo.",
+    "expected_id": "BOE-A-2002-25039",
+    "title": "Ley 49/2002 de entidades sin fines lucrativos y mecenazgo",
+    "area": "Fiscal \u2013 mecenazgo / ESFL"
+  },
+  {
+    "query": "Resumen rapido de Ley 58/2003, General Tributaria.",
+    "expected_id": "BOE-A-2003-23186",
+    "title": "Ley 58/2003, General Tributaria",
+    "area": "Fiscal general"
+  },
+  {
+    "query": "Resumen rapido de Real Decreto 1435/1985, relacion laboral especial de artistas.",
+    "expected_id": "BOE-A-1985-17303",
+    "title": "Real Decreto 1435/1985, relacion laboral especial de artistas",
+    "area": "Laboral \u2013 artistas"
+  },
+  {
+    "query": "Resumen rapido de Real Decreto-ley 5/2022, de mejora de la proteccion del colectivo artistico.",
+    "expected_id": "BOE-A-2022-4583",
+    "title": "Real Decreto-ley 5/2022, de mejora de la proteccion del colectivo artistico",
+    "area": "Laboral \u2013 artistas (reforma)"
+  },
+  {
+    "query": "Resumen rapido de Ley 20/2007, Estatuto del trabajo autonomo.",
+    "expected_id": "BOE-A-2007-13409",
+    "title": "Ley 20/2007, Estatuto del trabajo autonomo",
+    "area": "Laboral \u2013 aut\u00f3nomos"
+  },
+  {
+    "query": "Resumen rapido de Estatuto de los trabajadores (RDL 2/2015).",
+    "expected_id": "BOE-A-2015-11430",
+    "title": "Estatuto de los trabajadores (RDL 2/2015)",
+    "area": "Laboral general"
+  },
+  {
+    "query": "Resumen rapido de Constitucion espanola.",
+    "expected_id": "BOE-A-1978-31229",
+    "title": "Constitucion espanola",
+    "area": "Marco general"
+  },
+  {
+    "query": "Resumen rapido de TR Ley de sociedades de capital (RDL 1/2010).",
+    "expected_id": "BOE-A-2010-10544",
+    "title": "TR Ley de sociedades de capital (RDL 1/2010)",
+    "area": "Mercantil \u2013 sociedades"
+  },
+  {
+    "query": "Resumen rapido de Texto refundido de la Ley de propiedad intelectual (RDL 1/1996).",
+    "expected_id": "BOE-A-1996-8930",
+    "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+    "area": "Propiedad intelectual"
+  },
+  {
+    "query": "Resumen rapido de Ley Organica 3/2018 (LOPDGDD).",
+    "expected_id": "BOE-A-2018-16673",
+    "title": "Ley Organica 3/2018 (LOPDGDD)",
+    "area": "Protecci\u00f3n de datos"
+  },
+  {
+    "query": "Resumen rapido de Ley General de la Seguridad Social (RDL 8/2015).",
+    "expected_id": "BOE-A-2015-11724",
+    "title": "Ley General de la Seguridad Social (RDL 8/2015)",
+    "area": "Seguridad Social"
+  },
+  {
+    "query": "Resumen rapido de Ley 38/2003, General de subvenciones.",
+    "expected_id": "BOE-A-2003-20977",
+    "title": "Ley 38/2003, General de subvenciones",
+    "area": "Subvenciones"
+  },
+  {
+    "query": "Resumen rapido de Real Decreto 887/2006, Reglamento de la Ley General de subvenciones.",
+    "expected_id": "BOE-A-2006-13371",
+    "title": "Real Decreto 887/2006, Reglamento de la Ley General de subvenciones",
+    "area": "Subvenciones (reglamento)"
+  }
+]

@@ -1,0 +1,42 @@
+##CMD WINDOW 1 — Backend (Django API)
+
+
+cd /d "D:\IT workspace\Legal GraphRAG\backend"
+
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+
+python manage.py migrate
+
+
+python manage.py runserver 0.0.0.0:8000
+
+
+##Leave this running.
+
+
+##CMD WINDOW 2 — Frontend (Next.js)
+
+
+cd /d "D:\IT workspace\Legal GraphRAG\frontend-legal"
+
+npm install
+
+copy .env.local.example .env.local
+
+
+
+
+NEXT_PUBLIC_API_URL=http://localhost:8000
+
+npm run dev -- --port 3001
+
+
+
+
+
+
+
+deactivate

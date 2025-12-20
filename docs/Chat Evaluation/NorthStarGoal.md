@@ -1,0 +1,101 @@
+# North Star Goal for GraphRAG Chat
+
+## One sentence
+Build a GraphRAG chat that answers artist legal questions **only when it can prove the answer from retrieved sources**, always cites those sources, and otherwise asks for missing context or abstains.
+
+## Why this exists
+We are optimizing for **trustworthy legal assistance**, not for fluent text.
+A wrong legal answer with confidence is worse than a helpful abstention.
+
+## Product promise
+When a user asks a question, the assistant will:
+1. Retrieve the best evidence from the corpus using the GraphRAG pipeline.
+2. Answer using only that evidence, with citations for every legal claim.
+3. If evidence is missing or unclear, explicitly say so and ask for the minimum missing details needed to retrieve correctly.
+
+## Hard constraints (non negotiable)
+### C1. No hallucinations
+- Never invent laws, articles, case numbers, administrative criteria, deadlines, or obligations.
+- Never guess a legal rule.
+- If you cannot support a claim with a retrieved source, you must not state it as fact.
+
+### C2. Citation enforcement
+- Every legal claim must include a citation in the form:
+  - `[Fuente N#]` for Normativa
+  - `[Fuente D#]` for Doctrina or criteria
+  - `[Fuente J#]` for Jurisprudencia
+- If there is no source for the claim, you must abstain for that claim.
+
+### C3. Authority hierarchy
+- Prefer Normativa over Doctrina over Jurisprudencia as the backbone of the answer.
+- Do not use Doctrina to contradict Normativa.
+- Use Jurisprudencia only when it is relevant and does not conflict with Normativa.
+- If there is no Normativa retrieved for a legal rule question, you should usually ask clarifying questions or say you cannot find applicable Normativa.
+
+### C4. Transparent abstention
+Use one of these phrases (Spanish, consistent, short):
+- `No tengo información suficiente en las fuentes recuperadas para afirmar eso.`
+- `No he encontrado normativa aplicable en el corpus para este caso.`
+Then ask for missing context if it could unblock retrieval.
+
+### C5. Explain-first (no “bibliography bot”)
+- Never respond with only citations or a list of sources.
+- Explanations must come first, sources support the explanation.
+- “Fuentes” must be the last section.
+
+### C6. Anti-refusal gaming
+- Do not reduce hallucinations by refusing everything.
+- If retrieval includes applicable Normativa and the user context is sufficient, you must answer.
+- If context is missing but retrievable, ask targeted clarifying questions (minimal slots).
+
+### C7. Jurisdiction and time scope
+- If jurisdiction (country/region) or the relevant year/convocatoria matters and is unknown, ask for it before stating rules.
+- When answering, state the jurisdiction and scope you are assuming (e.g., España, convocatoria X, año Y) when relevant.
+
+
+
+## Definition of Done for MVP (acceptance metrics)
+Success Criteria:
+- Accuracy: 80%+ answers cite the correct legal source
+- Hallucination: 0% invented laws/articles
+- Usefulness: 70%+ users rate the answer as helpful
+- Speed: <9 seconds average response time
+
+Anti-gaming constraints (measured on the frozen eval set):
+- For cases labeled ANSWER: answer rate >= 70%
+- For cases labeled ASK: asks are targeted (<= 3 questions unless the case explicitly requires more)
+- For cases labeled ABSTAIN: abstains include a short reason + the minimal next question(s)
+
+
+## Test alignment (how we avoid drifting)
+We will not optimize on vibes. We will optimize on:
+- A frozen, versioned evaluation set of real artist queries.
+- Automated gates that fail the build on hallucinations, missing citations, or hierarchy violations.
+- Trend tracking on the four MVP metrics above.
+
+## Non goals (to prevent accidental scope creep)
+- Not a substitute for professional legal advice.
+- Not a general web search engine.
+- Not a creative writing assistant.
+- Not a full compliance system for every jurisdiction unless the corpus contains it.
+
+
+## Minimal answer structure (required)
+
+- ## Resumen (lenguaje llano)
+  - 1 to 2 short paragraphs explaining the rule in human terms.
+  - Citations at the end of paragraphs when a legal claim appears.
+
+- ## Qué dice la norma
+  - Explain the legal rule and its conditions in plain Spanish.
+  - Cite the specific sources used for each claim.
+
+- ## Cómo aplica a tu caso
+  - List the user facts you are using (mini “facts ledger”).
+  - Apply the rule to those facts.
+  - If key facts are missing, ask for the minimum missing details.
+
+- ## Fuentes
+  - List only the sources actually used (no citation dumping).
+  - Do not place “Fuentes” before the explanation sections.
+

@@ -1,0 +1,80 @@
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+*.env
+*.env.local
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Frontend build
+frontend-legal/dist/
+frontend-legal/build/
+frontend-legal/.next/
+frontend-legal/out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Claude Code
+.claude/
+
+# Test outputs and temporary files
+*.tmp
+*.bak
+tmp_*.py
+*_output.txt
+*_results.json
+baseline_*.txt
+baseline_*.json
+
+# Logs
+logs/
+*.log
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Excel temporary files
+~$*.xlsx
+~$*.xls
+
+# Workspace files (VSCode)
+*.code-workspace
+
+# OS files
+Thumbs.db
