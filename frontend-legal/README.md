@@ -4,11 +4,11 @@ Frontend application for the Legal GraphRAG system - A legal assistant for Spani
 
 ## Overview
 
-This is a Next.js 15 application that provides a chat interface for querying legal information from official Spanish and EU sources (BOE, EUR-Lex). The system uses AI to generate accurate answers with proper citations.
+This is a Next.js 16 (App Router) application that provides a chat interface for querying legal information from official Spanish and EU sources (BOE, EUR-Lex). The system uses AI to generate accurate answers with proper citations.
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4
 - **UI Components**: Custom React components
@@ -19,7 +19,7 @@ This is a Next.js 15 application that provides a chat interface for querying leg
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20+
 - npm or yarn
 - Backend API running (default: http://localhost:8000)
 
@@ -145,8 +145,8 @@ Tailwind CSS v4 with custom configuration:
 ## Testing
 
 ```bash
-# Type checking
-npm run type-check
+# Type checking (TypeScript compiler)
+npx tsc --noEmit
 
 # Linting
 npm run lint
@@ -187,7 +187,7 @@ vercel
 
 - Clear Next.js cache: `rm -rf .next`
 - Reinstall dependencies: `rm -rf node_modules && npm install`
-- Check TypeScript errors: `npm run type-check`
+- Check TypeScript errors: `npx tsc --noEmit`
 
 ## Future Enhancements
 

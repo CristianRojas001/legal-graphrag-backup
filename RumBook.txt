@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 python manage.py migrate
 
-
+set DEBUG_TRACE=1
 python manage.py runserver 0.0.0.0:8000
 
 
@@ -40,3 +40,292 @@ npm run dev -- --port 3001
 
 
 deactivate
+
+
+
+
+
+
+cd /d "D:\IT workspace\Legal GraphRAG\backend"
+
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+python manage.py migrate
+
+set DEBUG_TRACE=1
+set DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost,<backend-tunnel>.ngrok-free.app
+set CORS_ALLOWED_ORIGINS=http://localhost:3001,https://81acb83e4238.ngrok-free.app
+
+python manage.py runserver 0.0.0.0:8000
+
+
+=================================================
+
+cd /d "D:\IT workspace\Legal GraphRAG\backend"
+
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+python manage.py migrate
+
+# run on port 8001 instead of 8000
+set DEBUG_TRACE=1
+python manage.py runserver 0.0.0.0:8001
+
+
+
+
+=================================================
+#ngrok
+
+
+
+
+cd /d "D:\IT workspace\Legal GraphRAG\frontend-legal"
+$env:NEXT_PUBLIC_API_URL="http://localhost:8001"
+npm run dev -- --hostname 0.0.0.0 --port 3001
+
+
+
+----------------------------------------------------------------
+ngrok http 3001 --host-header=rewrite
+
+
+
+
+
+
+
+
+
+Fiscal (IRPF / IVA / obligaciones) (1–12)
+
+Soy autónomo músico. ¿Qué gastos suelen ser deducibles en IRPF y cuáles son típicamente problemáticos?
+
+Soy ilustradora y trabajo desde casa. ¿Puedo deducir parte del alquiler y suministros? ¿Qué criterios se suelen pedir?
+
+¿Qué diferencia hay entre “afectación” de vivienda y “gastos de difícil justificación”?
+
+Facturo a una empresa española como artista. ¿Debo aplicar retención? ¿De qué depende?
+
+Facturo a clientes de la UE. ¿Cuándo llevo IVA y cuándo no? (servicios digitales vs servicios artísticos presenciales)
+
+¿Qué es el “recargo de equivalencia” y me afecta si vendo merch en conciertos?
+
+¿Cómo se calcula la base imponible y la cuota de IVA en una factura con descuento?
+
+Soy fotógrafo y compro equipo caro. ¿Cómo funciona la amortización y en qué casos me conviene?
+
+¿Qué obligaciones tengo con modelos 303/130/111/190 como autónomo artístico?
+
+Si cobro royalties de plataformas, ¿cómo se declaran en IRPF? ¿rendimientos del trabajo o actividades económicas?
+
+¿Puedo deducir dietas y desplazamientos si voy a actuar fuera de mi ciudad?
+
+¿Qué riesgos hay si mezclo gastos personales con gastos de actividad (ej. móvil, coche)?
+
+
+
+Laboral / Seguridad Social (13–22)
+
+¿Qué diferencia hay entre trabajar como autónomo y como artista en régimen laboral por cuenta ajena?
+
+¿Cuándo un contrato artístico puede ser temporal y qué límites hay?
+
+Soy técnico de sonido y me pagan por bolo. ¿Qué debe aparecer sí o sí en el contrato?
+
+¿Qué es el alta en Seguridad Social por días/bolos y quién debe tramitarla?
+
+¿Qué derechos tengo si cancelan un evento a última hora? (pago, indemnización, preaviso)
+
+¿Qué diferencia hay entre TRADE y un autónomo “normal” en el sector creativo?
+
+¿Cómo se gestionan horas extra y nocturnidad en espectáculos?
+
+¿Qué puedo hacer si me pagan tarde de forma recurrente? (reclamación, pruebas, pasos)
+
+¿Se puede cobrar paro siendo artista con actividad intermitente? ¿De qué depende?
+
+¿Qué implicaciones tiene trabajar con menores en un rodaje (permisos/horarios)?
+
+
+
+Propiedad Intelectual / Derechos de autor (23–32)
+
+Soy compositor. ¿Qué derechos tengo sobre una canción y cuáles se pueden ceder a un sello?
+
+¿Qué diferencia hay entre derechos morales y patrimoniales?
+
+¿Qué es una “obra por encargo” y quién es titular por defecto?
+
+Soy fotógrafo: ¿puedo usar fotos de gente en la calle para un proyecto comercial? (consentimiento, límites)
+
+¿Cómo funcionan las licencias Creative Commons en España para un diseñador gráfico?
+
+¿Qué es el derecho de cita y cuándo puedo usar fragmentos de texto/imagen legalmente?
+
+Si subo un vídeo con música de terceros, ¿qué riesgos tengo (Content ID vs infracción)?
+
+¿Cómo se reparten derechos en una coautoría (dos guionistas, o música+letra)?
+
+¿Qué puedo hacer si alguien reutiliza mi ilustración sin permiso en redes? (prueba, reclamación, pasos)
+
+¿Qué diferencia hay entre “copyright” y “derechos de autor” en la práctica en España?
+
+
+
+
+Subvenciones / ayudas / justificación (33–42)
+
+Tengo una asociación cultural en Aragón. ¿Cómo busco ayudas y qué datos necesito para filtrar bien?
+
+¿Qué documentos suelen pedir para justificar una subvención (memoria, facturas, pagos, difusión)?
+
+¿Qué es la “subsanación” y cuánto tiempo suele haber para corregir documentación?
+
+Si me conceden una ayuda y no ejecuto todo el proyecto, ¿qué pasa con el reintegro?
+
+¿Qué diferencia hay entre “gasto subvencionable” y “gasto elegible”?
+
+¿Cómo se suelen valorar los criterios en convocatorias culturales (impacto, público, igualdad, territorio)?
+
+¿Qué señales indican que una convocatoria es incompatible con otras ayudas?
+
+¿Cómo justifico gastos de personal y nóminas en una subvención?
+
+¿Qué errores típicos hacen que rechacen una justificación (fechas, conceptos, pagos en efectivo, etc.)?
+
+¿Qué debo revisar antes de aceptar una subvención para evitar problemas futuros?
+
+
+
+
+Societario / Administrativo / Procedimiento (43–46)
+
+¿Cuándo me conviene ser autónomo vs crear una SL como artista? (criterios, pros/contras)
+
+¿Qué es un recurso de reposición y cuándo tiene sentido frente a un contencioso?
+
+¿Qué diferencia hay entre una ley, un real decreto y una orden ministerial en jerarquía normativa?
+
+¿Qué significa que una norma esté “derogada” o “vigente parcialmente” y cómo se comprueba?
+
+
+
+UE / Internacional / cruce de jurisdicciones (47–50)
+
+Soy artista residente fiscal en España y trabajo unos meses en Francia. ¿Qué preguntas clave determinan dónde tributo?
+
+¿Qué es el IVA intracomunitario y cuándo necesito un NIF-IVA?
+
+Trabajo con una plataforma extranjera (EE. UU.). ¿Qué debo mirar en retenciones y convenios de doble imposición?
+
+¿Qué es el Reglamento (UE) y cuándo aplica directamente en España frente a una Directiva?
+
+
+
+Soy ilustrador/a y vendo láminas impresas por mi web a clientes en España: ¿tengo que repercutir IVA y en qué tipo normalmente encajaría?
+
+Soy músico y hago un bolo para un ayuntamiento: ¿debo incluir retención de IRPF en la factura o depende del tipo de relación/contrato?
+
+Soy actor/actriz y me contratan 2 días para un rodaje: ¿esto suele encajar en “relación laboral especial de artistas” o como prestación de servicios?
+
+Soy cantante y cobro parte “en especie” (hotel, transporte, dietas): ¿cómo se trata eso fiscalmente para IRPF/IVA?
+
+Soy fotógrafo/a: ¿qué diferencia fiscal hay entre vender una foto “como obra” (cesión/licencia) vs vender una copia física (impresión)?
+
+Soy DJ y trabajo de forma intermitente: ¿cómo afecta la intermitencia a mi cotización y a la protección social?
+
+Si como artista me doy de alta como autónomo/a: ¿qué obligaciones básicas tengo frente a Hacienda y Seguridad Social desde el primer día?
+
+Si facturo a una empresa de Francia por un concierto: ¿cómo se gestiona el IVA en una prestación intracomunitaria de servicios culturales?
+
+Soy artista digital y vendo descargas (contenido digital) a consumidores: ¿qué obligaciones tengo por comercio electrónico y condiciones de venta?
+
+Soy escenógrafo/a y subcontrato a otro profesional: ¿cómo documento el gasto y qué precauciones contables/fiscales debería tener?
+
+¿Qué libros/registro contable mínimos debería llevar un/a artista profesional según el Código de Comercio?
+
+Si soy autónomo/a artista, ¿qué tipo de gastos suelen ser deducibles y cuáles suelen ser problemáticos (materiales, estudio, viajes, formación)?
+
+Soy compositor/a y cobro royalties: ¿cómo se declaran normalmente en IRPF (como rendimientos del trabajo, actividad, o capital) según el caso?
+
+Si una plataforma me paga ingresos por streaming y además me retiene algo: ¿cómo lo reflejo en mi declaración (retenciones, ingresos del extranjero)?
+
+Soy una compañía de teatro pequeña: ¿me conviene tributar como persona física o crear una SL por Impuesto sobre Sociedades? ¿Qué cambia a nivel de obligaciones?
+
+Soy artista y quiero crear una asociación cultural para proyectos: ¿qué ventajas fiscales puede tener (mecenazgo) y qué requisitos/limitaciones existen?
+
+Si recibo una donación de un patrocinador para un proyecto artístico: ¿qué incentivos fiscales puede tener el donante y qué debe cumplir mi entidad?
+
+Soy pintor/a y vendo obra original: ¿hay casos de IVA reducido o exenciones aplicables a servicios/entregas vinculadas a cultura?
+
+Si no emito factura correctamente o me equivoco en el IVA/retención: ¿qué sanciones/procedimientos prevé la normativa tributaria general?
+
+Me llega un requerimiento de Hacienda por mis facturas de actuaciones: ¿qué plazos y pasos típicos existen para contestar y aportar documentación?
+
+Soy actriz y la productora me propone un contrato mercantil “para simplificar”: ¿qué riesgos hay si en realidad corresponde relación laboral especial?
+
+En un contrato artístico, ¿qué elementos mínimos deberían aparecer para cubrir ensayos, funciones, desplazamientos y derechos de imagen?
+
+Soy bailarín/a y tengo varios pagadores al mes: ¿cómo afecta eso a mi protección (bajas, incapacidad temporal) y a mis bases de cotización?
+
+Si estoy de gira por la UE: ¿qué regla determina en qué país cotizo (y qué documento suele acreditar la legislación aplicable)?
+
+Soy músico y también doy clases: ¿cómo separo/organizo fiscalmente y contablemente ingresos de actividades artísticas vs docencia?
+
+Soy guionista y cedo derechos para una serie: ¿qué derechos (morales/patrimoniales) no puedo “perder” aunque firme un contrato?
+
+Si una marca usa mi ilustración en redes sin permiso: ¿qué acciones típicas tengo por propiedad intelectual y qué pruebas conviene recopilar?
+
+Soy creador/a y subo contenido a una plataforma: ¿qué pasa con la “licencia” que doy a la plataforma y qué debo mirar en los términos?
+
+Si un cliente me encarga una obra (commission): ¿quién es el titular de los derechos de explotación por defecto si el contrato no dice nada claro?
+
+Soy productor/a musical y remezclo una canción: ¿cuándo se considera obra derivada y qué permisos se requieren normalmente?
+
+Tengo una web de portfolio con formulario de contacto: ¿qué textos/medidas mínimas debo cumplir por RGPD y la ley española de protección de datos?
+
+Envío newsletter para anunciar conciertos: ¿qué base legal necesito y qué debe incluir el email (bajas, identificación, etc.)?
+
+Uso cookies/analítica en mi web de artista: ¿qué obligaciones de información/consentimiento suelen aplicar?
+
+Vendo entradas online para un show: ¿qué información legal debe aparecer (identidad, precio final, condiciones, contacto) según normativa de servicios digitales/comercio?
+
+Un fan compra merchandising y quiere devolverlo: ¿qué derechos de desistimiento/garantías aplican en ventas a consumidores?
+
+Vendo contenido digital “descargable” y el cliente quiere desistir tras descargar: ¿cómo funciona la excepción del desistimiento en contenido digital?
+
+Soy director/a y quiero acceder a ayudas públicas: ¿qué requisitos generales suelen exigir las subvenciones (publicidad, justificación, reintegro)?
+
+Si una subvención cultural me la conceden y luego cambio el presupuesto: ¿cuándo se considera modificación aceptable y cuándo puede implicar reintegro?
+
+¿Qué documentación típica se exige para justificar una subvención artística (facturas, memorias, pagos) y en qué plazos?
+
+Soy productora y quiero saber si una ayuda es compatible con otras: ¿cómo se regula normalmente la compatibilidad y la “doble financiación”?
+
+Trabajo con menores en un rodaje: ¿qué cautelas laborales/organizativas suelen exigirse (horarios, permisos, tutela) en producción audiovisual?
+
+Soy creador/a audiovisual en una plataforma: ¿qué obligaciones existen sobre comunicaciones comerciales, patrocinio o product placement?
+
+Para una plataforma/servicio audiovisual, ¿hay obligaciones sobre accesibilidad, cuotas de obra europea o protección de menores?
+
+Soy cineasta y busco criterios del ICAA: ¿qué tipo de resoluciones/instrucciones suelen afectar a calificación, ayudas o reconocimiento de obra?
+
+Quiero montar una SL para mi estudio creativo: ¿qué obligaciones y reglas clave hay sobre capital, administradores y reparto de dividendos?
+
+Si mi SL factura a clientes y yo soy administrador/creador: ¿cómo se decide si cobro nómina vs factura y cómo encaja con Seguridad Social?
+
+En contabilidad, ¿cómo registro ingresos por anticipos (señales) para un encargo artístico que entregaré en 3 meses?
+
+¿Cómo se contabilizan y reconocen ingresos por royalties/licencias en el PGC (devengo, periodificación)?
+
+Si hay criterios recientes (DGT/TEAC) sobre IVA en servicios artísticos: ¿cómo se usan esas consultas/resoluciones para orientar mi caso?
+
+Si hay jurisprudencia (Tribunal Supremo o TJUE) sobre IVA cultural, relación laboral de artistas o derechos de autor: ¿cómo influye en la interpretación práctica de mi situación?
+
+
+

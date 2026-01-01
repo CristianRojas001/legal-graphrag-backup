@@ -432,7 +432,7 @@ System deducts credits → Existing credit system (shared)
 
 3. **Libraries & Frameworks**:
    - Django 5 + DRF - Backend framework
-   - Next.js 15 - Frontend framework
+   - Next.js 16 (App Router) - Frontend framework
    - pgvector - Vector similarity search
    - Celery + Redis - Async task processing
    - Beautiful Soup / PyPDF2 - Document parsing

@@ -4,6 +4,7 @@ Database models for legal document ingestion, search, and chat.
 """
 
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 from pgvector.django import VectorField
 import uuid
@@ -121,6 +122,12 @@ class DocumentChunk(models.Model):
     # Vector Embedding (pgvector)
     embedding = VectorField(dimensions=768)
 
+    # Full-text search vector (generated column, managed by migration 0005)
+    # This is a database-only field (GENERATED ALWAYS AS ... STORED)
+    # Django doesn't need to write to it, but we declare it so queries can reference it
+    from django.contrib.postgres.search import SearchVectorField
+    chunk_search = SearchVectorField(null=True, editable=False)
+
     # Metadata
     metadata = models.JSONField(default=dict)
 
@@ -152,6 +159,9 @@ class ChatSession(models.Model):
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     user_agent = models.TextField(null=True, blank=True)
 
+    # Operational Memory State (V1.1)
+    session_state = models.JSONField(default=dict, blank=True)
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -159,6 +169,9 @@ class ChatSession(models.Model):
     class Meta:
         db_table = 'legal_chat_sessions'
         ordering = ['-updated_at']
+        indexes = [
+            models.Index(fields=['id', 'updated_at']),
+        ]
 
     def __str__(self):
         return f"Session {self.id} - {self.created_at.strftime('%Y-%m-%d')}"
@@ -204,3 +217,50 @@ class ChatMessage(models.Model):
 
     def __str__(self):
         return f"[{self.role}] {self.content[:50]}"
+
+
+class AnswerFeedbackEvent(models.Model):
+    """Feedback events for assistant answers (vote/copy)."""
+
+    EVENT_CHOICES = [
+        ('vote', 'vote'),
+        ('copy', 'copy'),
+    ]
+
+    id = models.BigAutoField(primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    user_id = models.CharField(max_length=128, null=True, blank=True)
+    session_id = models.CharField(max_length=128, null=True, blank=True)
+    conversation_id = models.CharField(max_length=128, null=True, blank=True)
+    message_id = models.CharField(max_length=128)
+    answer_hash = models.CharField(max_length=64, null=True, blank=True)
+
+    event_type = models.CharField(max_length=16, choices=EVENT_CHOICES)
+    vote_value = models.SmallIntegerField(null=True, blank=True)
+
+    route = models.CharField(max_length=255, null=True, blank=True)
+    app_version = models.CharField(max_length=64, null=True, blank=True)
+    model = models.CharField(max_length=64, null=True, blank=True)
+
+    class Meta:
+        db_table = 'answer_feedback_events'
+        indexes = [
+            models.Index(fields=['message_id'], name='idx_feedback_message_id'),
+            models.Index(fields=['created_at'], name='idx_feedback_created_at'),
+            models.Index(fields=['session_id'], name='idx_feedback_session'),
+        ]
+        constraints = [
+            models.CheckConstraint(
+                check=Q(event_type__in=['vote', 'copy']),
+                name='feedback_event_type_valid',
+            ),
+            models.CheckConstraint(
+                check=Q(vote_value__in=[-1, 1]) | Q(vote_value__isnull=True),
+                name='feedback_vote_value_valid',
+            ),
+            models.CheckConstraint(
+                check=Q(event_type='vote', vote_value__isnull=False) | Q(event_type='copy'),
+                name='feedback_vote_requires_value',
+            ),
+        ]

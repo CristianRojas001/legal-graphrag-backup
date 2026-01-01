@@ -6,6 +6,7 @@ Configuration for Legal GraphRAG system.
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from corsheaders.defaults import default_headers
 
 # Load environment variables
 load_dotenv()
@@ -93,6 +94,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# URL Configuration
+APPEND_SLASH = True  # Use canonical URLs in local/dev
+
 # Internationalization
 LANGUAGE_CODE = 'es-es'
 TIME_ZONE = 'Europe/Madrid'
@@ -109,6 +113,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://localhost:3001').split(',')
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'x-developer-debug',
+]
 
 # REST Framework
 REST_FRAMEWORK = {
@@ -126,11 +133,33 @@ REST_FRAMEWORK = {
 
 # Gemini API
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
-GEMINI_CHAT_MODEL = os.getenv('GEMINI_CHAT_MODEL', 'gemini-2.0-flash-lite')
+# Using gemini-2.0-flash-exp (fastest available, 2-3x faster than deprecated 1.5-flash-8b)
+GEMINI_CHAT_MODEL = os.getenv('GEMINI_CHAT_MODEL', 'gemini-2.0-flash-exp')
 GEMINI_EMBEDDING_MODEL = 'text-embedding-004'
 # RAG gating thresholds
-RAG_MIN_STRICT_MATCHES = int(os.getenv('RAG_MIN_STRICT_MATCHES', '1'))
+RAG_MIN_STRICT_MATCHES = int(os.getenv('RAG_MIN_STRICT_MATCHES', '0'))
 RAG_MIN_TOKEN_MATCHES = int(os.getenv('RAG_MIN_TOKEN_MATCHES', '1'))
+RAG_SEMANTIC_THRESHOLD = float(os.getenv('RAG_SEMANTIC_THRESHOLD', '0.7'))
+RAG_SEMANTIC_MATCH_ENABLED = os.getenv('RAG_SEMANTIC_MATCH_ENABLED', 'false').lower() == 'true'
+RAG_MAX_CHUNKS_PER_DOC = int(os.getenv('RAG_MAX_CHUNKS_PER_DOC', '2'))
+RAG_RERANK_ENABLED = os.getenv('RAG_RERANK_ENABLED', 'false').lower() == 'true'
+RAG_RERANK_MODEL = os.getenv('RAG_RERANK_MODEL', '')
+RAG_RERANK_TOP_K = int(os.getenv('RAG_RERANK_TOP_K', '30'))
+RAG_ADAPTIVE_RRF = os.getenv('RAG_ADAPTIVE_RRF', 'true').lower() == 'true'
+RAG_HYBRID_VECTOR_WEIGHT = float(os.getenv('RAG_HYBRID_VECTOR_WEIGHT', '0.6'))
+RAG_HYBRID_LEXICAL_WEIGHT = float(os.getenv('RAG_HYBRID_LEXICAL_WEIGHT', '0.4'))
+_NON_TAX_PERCENT_DEFAULTS = [100]
+_non_tax_percent_raw = os.getenv("RAG_NON_TAX_PERCENT_ALLOWLIST", "")
+_non_tax_percent_env = [
+    int(value)
+    for value in _non_tax_percent_raw.split(",")
+    if value.strip().isdigit()
+]
+RAG_NON_TAX_PERCENT_ALLOWLIST = sorted({*(_NON_TAX_PERCENT_DEFAULTS), *(_non_tax_percent_env)})
+
+# Performance optimizations (V1.1)
+RAG_AREA_FILTER_ENABLED = os.getenv('RAG_AREA_FILTER_ENABLED', 'true').lower() == 'true'  # Filter by area BEFORE retrieval
+RAG_JUDGE_ENABLED = os.getenv('RAG_JUDGE_ENABLED', 'false').lower() == 'true'  # Disable judge to reduce latency (saves 15-25s)
 
 # Redis
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')

@@ -1,0 +1,760 @@
+{
+  "request": {
+    "query": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+    "case_id": "F08",
+    "turn": 1
+  },
+  "response": {
+    "session_id": "dfde45e6-da49-44ad-8e10-2dc69c9ef8ae",
+    "answer": "PASO 1: SOURCE TRIAGE\n\n*   Fuente 1: IRRELEVANT (Modificación de Ley de Planes y Fondos de Pensiones)\n*   Fuente 2: IRRELEVANT (Base liquidable IRPF)\n*   Fuente 3: IRRELEVANT (Reducciones por pensiones compensatorias)\n*   Fuente 4: IRRELEVANT (Régimen transitorio seguros colectivos)\n*   Fuente 5: IRRELEVANT (Reducciones por aportaciones a patrimonios protegidos)\n\nPASO 2: KEYWORD COVERAGE CHECK\n\nLa pregunta menciona \"amortización\" y \"equipo\", pero ninguna de las fuentes proporcionadas cubre específicamente la amortización de equipos para fotógrafos o autónomos en el IRPF.\n\nPASO 3: AUTHORITY MENTION GUARD\n\nNo hay mención de autoridades fiscales en las fuentes recuperadas.\n\nPASO 4: NUMERIC & RATES RULE\n\nNo hay mención de tasas de amortización en las fuentes recuperadas.\n\nMODO DE RESPUESTA: B) TWO-LANE MODE\n\n**Lo que sí puedo afirmar con el corpus actual:**\n\nNo hay información directamente relacionada con la amortización de equipos para fotógrafos en las fuentes proporcionadas. Las fuentes disponibles se centran en otros aspectos del IRPF, como la base liquidable y las reducciones por pensiones compensatorias y aportaciones a patrimonios protegidos.\n\n**Orientación general (sin citar, puede requerir verificación):**\n\nEn general, la amortización permite a los autónomos deducir el coste de los bienes duraderos utilizados en su actividad a lo largo de su vida útil. Esto se realiza aplicando un porcentaje anual al valor del bien. Los porcentajes y los años máximos de amortización están establecidos en tablas oficiales. Para equipos fotográficos, la amortización suele ser lineal, aplicando un porcentaje anual sobre el coste de adquisición. La amortización permite reflejar contablemente la depreciación del equipo y deducir ese gasto en el IRPF.\n\n**Para afinar:**\n\n*   ¿Cuál es el tipo de equipo fotográfico específico que está comprando?\n*   ¿Está dado de alta como autónomo y en qué régimen del IRPF está?\n\n<!--CITED_IDS: -->\n\n<!--CITED_IDS: BOE-A-2006-20764 -->",
+    "sources": [
+      {
+        "id": "BOE-A-2006-20764",
+        "title": "Ley 35/2006 del IRPF",
+        "url": "https://www.boe.es/buscar/pdf/2006/BOE-A-2006-20764-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.764746346277798,
+        "excerpt": "1. La base liquidable general estará constituida por el resultado de practicar en la base imponible general, exclusivamente y por este orden, las reducciones a que se refieren los artículos 51, 53, 54 y 55 y disposición adicional undécima de esta Ley, sin que pueda resultar negativa como consecuenci",
+        "label": "Artículo 50. Base liquidable general y del ahorro.",
+        "source_title": "Ley 35/2006 del IRPF",
+        "source_priority": "P1",
+        "chunk_type": "article",
+        "is_cited": true
+      },
+      {
+        "id": "BOE-A-2006-20764",
+        "title": "Ley 35/2006 del IRPF",
+        "url": "https://www.boe.es/buscar/pdf/2006/BOE-A-2006-20764-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.752776286751885,
+        "excerpt": "1. Se modifica el apartado 3 del artículo 5 del texto refundido de la Ley de regulación de los Planes y Fondos de Pensiones, aprobado por el Real Decreto Legislativo 1/2002, de 29 de noviembre, que quedará redactado de la siguiente manera:",
+        "label": "Disposición final quinta. Modificación del texto refundido de la Ley de regulación de los Planes y Fondos de Pensiones, aprobado por el Real Decreto Legislativo 1/2002, de 29 de noviembre.",
+        "source_title": "Ley 35/2006 del IRPF",
+        "source_priority": "P1",
+        "chunk_type": "article",
+        "is_cited": true
+      },
+      {
+        "id": "BOE-A-2006-20764",
+        "title": "Ley 35/2006 del IRPF",
+        "url": "https://www.boe.es/buscar/pdf/2006/BOE-A-2006-20764-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.746374085295356,
+        "excerpt": "1. Para las prestaciones derivadas de contingencias acaecidas con anterioridad al 1 de enero de 2007, los beneficiarios podrán aplicar el régimen financiero y fiscal vigente a 31 de diciembre de 2006.\n\n2. Para las prestaciones derivadas de contingencias acaecidas a partir de 1 de enero de 2007 corre",
+        "label": "Disposición transitoria undécima. Régimen transitorio aplicable a las prestaciones derivadas de los contratos de seguros colectivos que instrumentan compromisos por pensiones.",
+        "source_title": "Ley 35/2006 del IRPF",
+        "source_priority": "P1",
+        "chunk_type": "article",
+        "is_cited": true
+      },
+      {
+        "id": "BOE-A-2006-20764",
+        "title": "Ley 35/2006 del IRPF",
+        "url": "https://www.boe.es/buscar/pdf/2006/BOE-A-2006-20764-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.724058873335898,
+        "excerpt": "Las pensiones compensatorias a favor del cónyuge y las anualidades por alimentos, con excepción de las fijadas en favor de los hijos del contribuyente, satisfechas ambas por decisión judicial, podrán ser objeto de reducción en la base imponible.",
+        "label": "Artículo 55. Reducciones por pensiones compensatorias.",
+        "source_title": "Ley 35/2006 del IRPF",
+        "source_priority": "P1",
+        "chunk_type": "article",
+        "is_cited": true
+      },
+      {
+        "id": "BOE-A-2006-20764",
+        "title": "Ley 35/2006 del IRPF",
+        "url": "https://www.boe.es/buscar/pdf/2006/BOE-A-2006-20764-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.712237340063422,
+        "excerpt": "1. Las aportaciones al patrimonio protegido de la persona con discapacidad efectuadas por las personas que tengan con el mismo una relación de parentesco en línea directa o colateral hasta el tercer grado inclusive, así como por el cónyuge de la persona con discapacidad o por aquellos que lo tuviese",
+        "label": "Artículo 54. Reducciones por aportaciones a patrimonios protegidos de las personas con discapacidad.",
+        "source_title": "Ley 35/2006 del IRPF",
+        "source_priority": "P1",
+        "chunk_type": "article",
+        "is_cited": true
+      }
+    ],
+    "metadata": {
+      "version": "v1_1",
+      "area_principal": "Fiscal",
+      "model": "models/gemini-2.0-flash-exp",
+      "normativa_count": 5,
+      "doctrina_count": 0,
+      "jurisprudencia_count": 0,
+      "total_sources": 5,
+      "cited_count": 5,
+      "additional_count": 0,
+      "cited_ids": [
+        "BOE-A-2006-20764"
+      ],
+      "question_type": "unknown",
+      "forced_area": "Fiscal",
+      "abstained": false,
+      "judge": {
+        "verdict": "PASS",
+        "reasons": [
+          "judge_disabled_v1.1"
+        ]
+      },
+      "redo_performed": false,
+      "expanded_queries": [
+        "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+        "amortizacion IRPF",
+        "Ley 35/2006 IRPF amortizacion",
+        "Amortización fiscal equipo fotográfico autónomos",
+        "Deducción amortización bienes inversión fotógrafos",
+        "Tratamiento fiscal amortización equipos fotográficos BOE"
+      ],
+      "authority_question": false,
+      "authority_pack_added": false,
+      "authority_pack_count": 0,
+      "retrieval_counts": {
+        "combined_results": 120,
+        "fused_pre_filter": {
+          "normativa": 5,
+          "doctrina": 0,
+          "jurisprudencia": 0
+        },
+        "post_filter": {
+          "normativa": 5,
+          "doctrina": 0,
+          "jurisprudencia": 0
+        },
+        "dropped_sources": 0
+      },
+      "top_scores": {
+        "normativa": [
+          2.009677419354839,
+          2.0092307692307694,
+          2.0085714285714285
+        ],
+        "doctrina": [],
+        "jurisprudencia": []
+      },
+      "postprocess_errors": null,
+      "debug_summary": {
+        "intent": {
+          "area_detected": "Fiscal",
+          "confidence": 1.0,
+          "scores": null
+        },
+        "reference_resolver": {
+          "forced_count": 0,
+          "forced_ids": []
+        },
+        "query_expansion": {
+          "count": 6,
+          "queries": [
+            "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+            "amortizacion IRPF",
+            "Ley 35/2006 IRPF amortizacion",
+            "Amortización fiscal equipo fotográfico autónomos",
+            "Deducción amortización bienes inversión fotógrafos"
+          ]
+        },
+        "retrieval": {
+          "combined_results": 120,
+          "fused_pre_filter": {
+            "normativa": 5,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "post_filter": {
+            "normativa": 5,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "dropped_sources": 0
+        },
+        "dedup_rank": {
+          "before": {
+            "normativa": 5,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "after": {
+            "normativa": 5,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "top_scores": {
+            "normativa": [
+              2.009677419354839,
+              2.0092307692307694,
+              2.0085714285714285
+            ],
+            "doctrina": [],
+            "jurisprudencia": []
+          }
+        },
+        "area_filter": {
+          "before": {
+            "normativa": 5,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "after": {
+            "normativa": 5,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "dropped": 0
+        },
+        "authority_pack": {
+          "is_authority_question": false,
+          "added": false,
+          "count": 0
+        },
+        "abstain": {
+          "abstained": false
+        },
+        "citations": {
+          "cited_ids": [
+            "BOE-A-2006-20764"
+          ],
+          "cited_count": 5,
+          "additional_count": 0
+        },
+        "sources_preview": [
+          {
+            "id": "BOE-A-2006-20764",
+            "title": "Ley 35/2006 del IRPF",
+            "label": "Artículo 50. Base liquidable general y del ahorro.",
+            "score": 0.764746346277798,
+            "is_cited": true
+          },
+          {
+            "id": "BOE-A-2006-20764",
+            "title": "Ley 35/2006 del IRPF",
+            "label": "Disposición final quinta. Modificación del texto refundido de la Ley de regulación de los Planes y Fondos de Pensiones, aprobado por el Real Decreto Legislativo 1/2002, de 29 de noviembre.",
+            "score": 0.752776286751885,
+            "is_cited": true
+          },
+          {
+            "id": "BOE-A-2006-20764",
+            "title": "Ley 35/2006 del IRPF",
+            "label": "Disposición transitoria undécima. Régimen transitorio aplicable a las prestaciones derivadas de los contratos de seguros colectivos que instrumentan compromisos por pensiones.",
+            "score": 0.746374085295356,
+            "is_cited": true
+          },
+          {
+            "id": "BOE-A-2006-20764",
+            "title": "Ley 35/2006 del IRPF",
+            "label": "Artículo 55. Reducciones por pensiones compensatorias.",
+            "score": 0.724058873335898,
+            "is_cited": true
+          },
+          {
+            "id": "BOE-A-2006-20764",
+            "title": "Ley 35/2006 del IRPF",
+            "label": "Artículo 54. Reducciones por aportaciones a patrimonios protegidos de las personas con discapacidad.",
+            "score": 0.712237340063422,
+            "is_cited": true
+          }
+        ],
+        "postprocess_errors": []
+      },
+      "orchestrator": true,
+      "decision": {
+        "mode": "NEW_QUESTION",
+        "reason": "new_question",
+        "effective_area": "Fiscal",
+        "forced_area": "Fiscal",
+        "question_type": "unknown",
+        "base_question": null,
+        "merged_query": null,
+        "context_block": null,
+        "state_patch": {
+          "set": {
+            "base_question": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+            "last_actionable_user_question": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+            "pending_slots": [],
+            "slot_values": {},
+            "topic_lock": "Fiscal"
+          },
+          "unset": [],
+          "append": {}
+        },
+        "should_call_rag": true,
+        "trace": {
+          "thread_status": "no_thread",
+          "candidate_modes": [
+            "FOLLOWUP_SLOT_FILL",
+            "FOLLOWUP_REFERENTIAL",
+            "NEW_QUESTION",
+            "CLARIFY",
+            "META"
+          ],
+          "inputs": {
+            "user_text_preview": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+            "token_count": 16,
+            "classifier": {
+              "area_detected": "Fiscal",
+              "confidence": 1.0,
+              "scores": {
+                "Fiscal": 1
+              }
+            },
+            "last_assistant": {
+              "answer_preview": "",
+              "had_para_afinar": false
+            }
+          },
+          "state_before": {
+            "topic_lock": null,
+            "base_question_preview": "",
+            "last_actionable_preview": "",
+            "pending_slots": [],
+            "slot_values_keys": [],
+            "last_answer_brief_preview": "",
+            "memory_summary_preview": ""
+          },
+          "router_inputs": {
+            "memory_summary": "",
+            "base_question": "",
+            "recent_user_messages": [],
+            "recent_assistant_messages": [],
+            "current_user_text": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?"
+          },
+          "llm_router": {
+            "enabled": false,
+            "used": false,
+            "model": null,
+            "error": null,
+            "decision": null,
+            "raw_preview": null
+          },
+          "signals": {
+            "short_message": {
+              "value": false,
+              "token_count": 16
+            },
+            "pending_slots_present": false,
+            "slot_fill_candidate": false,
+            "referential_hit": false,
+            "referential_matches": [],
+            "thin_turn": false,
+            "explicit_topic_change": false,
+            "topic_lock_available": false
+          },
+          "thresholds": {
+            "conf_follow_classifier": 0.55,
+            "conf_break_topic_lock": 0.8,
+            "short_token_limit": 6,
+            "slotfill_token_limit": 10
+          },
+          "decision": {
+            "mode": "NEW_QUESTION",
+            "reason": "new_question",
+            "effective_area": "Fiscal",
+            "forced_area_used": true,
+            "forced_area_value": "Fiscal",
+            "question_type": "unknown",
+            "merged_query_preview": null
+          },
+          "rejections": [
+            "FOLLOWUP_SLOT_FILL rejected: pending_slots_empty",
+            "FOLLOWUP_REFERENTIAL rejected: referential_hit=false",
+            "topic_lock_fallback skipped: no_topic_lock"
+          ],
+          "state_after": {
+            "topic_lock": "Fiscal",
+            "pending_slots": [
+              "entity_type"
+            ],
+            "turn_count": 1
+          },
+          "state_diff": {
+            "set": [
+              "base_question",
+              "last_actionable_user_question",
+              "pending_slots",
+              "slot_values",
+              "topic_lock"
+            ],
+            "cleared": [],
+            "pending_set": [
+              "pending_slots"
+            ],
+            "unchanged": []
+          },
+          "session_id": "dfde45e6-da49-44ad-8e10-2dc69c9ef8ae",
+          "turn_index": 0
+        }
+      },
+      "developer_debug": {
+        "orchestrator_trace": {
+          "thread_status": "no_thread",
+          "candidate_modes": [
+            "FOLLOWUP_SLOT_FILL",
+            "FOLLOWUP_REFERENTIAL",
+            "NEW_QUESTION",
+            "CLARIFY",
+            "META"
+          ],
+          "inputs": {
+            "user_text_preview": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+            "token_count": 16,
+            "classifier": {
+              "area_detected": "Fiscal",
+              "confidence": 1.0,
+              "scores": {
+                "Fiscal": 1
+              }
+            },
+            "last_assistant": {
+              "answer_preview": "",
+              "had_para_afinar": false
+            }
+          },
+          "state_before": {
+            "topic_lock": null,
+            "base_question_preview": "",
+            "last_actionable_preview": "",
+            "pending_slots": [],
+            "slot_values_keys": [],
+            "last_answer_brief_preview": "",
+            "memory_summary_preview": ""
+          },
+          "router_inputs": {
+            "memory_summary": "",
+            "base_question": "",
+            "recent_user_messages": [],
+            "recent_assistant_messages": [],
+            "current_user_text": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?"
+          },
+          "llm_router": {
+            "enabled": false,
+            "used": false,
+            "model": null,
+            "error": null,
+            "decision": null,
+            "raw_preview": null
+          },
+          "signals": {
+            "short_message": {
+              "value": false,
+              "token_count": 16
+            },
+            "pending_slots_present": false,
+            "slot_fill_candidate": false,
+            "referential_hit": false,
+            "referential_matches": [],
+            "thin_turn": false,
+            "explicit_topic_change": false,
+            "topic_lock_available": false
+          },
+          "thresholds": {
+            "conf_follow_classifier": 0.55,
+            "conf_break_topic_lock": 0.8,
+            "short_token_limit": 6,
+            "slotfill_token_limit": 10
+          },
+          "decision": {
+            "mode": "NEW_QUESTION",
+            "reason": "new_question",
+            "effective_area": "Fiscal",
+            "forced_area_used": true,
+            "forced_area_value": "Fiscal",
+            "question_type": "unknown",
+            "merged_query_preview": null
+          },
+          "rejections": [
+            "FOLLOWUP_SLOT_FILL rejected: pending_slots_empty",
+            "FOLLOWUP_REFERENTIAL rejected: referential_hit=false",
+            "topic_lock_fallback skipped: no_topic_lock"
+          ],
+          "state_after": {
+            "topic_lock": "Fiscal",
+            "pending_slots": [
+              "entity_type"
+            ],
+            "turn_count": 1
+          },
+          "state_diff": {
+            "set": [
+              "base_question",
+              "last_actionable_user_question",
+              "pending_slots",
+              "slot_values",
+              "topic_lock"
+            ],
+            "cleared": [],
+            "pending_set": [
+              "pending_slots"
+            ],
+            "unchanged": []
+          },
+          "session_id": "dfde45e6-da49-44ad-8e10-2dc69c9ef8ae",
+          "turn_index": 0
+        },
+        "full_trace": {
+          "request_id": "4a8e914e-229f-4f60-8c10-f4daaa074c77",
+          "timestamp": "2025-12-21T18:16:19.329377",
+          "endpoint": "/api/v1/legal-graphrag/v1_1/chat/",
+          "engine_version": "v1_1",
+          "session_id_received": null,
+          "user_id_received": null,
+          "ip": "127.0.0.1",
+          "user_agent": "python-requests/2.32.5",
+          "chat_session_db_id": "dfde45e6-da49-44ad-8e10-2dc69c9ef8ae",
+          "chat_session_lookup_method": "created_new",
+          "is_new_session": true,
+          "session": {
+            "state_before": {
+              "schema_version": 1,
+              "turn_count": 0,
+              "topic_lock": null,
+              "base_question": null,
+              "last_actionable_user_question": null,
+              "pending_slots": [],
+              "slot_values": {},
+              "last_answer_brief": null,
+              "memory_summary": ""
+            },
+            "state_after": {
+              "schema_version": 1,
+              "turn_count": 1,
+              "topic_lock": "Fiscal",
+              "base_question": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+              "last_actionable_user_question": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+              "pending_slots": [
+                "entity_type"
+              ],
+              "slot_values": {},
+              "last_answer_brief": "PASO 1: SOURCE TRIAGE\n\n*   Fuente 1: IRRELEVANT (Modificación de Ley de Planes y Fondos de Pensiones)\n*   Fuente 2: IRRELEVANT (Base liquidable IRPF)\n*   Fuente 3: IRRELEVANT (Reducciones por pensiones compensatorias)\n*   Fuente 4: IRRELEVANT (Régimen transitorio seguros colectivos)\n*   Fuente 5: IR",
+              "memory_summary": "- Tema/base: Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?"
+            },
+            "state_diff": {
+              "set": [
+                "base_question",
+                "last_actionable_user_question",
+                "last_answer_brief",
+                "memory_summary",
+                "pending_slots",
+                "topic_lock",
+                "turn_count"
+              ],
+              "cleared": [],
+              "unchanged": [
+                "schema_version",
+                "slot_values"
+              ]
+            },
+            "save_state_called": true,
+            "save_state_success": true,
+            "save_state_where": "orchestrator",
+            "db_commit_success": true,
+            "messages_before": 0,
+            "messages_after": 2,
+            "state_recovery": {
+              "applied": false,
+              "fields": []
+            }
+          },
+          "orchestrator": {
+            "thread_status": "no_thread",
+            "candidate_modes": [
+              "FOLLOWUP_SLOT_FILL",
+              "FOLLOWUP_REFERENTIAL",
+              "NEW_QUESTION",
+              "CLARIFY",
+              "META"
+            ],
+            "inputs": {
+              "user_text_preview": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+              "token_count": 16,
+              "classifier": {
+                "area_detected": "Fiscal",
+                "confidence": 1.0,
+                "scores": {
+                  "Fiscal": 1
+                }
+              },
+              "last_assistant": {
+                "answer_preview": "",
+                "had_para_afinar": false
+              }
+            },
+            "state_before": {
+              "topic_lock": null,
+              "base_question_preview": "",
+              "last_actionable_preview": "",
+              "pending_slots": [],
+              "slot_values_keys": [],
+              "last_answer_brief_preview": "",
+              "memory_summary_preview": ""
+            },
+            "router_inputs": {
+              "memory_summary": "",
+              "base_question": "",
+              "recent_user_messages": [],
+              "recent_assistant_messages": [],
+              "current_user_text": "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?"
+            },
+            "llm_router": {
+              "enabled": false,
+              "used": false,
+              "model": null,
+              "error": null,
+              "decision": null,
+              "raw_preview": null
+            },
+            "signals": {
+              "short_message": {
+                "value": false,
+                "token_count": 16
+              },
+              "pending_slots_present": false,
+              "slot_fill_candidate": false,
+              "referential_hit": false,
+              "referential_matches": [],
+              "thin_turn": false,
+              "explicit_topic_change": false,
+              "topic_lock_available": false
+            },
+            "thresholds": {
+              "conf_follow_classifier": 0.55,
+              "conf_break_topic_lock": 0.8,
+              "short_token_limit": 6,
+              "slotfill_token_limit": 10
+            },
+            "decision": {
+              "mode": "NEW_QUESTION",
+              "reason": "new_question",
+              "effective_area": "Fiscal",
+              "forced_area_used": true,
+              "forced_area_value": "Fiscal",
+              "question_type": "unknown",
+              "merged_query_preview": null
+            },
+            "rejections": [
+              "FOLLOWUP_SLOT_FILL rejected: pending_slots_empty",
+              "FOLLOWUP_REFERENTIAL rejected: referential_hit=false",
+              "topic_lock_fallback skipped: no_topic_lock"
+            ],
+            "state_after": {
+              "topic_lock": "Fiscal",
+              "pending_slots": [
+                "entity_type"
+              ],
+              "turn_count": 1
+            },
+            "state_diff": {
+              "set": [
+                "base_question",
+                "last_actionable_user_question",
+                "pending_slots",
+                "slot_values",
+                "topic_lock"
+              ],
+              "cleared": [],
+              "pending_set": [
+                "pending_slots"
+              ],
+              "unchanged": []
+            },
+            "session_id": "dfde45e6-da49-44ad-8e10-2dc69c9ef8ae",
+            "turn_index": 0
+          },
+          "classifier": {
+            "area_detected": "Fiscal",
+            "confidence": 1.0,
+            "scores": {
+              "Fiscal": 1
+            },
+            "matched_keywords": {
+              "Fiscal": [
+                "amortiza"
+              ]
+            }
+          },
+          "rag": {
+            "query_expansion": [
+              "Soy fot?grafo y compro equipo caro. ?C?mo funciona la amortizaci?n y en qu? casos me conviene?",
+              "amortizacion IRPF",
+              "Ley 35/2006 IRPF amortizacion",
+              "Amortización fiscal equipo fotográfico autónomos",
+              "Deducción amortización bienes inversión fotógrafos"
+            ],
+            "forced_area": "Fiscal",
+            "question_type": "unknown",
+            "retrieval_params": {
+              "max_sources_requested": 10,
+              "max_sources_returned": 5,
+              "area_principal": "Fiscal"
+            },
+            "top_sources": [
+              {
+                "id": "BOE-A-2006-20764",
+                "title": "Ley 35/2006 del IRPF",
+                "score": 0.764746346277798,
+                "naturaleza": "Normativa"
+              },
+              {
+                "id": "BOE-A-2006-20764",
+                "title": "Ley 35/2006 del IRPF",
+                "score": 0.752776286751885,
+                "naturaleza": "Normativa"
+              },
+              {
+                "id": "BOE-A-2006-20764",
+                "title": "Ley 35/2006 del IRPF",
+                "score": 0.746374085295356,
+                "naturaleza": "Normativa"
+              },
+              {
+                "id": "BOE-A-2006-20764",
+                "title": "Ley 35/2006 del IRPF",
+                "score": 0.724058873335898,
+                "naturaleza": "Normativa"
+              },
+              {
+                "id": "BOE-A-2006-20764",
+                "title": "Ley 35/2006 del IRPF",
+                "score": 0.712237340063422,
+                "naturaleza": "Normativa"
+              }
+            ],
+            "cited_ids": [
+              "BOE-A-2006-20764",
+              "BOE-A-2006-20764",
+              "BOE-A-2006-20764",
+              "BOE-A-2006-20764",
+              "BOE-A-2006-20764"
+            ],
+            "additional_ids": [],
+            "abstain": {
+              "abstained": false,
+              "reason": null
+            }
+          },
+          "persistence": {
+            "save_called": true,
+            "save_success": true,
+            "db_commit_success": true,
+            "messages": [
+              {
+                "id": "8e716e70-dee8-4ebd-a61f-05e3d2d8a30c",
+                "role": "user",
+                "session_id": "dfde45e6-da49-44ad-8e10-2dc69c9ef8ae",
+                "metadata_size": 28
+              },
+              {
+                "id": "f15e092d-bac9-482a-a3a8-12fa74830da6",
+                "role": "assistant",
+                "session_id": "dfde45e6-da49-44ad-8e10-2dc69c9ef8ae",
+                "metadata_size": 8776
+              }
+            ],
+            "assistant_contains_cited_ids": true
+          },
+          "pending_slots_extraction": {
+            "ran": true,
+            "written": true
+          }
+        }
+      }
+    }
+  }
+}

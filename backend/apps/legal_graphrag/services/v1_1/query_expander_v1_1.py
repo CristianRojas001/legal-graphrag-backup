@@ -5,17 +5,39 @@ Deterministic expansions + limited LLM variants.
 
 import re
 import unicodedata
+from collections import OrderedDict
+import hashlib
 from typing import List
 
 
 class QueryExpanderV1_1:
     def __init__(self, model) -> None:
         self.model = model
+        self._expansion_cache: "OrderedDict[str, List[str]]" = OrderedDict()
+        self._cache_max_size = 500
 
     @staticmethod
     def _to_ascii(text: str) -> str:
         normalized = unicodedata.normalize("NFKD", text)
         return "".join(ch for ch in normalized if not unicodedata.combining(ch))
+
+    def _cache_key(self, query: str, max_total: int, llm_variants: int) -> str:
+        normalized = self._to_ascii((query or "").lower().strip())
+        key = f"{normalized}:{max_total}:{llm_variants}"
+        return hashlib.md5(key.encode("utf-8")).hexdigest()
+
+    def _cache_get(self, key: str) -> List[str]:
+        payload = self._expansion_cache.get(key)
+        if payload is None:
+            return []
+        self._expansion_cache.move_to_end(key)
+        return list(payload)
+
+    def _cache_set(self, key: str, queries: List[str]) -> None:
+        self._expansion_cache[key] = list(queries)
+        self._expansion_cache.move_to_end(key)
+        while len(self._expansion_cache) > self._cache_max_size:
+            self._expansion_cache.popitem(last=False)
 
     def _add(self, queries: List[str], value: str) -> None:
         value = (value or "").strip()
@@ -30,6 +52,11 @@ class QueryExpanderV1_1:
         base = (query or "").strip()
         if not base:
             return []
+
+        cache_key = self._cache_key(base, max_total, llm_variants)
+        cached = self._cache_get(cache_key)
+        if cached:
+            return cached[:max_total]
 
         queries: List[str] = []
         self._add(queries, base)
@@ -78,16 +105,55 @@ class QueryExpanderV1_1:
             self._add(queries, "Ley 37/1992 IVA")
         if "tipo" in ascii_query.lower() and "iva" in ascii_query.lower():
             self._add(queries, "tipos IVA general reducido superreducido")
+
+        # ENHANCED: Retención queries (expanded for conceptual questions)
         if "retencion" in ascii_query.lower() or "retenciones" in ascii_query.lower():
             self._add(queries, "retenciones IRPF")
             self._add(queries, "tipos retención")
+            # Add specific expansions for artist/professional withholdings
+            if "artista" in ascii_query.lower() or "profesional" in ascii_query.lower():
+                self._add(queries, "retención rendimientos trabajo profesional artistas")
+                self._add(queries, "Ley 35/2006 IRPF retenciones profesionales")
+                self._add(queries, "artículo 101 retención IRPF")
+            # Generic retención questions
+            if "debo" in ascii_query.lower() or "aplicar" in ascii_query.lower() or "factura" in ascii_query.lower():
+                self._add(queries, "obligación retención IRPF rendimientos trabajo")
+                self._add(queries, "retención factura empresa pagadora")
+
+        if "amortiz" in ascii_query.lower():
+            self._add(queries, "amortizacion IRPF")
+            self._add(queries, "Ley 35/2006 IRPF amortizacion")
 
         # Services/digital
         if "servicio" in ascii_query.lower() or "digital" in ascii_query.lower():
             self._add(queries, "servicios digitales IVA")
             self._add(queries, "prestación servicios")
 
-        # Artists/cultural
+        # ENHANCED: Deduction/expenses queries
+        if "deducir" in ascii_query.lower() or "deducible" in ascii_query.lower() or "gasto" in ascii_query.lower():
+            self._add(queries, "gastos deducibles IRPF actividades económicas")
+            if "alquiler" in ascii_query.lower() or "vivienda" in ascii_query.lower() or "casa" in ascii_query.lower():
+                self._add(queries, "afectación vivienda deducción IRPF autónomos")
+                self._add(queries, "gastos vivienda trabajo domicilio deducibles")
+            if "dieta" in ascii_query.lower() or "desplaza" in ascii_query.lower() or "viaje" in ascii_query.lower():
+                self._add(queries, "dietas desplazamientos deducibles IRPF")
+                self._add(queries, "gastos locomoción manutención autónomos")
+
+        # ENHANCED: Subvenciones queries
+        if "subvencion" in ascii_query.lower():
+            self._add(queries, "Ley 38/2003 subvenciones")
+            if "criterio" in ascii_query.lower() or "valorar" in ascii_query.lower() or "convocatoria" in ascii_query.lower():
+                self._add(queries, "criterios valoración subvenciones")
+                self._add(queries, "bases convocatoria subvenciones valoración")
+
+        # ENHANCED: Contract/labor queries
+        if "contrato" in ascii_query.lower():
+            if "artista" in ascii_query.lower() or "bolo" in ascii_query.lower():
+                self._add(queries, "contrato artista relación laboral especial")
+                self._add(queries, "Real Decreto 1435/1985 artistas espectáculos")
+                self._add(queries, "elementos esenciales contrato artista")
+
+        # Artists/cultural (keep existing)
         if "artista" in ascii_query.lower() or "cultural" in ascii_query.lower():
             self._add(queries, "artistas profesionales")
             self._add(queries, "actividades artísticas")
@@ -145,5 +211,7 @@ Pregunta: {base}"""
                 # Ignore LLM expansion errors
                 pass
 
-        return queries[:max_total]
+        final_queries = queries[:max_total]
+        self._cache_set(cache_key, final_queries)
+        return final_queries
 

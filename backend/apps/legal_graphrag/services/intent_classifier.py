@@ -7,6 +7,8 @@ from typing import Optional, List, Dict
 import logging
 import re
 import unicodedata
+from collections import OrderedDict
+import hashlib
 
 logger = logging.getLogger(__name__)
 
@@ -283,6 +285,25 @@ class IntentClassifier:
             ]
             for area, keywords in self.AREA_KEYWORDS.items()
         }
+        self._cache: "OrderedDict[str, dict]" = OrderedDict()
+        self._cache_max_size = 1000
+
+    def _cache_key(self, query: str) -> str:
+        normalized = self._normalize_text(query or "")
+        return hashlib.md5(normalized.encode("utf-8")).hexdigest()
+
+    def _cache_get(self, key: str) -> Optional[dict]:
+        payload = self._cache.get(key)
+        if not payload:
+            return None
+        self._cache.move_to_end(key)
+        return payload
+
+    def _cache_set(self, key: str, payload: dict) -> None:
+        self._cache[key] = payload
+        self._cache.move_to_end(key)
+        while len(self._cache) > self._cache_max_size:
+            self._cache.popitem(last=False)
 
     @staticmethod
     def _normalize_text(text: str) -> str:
@@ -301,6 +322,10 @@ class IntentClassifier:
         normalized_query = self._normalize_text(query)
         if not normalized_query:
             return {}
+
+        # Guardrail: detect Constitution queries and steer them away from Societario heuristics.
+        if self._looks_like_constitution_query(normalized_query):
+            return {"Constitucion": 1}
 
         scores: Dict[str, int] = {}
         for area, keywords in self.normalized_area_keywords.items():
@@ -400,12 +425,48 @@ class IntentClassifier:
             >>> classifier.classify_with_confidence("¿Puedo deducir gastos?")
             {'area': 'Fiscal', 'confidence': 0.75, 'scores': {'Fiscal': 3, 'Laboral': 1}}
         """
+        cache_key = self._cache_key(query)
+        cached = self._cache_get(cache_key)
+        if cached is not None:
+            return cached
+
         scores = self._score_query(query)
+        if scores == {"Constitucion": 1}:
+            result = {"area": None, "confidence": 0.0, "scores": scores}
+            self._cache_set(cache_key, result)
+            return result
         if not scores:
-            return {"area": None, "confidence": 0.0, "scores": {}}
+            result = {"area": None, "confidence": 0.0, "scores": {}}
+            self._cache_set(cache_key, result)
+            return result
 
         total_score = sum(scores.values())
         best_area, best_score = max(scores.items(), key=lambda item: item[1])
         confidence = best_score / total_score if total_score else 0.0
 
-        return {"area": best_area, "confidence": confidence, "scores": scores}
+        result = {"area": best_area, "confidence": confidence, "scores": scores}
+        self._cache_set(cache_key, result)
+        return result
+
+    def _looks_like_constitution_query(self, normalized_query: str) -> bool:
+        """
+        Detect queries that clearly refer to the Spanish Constitution.
+        """
+        constitution_tokens = [
+            "constitucion espanola",
+            "constitucion espanol",
+            "constitucion",
+            "tribunal constitucional",
+            "boe a 1978 31229",
+            "constitucion ce",
+            "ce 1978",
+            "articulo 149",
+        ]
+
+        if any(tok in normalized_query for tok in constitution_tokens):
+            societario_hints = ["constitucion de sociedad", "constitucion sociedad", "sociedad", "estatutos"]
+            if any(hint in normalized_query for hint in societario_hints):
+                return False
+            return True
+
+        return False

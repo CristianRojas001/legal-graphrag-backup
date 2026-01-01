@@ -69,13 +69,13 @@ class LegalRAGEngine:
         # Stronger required terms per area to guard against off-topic sources.
         self._area_required_terms = {
             "Fiscal": ["irpf", "retencion", "retenciones", "iva", "impuesto", "lgt", "aeat", "dgt", "tipo impositivo"],
-            "Laboral": ["seguridad social", "reta", "laboral", "autonomo", "autónomo", "cotiz"],
+            "Laboral": ["seguridad social", "reta", "laboral", "autonomo", "aut?nomo", "cotiz", "contrato", "artista", "artistas"],
             "Propiedad Intelectual": ["propiedad intelectual", "derechos de autor", "copyright", "sgae", "cedro", "vegap", "trlpi"],
         }
         # Law-family hints to enforce intent relevance
         self._area_law_hints = {
             "Fiscal": ["irpf", "impuesto sobre la renta", "iva", "impuesto sobre el valor añadido", "retencion", "retenciones", "lgt"],
-            "Laboral": ["estatuto de los trabajadores", "seguridad social", "reta"],
+            "Laboral": ["estatuto de los trabajadores", "seguridad social", "reta", "contrato", "artista", "artistas"],
             "Propiedad Intelectual": ["propiedad intelectual", "trlpi", "derechos de autor"],
         }
         # Abstain thresholds (configurable via settings/env)
@@ -528,7 +528,56 @@ FORMATO RESPUESTA (EVIDENCE-BACKED):
         area_tokens = [self._normalize_text(t) for t in self._area_tokens.get(area_principal, [])]
         query_tokens = [self._normalize_text(t) for t in self.intent_classifier.extract_keywords(query)]
 
+        labor_core_terms = []
+        labor_strict_terms = []
+        artist_terms = []
+        labor_doc_allowlist = set()
+        if area_principal == "Laboral":
+            labor_core_terms = [
+                "seguridad social",
+                "reta",
+                "laboral",
+                "autonomo",
+                "autonomo",
+                "contrato",
+                "cotiz",
+                "trabajo",
+                "trabajador",
+                "empleo",
+            ]
+            labor_strict_terms = [
+                "relacion laboral",
+                "contrato de trabajo",
+                "estatuto",
+                "seguridad social",
+                "trabajador",
+                "trabajo",
+                "empleo",
+                "cotizacion",
+            ]
+            artist_terms = ["artista", "artistas", "artistico", "artistica", "artisticos", "artisticas"]
+            labor_doc_allowlist = {
+                "BOE-A-1985-17303",
+                "BOE-A-2022-4583",
+                "BOE-A-2015-11430",
+            }
+            labor_core_terms = [self._normalize_text(t) for t in labor_core_terms]
+            labor_strict_terms = [self._normalize_text(t) for t in labor_strict_terms]
+            artist_terms = [self._normalize_text(t) for t in artist_terms]
+
         def keep(src: Dict[str, Any]) -> bool:
+            # Laboral guard: require labor signal (avoid PI bleed-through on "artista").
+            if labor_core_terms and artist_terms:
+                doc_id = src.get("document_id")
+                if doc_id in labor_doc_allowlist:
+                    return True
+                has_artist = self._source_matches_tokens(src, artist_terms)
+                has_labor_core = self._source_matches_tokens(src, labor_core_terms)
+                has_labor_strict = self._source_matches_tokens(src, labor_strict_terms)
+                if has_artist and not (has_labor_core and has_labor_strict):
+                    return False
+                if not has_labor_strict and not has_labor_core:
+                    return False
             # Priority: required terms > law-family hints > area tokens > query tokens
             if self._source_matches_tokens(src, required_terms):
                 return True

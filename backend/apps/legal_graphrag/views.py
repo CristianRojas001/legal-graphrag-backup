@@ -3,15 +3,18 @@ Legal GraphRAG Views
 API endpoints for legal document search and chat.
 """
 
+import hashlib
 import ipaddress
 import logging
-from typing import Optional
+import re
+import uuid
+from typing import Optional, List
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import ChatSession, ChatMessage, CorpusSource
+from .models import AnswerFeedbackEvent, ChatSession, ChatMessage, CorpusSource
 from .serializers import (
     ChatRequestSerializer,
     SearchRequestSerializer,
@@ -58,37 +61,69 @@ def _get_or_create_session(session_id: Optional[str], request) -> ChatSession:
     )
 
 
-def _persist_chat_messages(session: ChatSession, query: str, rag_result: dict, area_principal: Optional[str]) -> None:
+def _get_or_create_session_with_meta(session_id: Optional[str], request) -> tuple[ChatSession, str, bool]:
+    """
+    Reuse an existing session or create a new one for the request.
+    Returns (session, lookup_method, is_new_session).
+    """
+    if session_id:
+        existing = ChatSession.objects.filter(id=session_id).first()
+        if existing:
+            return existing, "session_id", False
+
+    user_agent = request.META.get('HTTP_USER_AGENT', '')[:500]
+    session = ChatSession.objects.create(
+        user=request.user if getattr(request, 'user', None) and request.user.is_authenticated else None,
+        ip_address=_get_client_ip(request),
+        user_agent=user_agent,
+    )
+    return session, "created_new", True
+
+
+def _persist_chat_messages(session: ChatSession, query: str, rag_result: dict, area_principal: Optional[str]) -> dict:
     """Store user and assistant messages for the chat session."""
     try:
-        ChatMessage.objects.create(
+        user_msg = ChatMessage.objects.create(
             session=session,
             role='user',
             content=query,
             metadata={'area_principal': area_principal},
         )
-        ChatMessage.objects.create(
+        assistant_msg = ChatMessage.objects.create(
             session=session,
             role='assistant',
             content=rag_result.get('answer', ''),
             sources=rag_result.get('sources', []),
             metadata=rag_result.get('metadata', {}),
         )
+        return {
+            "user_message_id": str(user_msg.id),
+            "assistant_message_id": str(assistant_msg.id),
+        }
     except Exception:
         # Do not fail the endpoint if persistence fails; just log it.
         logger.exception("Failed to persist chat messages for session %s", session.id)
+    return {}
 
 
 def _is_greeting(query: str) -> bool:
     """Check if query is a casual greeting or chitchat."""
-    greetings = [
-        'hola', 'hello', 'hi', 'hey', 'buenos dias', 'buenas tardes', 'buenas noches',
-        'como estas', 'que tal', 'como va', 'que pasa', 'como te va',
-        'gracias', 'thanks', 'muchas gracias', 'ok', 'vale', 'de acuerdo',
-        'adios', 'chao', 'hasta luego', 'nos vemos', 'bye',
+    token_greetings = {
+        "hola", "hello", "hi", "hey", "gracias", "thanks", "ok", "vale",
+        "adios", "chao", "bye",
+    }
+    phrase_greetings = [
+        "buenos dias", "buenas tardes", "buenas noches",
+        "como estas", "que tal", "como va", "que pasa", "como te va",
+        "muchas gracias", "de acuerdo", "hasta luego", "nos vemos",
     ]
     query_lower = query.lower().strip()
-    return any(greeting in query_lower for greeting in greetings) and len(query_lower.split()) < 10
+    if len(query_lower.split()) >= 10:
+        return False
+    tokens = re.findall(r"\b\w+\b", query_lower)
+    if any(token in token_greetings for token in tokens):
+        return True
+    return any(phrase in query_lower for phrase in phrase_greetings)
 
 
 def _is_follow_up_question(query: str) -> bool:
@@ -105,6 +140,92 @@ def _is_follow_up_question(query: str) -> bool:
     is_short_question = len(query_lower.split()) < 15 and any(q in query_lower for q in ['?', 'por que', 'como', 'cuando', 'donde', 'cual', 'quien', 'cuanto'])
     has_follow_up_pattern = any(pattern in query_lower for pattern in follow_up_patterns)
     return has_follow_up_pattern or (is_short_question and len(query_lower.split()) < 8)
+
+
+def _extract_para_afinar_questions(answer: str) -> List[str]:
+    """Extract bullet questions from a 'Para afinar' section if present."""
+    if not answer:
+        return []
+
+    lines = answer.splitlines()
+    start_idx = None
+    for idx, line in enumerate(lines):
+        if "para afinar" in line.lower():
+            start_idx = idx + 1
+            break
+
+    if start_idx is None:
+        return []
+
+    questions = []
+    for line in lines[start_idx:]:
+        stripped = line.strip()
+        if not stripped:
+            if questions:
+                break
+            continue
+        if stripped.startswith("**"):
+            break
+        if stripped.startswith(("-", "•", "*")):
+            questions.append(stripped.lstrip("-•* ").strip())
+
+    return questions
+
+
+def _derive_pending_slots(questions: List[str]) -> List[str]:
+    """Map clarifying questions to simple slot categories."""
+    slot_map = {
+        "location": ["ccaa", "comunidad", "provincia", "ciudad", "municipio", "localidad", "donde"],
+        "entity_type": ["autonomo", "autónomo", "sl", "s.l", "sociedad", "asociacion", "asociación", "empresa", "entidad"],
+        "period": ["fecha", "fechas", "periodo", "período", "anio", "año", "ejercicio", "202"],
+    }
+
+    pending = []
+    for question in questions:
+        normalized = question.lower()
+        for slot, tokens in slot_map.items():
+            if any(token in normalized for token in tokens) and slot not in pending:
+                pending.append(slot)
+    return pending
+
+
+def _build_pending_metadata(answer: str, pending_question: str, area_principal: Optional[str]) -> Optional[dict]:
+    """Build metadata for slot-fill follow-ups based on 'Para afinar'."""
+    questions = _extract_para_afinar_questions(answer)
+    pending_slots = _derive_pending_slots(questions)
+    if not pending_slots:
+        return None
+
+    return {
+        "pending_slots": pending_slots,
+        "pending_question": pending_question,
+        "pending_topic": area_principal,
+    }
+
+
+def _infer_slot_from_reply(reply: str, pending_slots: List[str]) -> str:
+    """Infer which slot a short reply likely fills."""
+    normalized = reply.lower().strip()
+    if re.search(r"\b(19|20)\d{2}\b", normalized):
+        return "period"
+    if any(token in normalized for token in ["autonomo", "autónomo", "sl", "s.l", "sociedad", "asociacion", "asociación"]):
+        return "entity_type"
+    if "location" in pending_slots:
+        return "location"
+    return pending_slots[0] if pending_slots else "context"
+
+
+def _is_slot_fill_reply(reply: str, pending_slots: List[str]) -> bool:
+    """Detect short replies meant to fill pending slots."""
+    if not pending_slots:
+        return False
+    tokens = reply.strip().split()
+    return len(tokens) <= 8 and "?" not in reply
+
+
+def _merge_pending_question(pending_question: str, slot_name: str, reply: str) -> str:
+    """Merge a short reply into the previous question for retrieval."""
+    return f"{pending_question}\nContexto adicional: {slot_name}={reply}"
 
 
 def _get_conversation_context(session: ChatSession, limit: int = 5) -> str:
@@ -146,7 +267,10 @@ def chat_view(request):
             'metadata': {'greeting': True}
         }
 
-        _persist_chat_messages(session, query, greeting_response, None)
+        message_ids = _persist_chat_messages(session, query, greeting_response, None)
+        if message_ids:
+            greeting_response.setdefault('metadata', {})
+            greeting_response['metadata'].update(message_ids)
 
         return Response({
             'session_id': str(session.id),
@@ -196,7 +320,10 @@ Responde de forma directa y concisa."""
             'metadata': {'follow_up': True, 'used_conversation_context': True}
         }
 
-        _persist_chat_messages(session, query, follow_up_result, None)
+        message_ids = _persist_chat_messages(session, query, follow_up_result, None)
+        if message_ids:
+            follow_up_result.setdefault('metadata', {})
+            follow_up_result['metadata'].update(message_ids)
 
         return Response({
             'session_id': str(session.id),
@@ -217,7 +344,10 @@ Responde de forma directa y concisa."""
         logger.exception("RAG generation failed")
         return Response({'detail': 'Failed to generate answer'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    _persist_chat_messages(session, query, rag_result, data.get('area_principal'))
+    message_ids = _persist_chat_messages(session, query, rag_result, data.get('area_principal'))
+    if message_ids:
+        rag_result.setdefault('metadata', {})
+        rag_result['metadata'].update(message_ids)
 
     response_payload = {
         'session_id': str(session.id),
@@ -318,3 +448,100 @@ def health_view(request):
 
     response_status = status.HTTP_200_OK if db_status == 'healthy' else status.HTTP_503_SERVICE_UNAVAILABLE
     return Response(health_data, status=response_status)
+
+
+@api_view(['POST'])
+def feedback_view(request):
+    """
+    Persist feedback events for assistant answers.
+    """
+    payload = request.data or {}
+    message_id = payload.get('message_id')
+    event_type = payload.get('event_type')
+    vote_value = payload.get('vote_value')
+    conversation_id = payload.get('conversation_id')
+    answer_text = payload.get('answer_text')
+    session_id = payload.get('session_id')
+
+    if not isinstance(message_id, str) or not message_id.strip():
+        return Response({'error': 'message_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+    if event_type not in {'vote', 'copy'}:
+        return Response({'error': 'event_type must be vote or copy'}, status=status.HTTP_400_BAD_REQUEST)
+    if event_type == 'vote' and vote_value not in (-1, 1):
+        return Response({'error': 'vote_value must be 1 or -1'}, status=status.HTTP_400_BAD_REQUEST)
+
+    message = ChatMessage.objects.filter(id=message_id).select_related('session').first()
+    if message and not conversation_id:
+        conversation_id = str(message.session.id)
+    if not session_id:
+        session_id = request.COOKIES.get('legal_feedback_session_id')
+    if not session_id:
+        session_id = str(uuid.uuid4())
+
+    user_id = None
+    if getattr(request, 'user', None) and request.user.is_authenticated:
+        user_id = str(request.user.id)
+
+    answer_hash = None
+    if isinstance(answer_text, str) and answer_text.strip():
+        answer_hash = hashlib.sha256(answer_text.encode('utf-8')).hexdigest()
+
+    route = request.path
+
+    if event_type == 'vote':
+        filter_kwargs = {'event_type': 'vote', 'message_id': message_id}
+        if session_id:
+            filter_kwargs['session_id'] = session_id
+        elif conversation_id:
+            filter_kwargs['conversation_id'] = conversation_id
+
+        existing = AnswerFeedbackEvent.objects.filter(**filter_kwargs).first()
+        if existing:
+            existing.vote_value = vote_value
+            existing.answer_hash = answer_hash or existing.answer_hash
+            existing.route = route
+            existing.user_id = user_id or existing.user_id
+            existing.conversation_id = conversation_id or existing.conversation_id
+            existing.session_id = session_id or existing.session_id
+            existing.save(update_fields=[
+                'vote_value',
+                'answer_hash',
+                'route',
+                'user_id',
+                'conversation_id',
+                'session_id',
+            ])
+            response = Response({'ok': True}, status=status.HTTP_200_OK)
+        else:
+            AnswerFeedbackEvent.objects.create(
+                user_id=user_id,
+                session_id=session_id,
+                conversation_id=conversation_id,
+                message_id=message_id,
+                answer_hash=answer_hash,
+                event_type='vote',
+                vote_value=vote_value,
+                route=route,
+            )
+            response = Response({'ok': True}, status=status.HTTP_201_CREATED)
+    else:
+        AnswerFeedbackEvent.objects.create(
+            user_id=user_id,
+            session_id=session_id,
+            conversation_id=conversation_id,
+            message_id=message_id,
+            answer_hash=answer_hash,
+            event_type='copy',
+            vote_value=None,
+            route=route,
+        )
+        response = Response({'ok': True}, status=status.HTTP_201_CREATED)
+
+    if 'legal_feedback_session_id' not in request.COOKIES:
+        response.set_cookie(
+            'legal_feedback_session_id',
+            session_id,
+            httponly=True,
+            samesite='Lax',
+        )
+    return response

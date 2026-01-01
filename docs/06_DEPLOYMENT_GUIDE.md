@@ -18,7 +18,7 @@ Digital Ocean App Platform
 │   ├── App: api.artisting.es
 │   ├── Gunicorn workers
 │   └── Celery workers
-├── Frontend (Next.js 15)
+├── Frontend (Next.js 16 App Router)
 │   ├── App: legal.artisting.es
 │   └── Static assets on CDN
 ├── Managed PostgreSQL

@@ -7,6 +7,8 @@ export interface LegalSource {
   source_type: string;
   relevance_score?: number;
   excerpt?: string;
+  label?: string;
+  is_cited?: boolean;
 }
 
 export interface ChatResponse {
@@ -15,6 +17,25 @@ export interface ChatResponse {
   query: string;
   timestamp?: string;
   session_id?: string;
+  metadata?: {
+    cited_count?: number;
+    additional_count?: number;
+    assistant_message_id?: string;
+    user_message_id?: string;
+  };
+}
+
+export interface FeedbackRequest {
+  conversation_id?: string;
+  session_id?: string;
+  message_id: string;
+  event_type: 'vote' | 'copy';
+  vote_value?: 1 | -1;
+  answer_text?: string;
+}
+
+export interface FeedbackResponse {
+  ok: boolean;
 }
 
 export interface ChatRequest {

@@ -4,6 +4,8 @@ import axios, { AxiosInstance } from 'axios';
 import type {
   ChatRequest,
   ChatResponse,
+  FeedbackRequest,
+  FeedbackResponse,
   SearchRequest,
   SearchResponse,
   SourcesResponse,
@@ -15,8 +17,28 @@ class LegalGraphRAGApiClient {
   private baseURL: string;
 
   constructor() {
-    // Use environment variable with fallback to localhost
-    this.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    // Prefer explicit API URL, but avoid sending remote users to localhost.
+    const envBaseURL = process.env.NEXT_PUBLIC_API_URL;
+    let resolvedBaseURL = envBaseURL || '';
+    if (envBaseURL) {
+      try {
+        const parsed = new URL(envBaseURL);
+        if (typeof window !== 'undefined') {
+          const isLocalEnv =
+            parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1';
+          const isRemoteHost =
+            window.location.hostname !== 'localhost' &&
+            window.location.hostname !== '127.0.0.1';
+          if (isLocalEnv && isRemoteHost) {
+            resolvedBaseURL = '';
+          }
+        }
+      } catch {
+        // Keep the env value if it's not a valid URL.
+      }
+    }
+
+    this.baseURL = resolvedBaseURL;
 
     this.client = axios.create({
       baseURL: this.baseURL,
@@ -49,12 +71,17 @@ class LegalGraphRAGApiClient {
   async chat(query: string, sessionId?: string): Promise<ChatResponse> {
     const request: ChatRequest = {
       query,
-      session_id: sessionId,
+      ...(sessionId ? { session_id: sessionId } : {}),
     };
 
     const response = await this.client.post<ChatResponse>(
       '/api/v1/legal-graphrag/v1_1/chat/',
-      request
+      request,
+      {
+        headers: {
+          'X-Developer-Debug': '1',
+        },
+      }
     );
     return response.data;
   }
@@ -100,6 +127,17 @@ class LegalGraphRAGApiClient {
     } catch {
       return false;
     }
+  }
+
+  /**
+   * Persist feedback events for assistant answers
+   */
+  async sendFeedback(payload: FeedbackRequest): Promise<FeedbackResponse> {
+    const response = await this.client.post<FeedbackResponse>(
+      '/api/v1/legal-graphrag/feedback/',
+      payload
+    );
+    return response.data;
   }
 }
 

@@ -3,8 +3,7 @@ import LegalDisclaimer from '@/components/LegalDisclaimer';
 
 export default function Home() {
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
-      <LegalDisclaimer />
+    <div className="min-h-screen bg-background flex flex-col">
       <LegalChatInterface />
     </div>
   );

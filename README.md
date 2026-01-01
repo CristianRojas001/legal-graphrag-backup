@@ -4,7 +4,7 @@
 
 [![Status](https://img.shields.io/badge/status-MVP%20Build%20In%20Progress-yellow)](https://github.com)
 [![Django](https://img.shields.io/badge/django-5.2-green)](https://www.djangoproject.com/)
-[![Next.js](https://img.shields.io/badge/next.js-15-black)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/next.js-16-black)](https://nextjs.org/)
 [![PostgreSQL](https://img.shields.io/badge/postgresql-15%2Bpgvector-blue)](https://www.postgresql.org/)
 [![License](https://img.shields.io/badge/license-Proprietary-red)]()
 
@@ -24,10 +24,12 @@ The **Artisting Legal GraphRAG** is a specialized Retrieval-Augmented Generation
 ### Key Features
 
 - **Hybrid Search**: Semantic (pgvector) + Lexical (PostgreSQL FTS) with RRF fusion
-- **Legal Hierarchy**: Respects Spanish legal authority (Constitution > Law > Decree)
-- **Source Attribution**: Answers include grounded source lists (BOE, EUR-Lex)
+- **Orchestrator v1.1**: Deterministic turn router with topic lock, slot-fill detection, and short-message follow-up handling (e.g., “por ejemplo?” stays on topic)
+- **Short Memory Summary**: Compact per-session summary (`memory_summary` in `session_state`) so the router keeps context without full history
+- **Exact Reference Resolver**: Detects BOE IDs, law titles, and artículos to force/boost the right chunks
+- **Source Attribution**: Answers include grounded source lists (BOE, EUR-Lex) with `<!--CITED_IDS: ... -->`
 - **Evidence Gating**: Abstains when evidence is weak or off-topic
-- **Session Support**: Follow-up questions use recent chat context
+- **Developer Debug**: Optional dashboard + full trace when `X-Developer-Debug: 1` (and `DEBUG_TRACE=1` for full trace)
 - **Artist-Specific**: Tailored examples and language for cultural professionals
 
 ---
@@ -81,6 +83,7 @@ celery -A ovra_backend worker -l info
 python manage.py ingest_all_p1
 
 # Run backend
+# (orchestrator on by default; set ORCHESTRATOR_V1_1=0 to disable)
 python manage.py runserver
 ```
 
@@ -110,28 +113,19 @@ npm run dev
 curl -X POST http://localhost:8000/api/v1/legal-graphrag/chat/ \
   -H "Content-Type: application/json" \
   -d '{"query": "¿Puedo deducir gastos de mi home studio?"}'
-```
+```# Run backend tests (uses PostgreSQL test DB)
+python -m pytest -q
+
+# Developer debug / traces
+# - To see the Developer Dashboard info in responses/UI: add header X-Developer-Debug: 1
+# - To also receive full traces (and log to logs/trace_v1_1.jsonl): set env DEBUG_TRACE=1 and send the same header
+
 
 ---
 
 ## Project Structure
 
-```
-Legal GraphRAG/
-  backend/
-    apps/legal_graphrag/               # Django app
-      models.py                        # Database models
-      views.py                         # API endpoints
-      services/                        # Business logic
-        legal_search_engine.py
-        legal_rag_engine.py
-        ingestion/                     # BOE/DOUE/DGT connectors
-      tests/                           # Unit & integration tests
-  frontend-legal/                      # Next.js app
-    src/app/                           # Pages
-    src/components/                    # React components
-    src/services/                      # API clients
-  docs/                                # Documentation
+`
     00_OVERVIEW.md                     # Start here!
     01_ARCHITECTURE.md
     02_DATA_MODEL.md
@@ -165,6 +159,7 @@ All documentation is in the [`docs/`](./docs/) folder. Start here:
 10. **[09_FUTURE_ROADMAP.md](./docs/09_FUTURE_ROADMAP.md)** - Post-MVP features
 11. **[CLAUDE.md](./docs/CLAUDE.md)** - Instructions for AI assistants
 12. **[CODEX.md](./docs/CODEX.md)** - Code conventions
+13. **[V1_1_ROUTER_AND_MEMORY.md](./docs/V1_1_ROUTER_AND_MEMORY.md)** - Orchestrator, memory summary, and debug tracing
 13. **[Chat Evaluation (North Star & rules)](./docs/Chat%20Evaluation/NorthStarGoal.md)** - Quality goal, prompt contract, automated eval rules
 14. **[RunBook.md](./docs/RunBook.md)** - How to run backend/frontend locally and smoke-test
 
@@ -178,8 +173,7 @@ All documentation is in the [`docs/`](./docs/) folder. Start here:
 - **Task Queue**: Celery + Redis
 - **AI**: Google Gemini API (embeddings + chat)
 
-### Frontend
-- **Framework**: Next.js 15 + React 19
+- **Framework**: Next.js 16 (App Router) + React 19
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **Components**: Radix UI

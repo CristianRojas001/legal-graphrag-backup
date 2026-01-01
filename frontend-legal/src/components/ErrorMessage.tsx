@@ -9,10 +9,10 @@ interface ErrorMessageProps {
 
 export default function ErrorMessage({ message, onDismiss }: ErrorMessageProps) {
   return (
-    <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 flex items-start justify-between">
-      <div className="flex items-start gap-3">
+    <div className="bg-destructive/10 border-2 border-destructive/40 rounded-[3px] px-5 py-4 flex items-start justify-between shadow-soft">
+      <div className="flex items-start gap-4">
         <svg
-          className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5"
+          className="w-6 h-6 text-destructive flex-shrink-0 mt-0.5"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -25,14 +25,14 @@ export default function ErrorMessage({ message, onDismiss }: ErrorMessageProps) 
           />
         </svg>
         <div>
-          <h4 className="text-sm font-semibold text-red-900">Error</h4>
-          <p className="text-sm text-red-700 mt-1">{message}</p>
+          <h4 className="text-sm font-bold text-foreground uppercase tracking-[0.5px]">Error</h4>
+          <p className="text-sm text-foreground/80 mt-2 normal-case tracking-normal font-normal">{message}</p>
         </div>
       </div>
       {onDismiss && (
         <button
           onClick={onDismiss}
-          className="text-red-600 hover:text-red-800 ml-4"
+          className="text-destructive hover:text-destructive/80 ml-4 transition-colors"
           aria-label="Cerrar error"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

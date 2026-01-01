@@ -23,7 +23,7 @@ The Legal GraphRAG frontend (`frontend-legal/`) is a **standalone Next.js app** 
 > **⚠️ Important**: The parent Artisting project has a **different chat system** (grants-related). This Legal GraphRAG chat is **completely independent** for legal questions. These are separate features.
 
 ### Current State (MVP - Sprint Week 1)
-- ✅ Standalone Next.js 15 app (TypeScript + Tailwind)
+- ✅ Standalone Next.js 16 app (App Router + Tailwind)
 - ✅ Custom components with basic styling
 - ✅ Functional **legal-specific** chat interface
 - ✅ **Independent deployment** (separate domain)
@@ -50,7 +50,7 @@ The Legal GraphRAG frontend (`frontend-legal/`) is a **standalone Next.js app** 
 **Location**: `D:\IT workspace\Legal GraphRAG\frontend-legal\`
 
 **Tech Stack**:
-- Next.js 15 (App Router)
+- Next.js 16 (App Router)
 - Tailwind CSS v4
 - Custom React components (no component library)
 - Geist fonts

@@ -5,17 +5,18 @@ import type { LegalSource } from '@/types/api';
 
 interface SourceCardProps {
   source: LegalSource;
+  isCited?: boolean;
 }
 
-export default function SourceCard({ source }: SourceCardProps) {
+export default function SourceCard({ source, isCited = false }: SourceCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const getSourceTypeColor = (type: string): string => {
     const typeMap: Record<string, string> = {
-      BOE: 'bg-blue-100 text-blue-800',
-      'EUR-Lex': 'bg-yellow-100 text-yellow-800',
-      DGT: 'bg-green-100 text-green-800',
-      default: 'bg-gray-100 text-gray-800',
+      BOE: 'bg-primary/10 text-primary',
+      'EUR-Lex': 'bg-secondary text-secondary-foreground',
+      DGT: 'bg-emerald-100 text-emerald-800',
+      default: 'bg-muted text-muted-foreground',
     };
     return typeMap[type] || typeMap.default;
   };
@@ -30,32 +31,43 @@ export default function SourceCard({ source }: SourceCardProps) {
   };
 
   return (
-    <div className="border border-gray-300 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+    <div
+      className={`border-2 rounded-[3px] overflow-hidden shadow-soft hover:shadow-medium transition-all ${
+        isCited ? 'border-primary bg-primary/5' : 'border-border bg-card'
+      }`}
+    >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full px-4 py-3 flex items-start justify-between bg-white hover:bg-gray-50 transition-colors text-left"
+        className={`w-full px-5 py-4 flex items-start justify-between transition-colors text-left ${
+          isCited ? 'bg-primary/5 hover:bg-primary/10' : 'bg-card hover:bg-muted/30'
+        }`}
       >
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-2">
+            {isCited && (
+              <span className="px-3 py-1 text-xs font-bold bg-primary text-primary-foreground rounded-[3px] uppercase tracking-[0.5px]">
+                Citada
+              </span>
+            )}
             <span
-              className={`px-2 py-1 text-xs font-medium rounded ${getSourceTypeColor(
+              className={`px-3 py-1 text-xs font-bold rounded-[3px] uppercase tracking-[0.5px] ${getSourceTypeColor(
                 source.source_type
               )}`}
             >
               {source.source_type}
             </span>
             {source.relevance_score !== undefined && (
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-muted-foreground">
                 Relevancia: {(source.relevance_score * 100).toFixed(0)}%
               </span>
             )}
           </div>
-          <h5 className="font-medium text-sm text-gray-900 line-clamp-2">
+          <h5 className="font-bold text-sm text-foreground line-clamp-2 tracking-normal normal-case">
             {source.title}
           </h5>
         </div>
         <svg
-          className={`ml-3 w-5 h-5 text-gray-500 transition-transform flex-shrink-0 ${
+          className={`ml-3 w-5 h-5 text-muted-foreground transition-transform flex-shrink-0 ${
             isExpanded ? 'rotate-180' : ''
           }`}
           fill="none"
@@ -72,16 +84,20 @@ export default function SourceCard({ source }: SourceCardProps) {
       </button>
 
       {isExpanded && (
-        <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 space-y-3">
+        <div
+          className={`px-5 py-4 border-t-2 border-border space-y-4 ${
+            isCited ? 'bg-primary/5' : 'bg-muted/20'
+          }`}
+        >
           <div>
-            <p className="text-xs font-semibold text-gray-700 mb-1">Tipo de fuente:</p>
-            <p className="text-sm text-gray-600">{formatSourceType(source.source_type)}</p>
+            <p className="text-xs font-bold text-muted-foreground mb-2 uppercase tracking-[0.5px]">Tipo de fuente:</p>
+            <p className="text-sm text-foreground normal-case tracking-normal font-normal">{formatSourceType(source.source_type)}</p>
           </div>
 
           {source.excerpt && (
             <div>
-              <p className="text-xs font-semibold text-gray-700 mb-1">Extracto relevante:</p>
-              <p className="text-sm text-gray-600 italic">{source.excerpt}</p>
+              <p className="text-xs font-bold text-muted-foreground mb-2 uppercase tracking-[0.5px]">Extracto relevante:</p>
+              <p className="text-sm text-foreground italic normal-case tracking-normal font-normal">{source.excerpt}</p>
             </div>
           )}
 
@@ -90,7 +106,7 @@ export default function SourceCard({ source }: SourceCardProps) {
               href={source.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 font-medium"
+              className="inline-flex items-center gap-2 text-sm text-secondary hover:text-primary font-bold transition-colors normal-case tracking-normal"
             >
               Ver documento completo
               <svg
@@ -109,8 +125,8 @@ export default function SourceCard({ source }: SourceCardProps) {
             </a>
           </div>
 
-          <div className="pt-2 border-t border-gray-200">
-            <p className="text-xs text-gray-500">ID: {source.id}</p>
+          <div className="pt-3 border-t-2 border-border">
+            <p className="text-xs text-muted-foreground normal-case tracking-normal font-normal">ID: {source.id}</p>
           </div>
         </div>
       )}

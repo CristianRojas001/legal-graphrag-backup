@@ -13,8 +13,10 @@ class ChatRequestSerializer(serializers.Serializer):
 
     query = serializers.CharField()
     area_principal = serializers.CharField(required=False, allow_blank=True, allow_null=True)
-    session_id = serializers.UUIDField(required=False)
+    session_id = serializers.UUIDField(required=False, allow_null=True)
     max_sources = serializers.IntegerField(required=False, min_value=1, max_value=15, default=10)
+    case_id = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    turn = serializers.IntegerField(required=False, min_value=1)
 
 
 class SearchRequestSerializer(serializers.Serializer):

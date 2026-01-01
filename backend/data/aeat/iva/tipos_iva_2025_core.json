@@ -1,0 +1,130 @@
+{
+  "dataset": "aeat_iva_tipos_2025_core",
+  "version": "2025",
+  "canonical_rates_percent": [0, 4, 10, 21],
+  "entries": [
+    {
+      "id": "IVA_GENERAL",
+      "rate_percent": 21,
+      "match": {
+        "kind": "fallback_general",
+        "notes": "General rate when no reduced/superreduced rule applies"
+      },
+      "refs": [
+        {
+          "label": "AEAT Tipos IVA 2025",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Tema/IVA/IVA_reperc/Tipos_IVA_2025.pdf"
+        }
+      ]
+    },
+    {
+      "id": "IVA_ENTRADAS_CULTURA",
+      "rate_percent": 10,
+      "match": {
+        "kind": "keyword_any",
+        "keywords_any": [
+          "entrada",
+          "entradas",
+          "teatro",
+          "circo",
+          "concierto",
+          "museo",
+          "biblioteca",
+          "exposicion",
+          "exposiciones"
+        ]
+      },
+      "refs": [
+        {
+          "label": "AEAT Tipos IVA 2025",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Tema/IVA/IVA_reperc/Tipos_IVA_2025.pdf"
+        }
+      ]
+    },
+    {
+      "id": "IVA_HOSTELERIA_RESTAURANTES",
+      "rate_percent": 10,
+      "match": {
+        "kind": "keyword_any",
+        "keywords_any": [
+          "hosteleria",
+          "restaurante",
+          "restaurantes",
+          "bar",
+          "bares",
+          "cafeteria",
+          "balneario",
+          "acampamento",
+          "campamento",
+          "discoteca",
+          "discotecas",
+          "barbacoa",
+          "barbacoas",
+          "sala de fiesta",
+          "salas de fiesta",
+          "suministro de comidas",
+          "suministro de bebidas",
+          "comidas y bebidas",
+          "consumir en el acto"
+        ]
+      },
+      "refs": [
+        {
+          "label": "AEAT Tipos IVA 2025",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Tema/IVA/IVA_reperc/Tipos_IVA_2025.pdf"
+        }
+      ]
+    },
+    {
+      "id": "IVA_SERVICIOS_ARTISTAS_A_ORGANIZADOR",
+      "rate_percent": 10,
+      "match": {
+        "kind": "keyword_any",
+        "keywords_any": [
+          "interprete",
+          "artista",
+          "director",
+          "tecnico",
+          "teatro",
+          "organizador",
+          "productor de cine",
+          "productores de cine"
+        ]
+      },
+      "refs": [
+        {
+          "label": "AEAT Tipos IVA 2025",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Tema/IVA/IVA_reperc/Tipos_IVA_2025.pdf"
+        }
+      ]
+    },
+    {
+      "id": "IVA_LIBROS_PRENSA_REVISTAS",
+      "rate_percent": 4,
+      "match": {
+        "kind": "keyword_any",
+        "keywords_any": [
+          "libro",
+          "libros",
+          "periodico",
+          "periodicos",
+          "revista",
+          "revistas",
+          "partitura",
+          "partituras"
+        ]
+      },
+      "refs": [
+        {
+          "label": "AEAT Tipos IVA 2025",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Tema/IVA/IVA_reperc/Tipos_IVA_2025.pdf"
+        }
+      ]
+    }
+  ]
+}

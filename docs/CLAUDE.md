@@ -109,15 +109,21 @@ When the user asks **how to do something**:
 5) Update docs when decisions change (docs/ARCHITECTURE.md, docs/RUNBOOK.md).
 
 ## Commands (must stay accurate)
-- Install: pnpm install
-- Dev: pnpm dev
-- Web dev: pnpm --filter web dev
-- API dev: pnpm --filter api dev
-- Typecheck: pnpm typecheck
-- Lint: pnpm lint
-- Unit tests: pnpm test
-- DB migrate: pnpm db:migrate
-- DB seed: pnpm db:seed
+
+### Backend (run from `backend/`)
+- Install dependencies: `pip install -r requirements.txt`
+- Run dev server: `python manage.py runserver`
+- Apply migrations: `python manage.py migrate`
+- Import corpus catalog: `python manage.py import_corpus_from_excel <excel-file>`
+- Queue ingestion tasks: `celery -A ovra_backend worker -l info`
+- Tests: `pytest`
+
+### Frontend (run from `frontend-legal/`)
+- Install dependencies: `npm install`
+- Development server: `npm run dev`
+- Lint: `npm run lint`
+- Build: `npm run build`
+- Type check: `npx tsc --noEmit`
 
 ## Engineering standards
 - TypeScript strict.

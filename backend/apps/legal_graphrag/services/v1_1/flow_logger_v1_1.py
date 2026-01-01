@@ -6,7 +6,7 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -25,10 +25,16 @@ class FlowLoggerV1_1:
         self.log_file = log_dir / "query_flow_v1_1.jsonl"
         self.current_flow = {}
 
-    def start_query(self, query: str):
+        # Operational memory state tracking
+        self._previous_session_state = None
+        self._forced_area_used = False
+        self._forced_area_value = None
+
+    def start_query(self, query: str, session_id: str = None):
         """Start logging a new query"""
         self.current_flow = {
             "timestamp": datetime.now().isoformat(),
+            "session_id": session_id,
             "query": query,
             "steps": {}
         }
@@ -36,14 +42,6 @@ class FlowLoggerV1_1:
     def log_step(self, step_name: str, data: Dict[str, Any]):
         """Log a pipeline step"""
         self.current_flow["steps"][step_name] = data
-
-    def finish_and_write(self):
-        """Write the complete flow to file"""
-        try:
-            with open(self.log_file, 'a', encoding='utf-8') as f:
-                f.write(json.dumps(self.current_flow, ensure_ascii=False) + '\n')
-        except Exception as e:
-            logger.error(f"Failed to write flow log: {e}")
 
     # Helper methods for common logging patterns
 
@@ -123,7 +121,8 @@ class FlowLoggerV1_1:
             "success": error is None,
             "error": error,
             "response_length_chars": response_length,
-            "preview_first_200": preview[:200] if preview else None
+            "preview_first_200": preview[:200] if preview else None,
+            "preview_first_1000": preview[:1000] if preview else None,
         })
 
     def log_validation(self, answer_changed: bool, before_length: int, after_length: int):
@@ -143,7 +142,7 @@ class FlowLoggerV1_1:
             "note": "DISABLED in v1.1"
         })
 
-    def log_final_answer(self, length: int, is_helpful: bool, preview: str):
+    def log_final_answer(self, length: int, is_helpful: bool, preview: str, cited_ids: Any = None):
         """Log final answer characteristics"""
         unhelpful_phrases = [
             "no puedo afirmar",
@@ -157,8 +156,173 @@ class FlowLoggerV1_1:
             "length_chars": length,
             "appears_helpful": is_helpful and not contains_unhelpful,
             "contains_unhelpful_phrases": contains_unhelpful,
-            "preview_first_300": preview[:300]
+            "preview_first_300": preview[:300],
+            "preview_first_1000": preview[:1000],
+            "cited_ids": list(cited_ids) if cited_ids else [],
         })
+
+    def log_sources_final(self, sources: List[Dict[str, Any]], cited_ids: Any = None):
+        """Log final sources with scores and cited flag"""
+        cited_set = set(cited_ids or [])
+        top_sources = []
+        for src in sources[:10]:
+            top_sources.append({
+                "id": src.get("id"),
+                "title": (src.get("title") or "")[:120],
+                "source_type": src.get("source_type"),
+                "relevance_score": src.get("relevance_score"),
+                "is_cited": src.get("is_cited") or (src.get("id") in cited_set),
+                "label": src.get("label"),
+            })
+
+        self.log_step("13_sources_final", {
+            "count": len(sources),
+            "top_sources": top_sources,
+            "cited_ids": list(cited_set),
+        })
+
+    # ========== Operational Memory Logging ==========
+
+    def set_forced_area(self, area_value: str):
+        """Mark that area was forced (topic lock)"""
+        self._forced_area_used = True
+        self._forced_area_value = area_value
+
+    def log_opmem_merge_attempt(
+        self,
+        merge_attempted: bool,
+        merge_success: bool,
+        reason: str,
+        base_question: Optional[str] = None,
+        user_reply: Optional[str] = None,
+        merged_query: Optional[str] = None,
+        slot_filled: Optional[str] = None,
+        slot_value: Optional[str] = None,
+        pending_slots_before: Optional[List[str]] = None,
+        pending_slots_after: Optional[List[str]] = None,
+        topic_lock_before: Optional[str] = None,
+        topic_lock_after: Optional[str] = None,
+    ):
+        """
+        Log query merge attempts with structured payload.
+
+        Event: opmem_merge_attempt
+
+        Args:
+            merge_attempted: Whether merge was attempted
+            merge_success: Whether merge succeeded
+            reason: Why merge happened (e.g., "short_reply_with_pending_slots", "referential_marker", "no_base_question")
+            base_question: Original question (first 200 chars)
+            user_reply: Current user reply (first 200 chars)
+            merged_query: Result of merge (first 300 chars)
+            slot_filled: Name of slot filled (e.g., "location")
+            slot_value: Value provided (first 60 chars)
+            pending_slots_before: Slots pending before merge
+            pending_slots_after: Slots pending after merge
+            topic_lock_before: Topic lock before merge
+            topic_lock_after: Topic lock after merge
+        """
+        log_data = {
+            "merge_attempted": merge_attempted,
+            "merge_success": merge_success,
+            "reason": reason,
+        }
+
+        # Add previews if provided
+        if base_question is not None:
+            log_data["base_question_preview"] = base_question[:200]
+        if user_reply is not None:
+            log_data["user_reply_preview"] = user_reply[:200]
+        if merged_query is not None:
+            log_data["merged_query_preview"] = merged_query[:300]
+
+        # Add slot data
+        if slot_filled is not None:
+            log_data["slot_filled"] = slot_filled
+        if slot_value is not None:
+            log_data["slot_value_preview"] = slot_value[:60]
+
+        # Add state transitions
+        if pending_slots_before is not None:
+            log_data["pending_slots_before"] = pending_slots_before
+        if pending_slots_after is not None:
+            log_data["pending_slots_after"] = pending_slots_after
+        if topic_lock_before is not None:
+            log_data["topic_lock_before"] = topic_lock_before
+        if topic_lock_after is not None:
+            log_data["topic_lock_after"] = topic_lock_after
+
+        self.log_step("opmem_merge_attempt", log_data)
+
+    def log_opmem_state_changed(
+        self,
+        event_type: str,
+        session_state_snapshot: Optional[Dict[str, Any]] = None,
+        diff: Optional[Dict[str, Any]] = None,
+    ):
+        """
+        Log operational memory state changes.
+
+        Event: opmem_state_changed
+
+        Args:
+            event_type: Type of change (e.g., "slot_filled", "topic_lock_set", "state_reset", "pending_slots_updated")
+            session_state_snapshot: Snapshot of current state (topic_lock, pending_slots, slot_values keys)
+            diff: What changed
+        """
+        log_data = {"event_type": event_type}
+
+        if session_state_snapshot is not None:
+            # Only include key fields, not full chat history
+            snapshot = {}
+            if "topic_lock" in session_state_snapshot:
+                snapshot["topic_lock"] = session_state_snapshot["topic_lock"]
+            if "pending_slots" in session_state_snapshot:
+                snapshot["pending_slots"] = session_state_snapshot["pending_slots"]
+            if "base_question" in session_state_snapshot:
+                # Preview only
+                base_q = session_state_snapshot["base_question"]
+                snapshot["base_question_preview"] = (base_q[:200] if base_q else None)
+            if "slot_values" in session_state_snapshot:
+                # Preview slot values (first 60 chars each)
+                slot_vals = session_state_snapshot["slot_values"]
+                if isinstance(slot_vals, dict):
+                    snapshot["slot_values_preview"] = {
+                        k: (v[:60] if isinstance(v, str) else v)
+                        for k, v in slot_vals.items()
+                    }
+
+            log_data["session_state"] = snapshot
+
+        if diff is not None:
+            log_data["diff"] = diff
+
+        self.log_step("opmem_state_changed", log_data)
+
+    def finalize_with_forced_area(self):
+        """Add forced_area tracking to final flow before writing"""
+        if "steps" not in self.current_flow:
+            self.current_flow["steps"] = {}
+
+        self.current_flow["steps"]["opmem_forced_area"] = {
+            "used_forced_area": self._forced_area_used,
+            "forced_area_value": self._forced_area_value,
+        }
+
+    def finish_and_write(self):
+        """Write the complete flow to file"""
+        # Add forced area tracking
+        self.finalize_with_forced_area()
+
+        try:
+            with open(self.log_file, 'a', encoding='utf-8') as f:
+                f.write(json.dumps(self.current_flow, ensure_ascii=False) + '\n')
+        except Exception as e:
+            logger.error(f"Failed to write flow log: {e}")
+
+        # Reset forced area tracking
+        self._forced_area_used = False
+        self._forced_area_value = None
 
 
 def format_source_snippet(source: Dict[str, Any]) -> Dict[str, str]:

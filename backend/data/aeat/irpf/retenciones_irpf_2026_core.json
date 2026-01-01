@@ -1,0 +1,112 @@
+{
+  "dataset": "aeat_irpf_retenciones_2026_core",
+  "version": "2026",
+  "entries": [
+    {
+      "id": "IRPF_ADMIN_GT_100K",
+      "rate_percent": 35,
+      "match": {
+        "kind": "all",
+        "conditions": {
+          "income_type": "consejero_administrador",
+          "net_turnover_bucket": "GT_100K"
+        }
+      },
+      "refs": [
+        {
+          "label": "AEAT Retenciones IRPF 2026",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2026/CUADRO_TIPOS_RETENCION_IRPF_2026.pdf"
+        }
+      ]
+    },
+    {
+      "id": "IRPF_ADMIN_LT_100K",
+      "rate_percent": 19,
+      "match": {
+        "kind": "all",
+        "conditions": {
+          "income_type": "consejero_administrador",
+          "net_turnover_bucket": "LT_100K"
+        }
+      },
+      "refs": [
+        {
+          "label": "AEAT Retenciones IRPF 2026",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2026/CUADRO_TIPOS_RETENCION_IRPF_2026.pdf"
+        }
+      ]
+    },
+    {
+      "id": "IRPF_PROFESIONAL_GENERAL",
+      "rate_percent": 15,
+      "match": {
+        "kind": "all",
+        "conditions": {
+          "income_type": "actividad_profesional",
+          "new_activity": false
+        }
+      },
+      "refs": [
+        {
+          "label": "AEAT Retenciones IRPF 2026",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2026/CUADRO_TIPOS_RETENCION_IRPF_2026.pdf"
+        }
+      ]
+    },
+    {
+      "id": "IRPF_PROFESIONAL_NUEVO_INICIO",
+      "rate_percent": 7,
+      "match": {
+        "kind": "all",
+        "conditions": {
+          "income_type": "actividad_profesional",
+          "new_activity": true
+        }
+      },
+      "refs": [
+        {
+          "label": "AEAT Retenciones IRPF 2026",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2026/CUADRO_TIPOS_RETENCION_IRPF_2026.pdf"
+        }
+      ]
+    },
+    {
+      "id": "IRPF_DERECHO_IMAGEN",
+      "rate_percent": 24,
+      "match": {
+        "kind": "all",
+        "conditions": {
+          "income_type": "cesion_derecho_imagen"
+        }
+      },
+      "refs": [
+        {
+          "label": "AEAT Retenciones IRPF 2026",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2026/CUADRO_TIPOS_RETENCION_IRPF_2026.pdf"
+        }
+      ]
+    },
+    {
+      "id": "IRPF_ARRENDAMIENTO_INMUEBLES_URBANOS",
+      "rate_percent": 19,
+      "match": {
+        "kind": "all",
+        "conditions": {
+          "income_type": "capital_inmobiliario_arrendamiento_urbano"
+        }
+      },
+      "refs": [
+        {
+          "label": "AEAT Retenciones IRPF 2026",
+          "type": "pdf",
+          "url": "https://sede.agenciatributaria.gob.es/static_files/Sede/Programas_ayuda/Retenciones/2026/CUADRO_TIPOS_RETENCION_IRPF_2026.pdf"
+        }
+      ]
+    }
+  ]
+}

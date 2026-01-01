@@ -1,0 +1,692 @@
+{
+  "request": {
+    "query": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+    "case_id": "L14",
+    "turn": 1
+  },
+  "response": {
+    "session_id": "ebdf8627-bf0f-4209-abe9-d7385697e98f",
+    "answer": "```tool_code\n# Paso 1: Source Triage\n# Fuente 1: RELEVANT - Menciona personal técnico y auxiliar en el contexto del colectivo artístico.\n# Fuente 2: RELEVANT - Causas de resolución del contrato en el ámbito de la propiedad intelectual, aplicable a artistas.\n# Fuente 3: RELEVANT - Jurisdicción competente en conflictos laborales de artistas.\n\n# Paso 2: Keyword Coverage Check\n# La pregunta se centra en contratos artísticos temporales y sus límites. Las fuentes abordan aspectos relacionados con contratos artísticos y la relación laboral especial de artistas.\n\n# Paso 3: Authority Mention Guard\n# No hay mención de autoridades específicas en las fuentes.\n\n# Paso 4: Numeric & Rates Rule\n# No hay mención de tasas o porcentajes.\n\n# Decisión: Evidence-Backed Mode\n```\n\n**Respuesta:**\n\nLos contratos artísticos pueden ser temporales, rigiéndose por la normativa laboral especial de los artistas en espectáculos públicos. Los conflictos que surjan entre los artistas y las empresas, como consecuencia del contrato de trabajo, serán competencia de los juzgados y tribunales del orden jurisdiccional social. (Real Decreto 1435/1985, Art. 11).\n\nAdemás, el contrato artístico puede ser resuelto por voluntad del autor en casos específicos, como la interrupción de las representaciones públicas de la obra durante un año por parte del empresario que adquirió los derechos exclusivos, o el incumplimiento de ciertas obligaciones por parte del empresario después de haber sido requerido por el autor (Texto refundido de la Ley de propiedad intelectual, Art. 81). Es importante señalar que el Real Decreto-ley 5/2022, que busca mejorar la protección del colectivo artístico, es de aplicación al personal técnico y auxiliar, aunque algunas de sus disposiciones no les resultan aplicables (Disposición adicional única del Real Decreto-ley 5/2022).\n\n**En la práctica:**\n\nUn contrato artístico temporal podría ser aquel que se celebra para la realización de una obra o espectáculo específico, con una duración determinada. Los límites a la temporalidad del contrato pueden estar definidos tanto por la legislación laboral general como por los convenios colectivos aplicables al sector artístico, así como por la propia naturaleza del proyecto artístico en cuestión. La resolución del contrato puede surgir por incumplimientos del empresario, dando lugar a la finalización anticipada del mismo.\n\n<!--CITED_IDS: BOE-A-1985-17303, BOE-A-1996-8930, BOE-A-2022-4583 -->",
+    "sources": [
+      {
+        "id": "BOE-A-1985-17303",
+        "title": "Real Decreto 1435/1985, relación laboral especial de artistas",
+        "url": "https://www.boe.es/buscar/pdf/1985/BOE-A-1985-17303-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.83172060846134,
+        "excerpt": "Los conflictos que surjan entre los artistas en espectáculos públicos y las Empresas, como consecuencia del contrato de trabajo, serán competencia de los Jueces y Tribunales del orden jurisdiccional social.",
+        "label": "Art. 11. Jurisdicción competente.",
+        "source_title": "Real Decreto 1435/1985, relación laboral especial de artistas",
+        "source_priority": "P1",
+        "chunk_type": "article",
+        "is_cited": true
+      },
+      {
+        "id": "BOE-A-1996-8930",
+        "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "url": "https://www.boe.es/buscar/pdf/1996/BOE-A-1996-8930-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.8119225975090569,
+        "excerpt": "El contrato podrá ser resuelto por voluntad del autor en los siguientes casos:\n\n1.º Si el empresario que hubiese adquirido derechos exclusivos, una vez iniciadas las representaciones públicas de la obra, las interrumpiere durante un año.\n\n2.º Si el empresario incumpliere la obligación mencionada en ",
+        "label": "Artículo 81. Causas de resolución.",
+        "source_title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+        "source_priority": "P1",
+        "chunk_type": "article",
+        "is_cited": true
+      },
+      {
+        "id": "BOE-A-2022-4583",
+        "title": "Real Decreto-ley 5/2022, de mejora de la protección del colectivo artístico",
+        "url": "https://www.boe.es/buscar/pdf/2022/BOE-A-2022-4583-consolidado.pdf",
+        "source_type": "Normativa",
+        "relevance_score": 0.792831133817094,
+        "excerpt": "Las previsiones contenidas en este real decreto son de aplicación al personal técnico y auxiliar al que se refiere el artículo 1.\n\nPor excepción, no les resulta de aplicación los artículos 2, 6, 7, 8, 9 y 10, apartado 4, aplicables exclusivamente a las personas artistas.»",
+        "label": "«Disposición adicional única. Régimen aplicable al personal técnico y auxiliar.",
+        "source_title": "Real Decreto-ley 5/2022, de mejora de la protección del colectivo artístico",
+        "source_priority": "P1",
+        "chunk_type": "article",
+        "is_cited": true
+      }
+    ],
+    "metadata": {
+      "version": "v1_1",
+      "area_principal": "Laboral",
+      "model": "models/gemini-2.0-flash-exp",
+      "normativa_count": 3,
+      "doctrina_count": 0,
+      "jurisprudencia_count": 0,
+      "total_sources": 3,
+      "cited_count": 3,
+      "additional_count": 0,
+      "cited_ids": [
+        "BOE-A-1985-17303",
+        "BOE-A-1996-8930",
+        "BOE-A-2022-4583"
+      ],
+      "question_type": "unknown",
+      "forced_area": "Laboral",
+      "abstained": false,
+      "judge": {
+        "verdict": "PASS",
+        "reasons": [
+          "judge_disabled_v1.1"
+        ]
+      },
+      "redo_performed": false,
+      "expanded_queries": [
+        "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+        "Contrato artístico temporal: requisitos y límites legales",
+        "Temporalidad contrato artistas: jurisprudencia y normativa aplicable",
+        "Contrato artístico duración determinada: cuándo y qué restricciones"
+      ],
+      "authority_question": false,
+      "authority_pack_added": false,
+      "authority_pack_count": 0,
+      "retrieval_counts": {
+        "combined_results": 80,
+        "fused_pre_filter": {
+          "normativa": 5,
+          "doctrina": 0,
+          "jurisprudencia": 0
+        },
+        "post_filter": {
+          "normativa": 3,
+          "doctrina": 0,
+          "jurisprudencia": 0
+        },
+        "dropped_sources": 2
+      },
+      "top_scores": {
+        "normativa": [
+          0.01337126600284495,
+          0.009836065573770491,
+          0.009836065573770491
+        ],
+        "doctrina": [],
+        "jurisprudencia": []
+      },
+      "postprocess_errors": null,
+      "debug_summary": {
+        "intent": {
+          "area_detected": "Laboral",
+          "confidence": 1.0,
+          "scores": null
+        },
+        "reference_resolver": {
+          "forced_count": 0,
+          "forced_ids": []
+        },
+        "query_expansion": {
+          "count": 4,
+          "queries": [
+            "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+            "Contrato artístico temporal: requisitos y límites legales",
+            "Temporalidad contrato artistas: jurisprudencia y normativa aplicable",
+            "Contrato artístico duración determinada: cuándo y qué restricciones"
+          ]
+        },
+        "retrieval": {
+          "combined_results": 80,
+          "fused_pre_filter": {
+            "normativa": 5,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "post_filter": {
+            "normativa": 3,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "dropped_sources": 2
+        },
+        "dedup_rank": {
+          "before": {
+            "normativa": 5,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "after": {
+            "normativa": 3,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "top_scores": {
+            "normativa": [
+              0.01337126600284495,
+              0.009836065573770491,
+              0.009836065573770491
+            ],
+            "doctrina": [],
+            "jurisprudencia": []
+          }
+        },
+        "area_filter": {
+          "before": {
+            "normativa": 5,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "after": {
+            "normativa": 3,
+            "doctrina": 0,
+            "jurisprudencia": 0
+          },
+          "dropped": 2
+        },
+        "authority_pack": {
+          "is_authority_question": false,
+          "added": false,
+          "count": 0
+        },
+        "abstain": {
+          "abstained": false
+        },
+        "citations": {
+          "cited_ids": [
+            "BOE-A-1985-17303",
+            "BOE-A-1996-8930",
+            "BOE-A-2022-4583"
+          ],
+          "cited_count": 3,
+          "additional_count": 0
+        },
+        "sources_preview": [
+          {
+            "id": "BOE-A-1985-17303",
+            "title": "Real Decreto 1435/1985, relación laboral especial de artistas",
+            "label": "Art. 11. Jurisdicción competente.",
+            "score": 0.83172060846134,
+            "is_cited": true
+          },
+          {
+            "id": "BOE-A-1996-8930",
+            "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+            "label": "Artículo 81. Causas de resolución.",
+            "score": 0.8119225975090569,
+            "is_cited": true
+          },
+          {
+            "id": "BOE-A-2022-4583",
+            "title": "Real Decreto-ley 5/2022, de mejora de la protección del colectivo artístico",
+            "label": "«Disposición adicional única. Régimen aplicable al personal técnico y auxiliar.",
+            "score": 0.792831133817094,
+            "is_cited": true
+          }
+        ],
+        "postprocess_errors": []
+      },
+      "orchestrator": true,
+      "decision": {
+        "mode": "NEW_QUESTION",
+        "reason": "new_question",
+        "effective_area": "Laboral",
+        "forced_area": "Laboral",
+        "question_type": "unknown",
+        "base_question": null,
+        "merged_query": null,
+        "context_block": null,
+        "state_patch": {
+          "set": {
+            "base_question": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+            "last_actionable_user_question": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+            "pending_slots": [],
+            "slot_values": {},
+            "topic_lock": "Laboral"
+          },
+          "unset": [],
+          "append": {}
+        },
+        "should_call_rag": true,
+        "trace": {
+          "thread_status": "no_thread",
+          "candidate_modes": [
+            "FOLLOWUP_SLOT_FILL",
+            "FOLLOWUP_REFERENTIAL",
+            "NEW_QUESTION",
+            "CLARIFY",
+            "META"
+          ],
+          "inputs": {
+            "user_text_preview": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+            "token_count": 11,
+            "classifier": {
+              "area_detected": "Laboral",
+              "confidence": 1.0,
+              "scores": {
+                "Laboral": 1
+              }
+            },
+            "last_assistant": {
+              "answer_preview": "",
+              "had_para_afinar": false
+            }
+          },
+          "state_before": {
+            "topic_lock": null,
+            "base_question_preview": "",
+            "last_actionable_preview": "",
+            "pending_slots": [],
+            "slot_values_keys": [],
+            "last_answer_brief_preview": "",
+            "memory_summary_preview": ""
+          },
+          "router_inputs": {
+            "memory_summary": "",
+            "base_question": "",
+            "recent_user_messages": [],
+            "recent_assistant_messages": [],
+            "current_user_text": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?"
+          },
+          "llm_router": {
+            "enabled": false,
+            "used": false,
+            "model": null,
+            "error": null,
+            "decision": null,
+            "raw_preview": null
+          },
+          "signals": {
+            "short_message": {
+              "value": false,
+              "token_count": 11
+            },
+            "pending_slots_present": false,
+            "slot_fill_candidate": false,
+            "referential_hit": false,
+            "referential_matches": [],
+            "thin_turn": false,
+            "explicit_topic_change": false,
+            "topic_lock_available": false
+          },
+          "thresholds": {
+            "conf_follow_classifier": 0.55,
+            "conf_break_topic_lock": 0.8,
+            "short_token_limit": 6,
+            "slotfill_token_limit": 10
+          },
+          "decision": {
+            "mode": "NEW_QUESTION",
+            "reason": "new_question",
+            "effective_area": "Laboral",
+            "forced_area_used": true,
+            "forced_area_value": "Laboral",
+            "question_type": "unknown",
+            "merged_query_preview": null
+          },
+          "rejections": [
+            "FOLLOWUP_SLOT_FILL rejected: pending_slots_empty",
+            "FOLLOWUP_REFERENTIAL rejected: referential_hit=false",
+            "topic_lock_fallback skipped: no_topic_lock"
+          ],
+          "state_after": {
+            "topic_lock": "Laboral",
+            "pending_slots": [],
+            "turn_count": 1
+          },
+          "state_diff": {
+            "set": [
+              "base_question",
+              "last_actionable_user_question",
+              "pending_slots",
+              "slot_values",
+              "topic_lock"
+            ],
+            "cleared": [],
+            "pending_set": [],
+            "unchanged": []
+          },
+          "session_id": "ebdf8627-bf0f-4209-abe9-d7385697e98f",
+          "turn_index": 0
+        }
+      },
+      "developer_debug": {
+        "orchestrator_trace": {
+          "thread_status": "no_thread",
+          "candidate_modes": [
+            "FOLLOWUP_SLOT_FILL",
+            "FOLLOWUP_REFERENTIAL",
+            "NEW_QUESTION",
+            "CLARIFY",
+            "META"
+          ],
+          "inputs": {
+            "user_text_preview": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+            "token_count": 11,
+            "classifier": {
+              "area_detected": "Laboral",
+              "confidence": 1.0,
+              "scores": {
+                "Laboral": 1
+              }
+            },
+            "last_assistant": {
+              "answer_preview": "",
+              "had_para_afinar": false
+            }
+          },
+          "state_before": {
+            "topic_lock": null,
+            "base_question_preview": "",
+            "last_actionable_preview": "",
+            "pending_slots": [],
+            "slot_values_keys": [],
+            "last_answer_brief_preview": "",
+            "memory_summary_preview": ""
+          },
+          "router_inputs": {
+            "memory_summary": "",
+            "base_question": "",
+            "recent_user_messages": [],
+            "recent_assistant_messages": [],
+            "current_user_text": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?"
+          },
+          "llm_router": {
+            "enabled": false,
+            "used": false,
+            "model": null,
+            "error": null,
+            "decision": null,
+            "raw_preview": null
+          },
+          "signals": {
+            "short_message": {
+              "value": false,
+              "token_count": 11
+            },
+            "pending_slots_present": false,
+            "slot_fill_candidate": false,
+            "referential_hit": false,
+            "referential_matches": [],
+            "thin_turn": false,
+            "explicit_topic_change": false,
+            "topic_lock_available": false
+          },
+          "thresholds": {
+            "conf_follow_classifier": 0.55,
+            "conf_break_topic_lock": 0.8,
+            "short_token_limit": 6,
+            "slotfill_token_limit": 10
+          },
+          "decision": {
+            "mode": "NEW_QUESTION",
+            "reason": "new_question",
+            "effective_area": "Laboral",
+            "forced_area_used": true,
+            "forced_area_value": "Laboral",
+            "question_type": "unknown",
+            "merged_query_preview": null
+          },
+          "rejections": [
+            "FOLLOWUP_SLOT_FILL rejected: pending_slots_empty",
+            "FOLLOWUP_REFERENTIAL rejected: referential_hit=false",
+            "topic_lock_fallback skipped: no_topic_lock"
+          ],
+          "state_after": {
+            "topic_lock": "Laboral",
+            "pending_slots": [],
+            "turn_count": 1
+          },
+          "state_diff": {
+            "set": [
+              "base_question",
+              "last_actionable_user_question",
+              "pending_slots",
+              "slot_values",
+              "topic_lock"
+            ],
+            "cleared": [],
+            "pending_set": [],
+            "unchanged": []
+          },
+          "session_id": "ebdf8627-bf0f-4209-abe9-d7385697e98f",
+          "turn_index": 0
+        },
+        "full_trace": {
+          "request_id": "b1918b9b-e204-4bb3-8567-a4451ecbec62",
+          "timestamp": "2025-12-21T18:16:47.591571",
+          "endpoint": "/api/v1/legal-graphrag/v1_1/chat/",
+          "engine_version": "v1_1",
+          "session_id_received": null,
+          "user_id_received": null,
+          "ip": "127.0.0.1",
+          "user_agent": "python-requests/2.32.5",
+          "chat_session_db_id": "ebdf8627-bf0f-4209-abe9-d7385697e98f",
+          "chat_session_lookup_method": "created_new",
+          "is_new_session": true,
+          "session": {
+            "state_before": {
+              "schema_version": 1,
+              "turn_count": 0,
+              "topic_lock": null,
+              "base_question": null,
+              "last_actionable_user_question": null,
+              "pending_slots": [],
+              "slot_values": {},
+              "last_answer_brief": null,
+              "memory_summary": ""
+            },
+            "state_after": {
+              "schema_version": 1,
+              "turn_count": 1,
+              "topic_lock": "Laboral",
+              "base_question": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+              "last_actionable_user_question": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+              "pending_slots": [],
+              "slot_values": {},
+              "last_answer_brief": "```tool_code\n# Paso 1: Source Triage\n# Fuente 1: RELEVANT - Menciona personal técnico y auxiliar en el contexto del colectivo artístico.\n# Fuente 2: RELEVANT - Causas de resolución del contrato en el ámbito de la propiedad intelectual, aplicable a artistas.\n# Fuente 3: RELEVANT - Jurisdicción compet",
+              "memory_summary": "- Tema/base: ?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?\n- Jurisdiccion/region: UE"
+            },
+            "state_diff": {
+              "set": [
+                "base_question",
+                "last_actionable_user_question",
+                "last_answer_brief",
+                "memory_summary",
+                "topic_lock",
+                "turn_count"
+              ],
+              "cleared": [],
+              "unchanged": [
+                "pending_slots",
+                "schema_version",
+                "slot_values"
+              ]
+            },
+            "save_state_called": true,
+            "save_state_success": true,
+            "save_state_where": "orchestrator",
+            "db_commit_success": true,
+            "messages_before": 0,
+            "messages_after": 2,
+            "state_recovery": {
+              "applied": false,
+              "fields": []
+            }
+          },
+          "orchestrator": {
+            "thread_status": "no_thread",
+            "candidate_modes": [
+              "FOLLOWUP_SLOT_FILL",
+              "FOLLOWUP_REFERENTIAL",
+              "NEW_QUESTION",
+              "CLARIFY",
+              "META"
+            ],
+            "inputs": {
+              "user_text_preview": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+              "token_count": 11,
+              "classifier": {
+                "area_detected": "Laboral",
+                "confidence": 1.0,
+                "scores": {
+                  "Laboral": 1
+                }
+              },
+              "last_assistant": {
+                "answer_preview": "",
+                "had_para_afinar": false
+              }
+            },
+            "state_before": {
+              "topic_lock": null,
+              "base_question_preview": "",
+              "last_actionable_preview": "",
+              "pending_slots": [],
+              "slot_values_keys": [],
+              "last_answer_brief_preview": "",
+              "memory_summary_preview": ""
+            },
+            "router_inputs": {
+              "memory_summary": "",
+              "base_question": "",
+              "recent_user_messages": [],
+              "recent_assistant_messages": [],
+              "current_user_text": "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?"
+            },
+            "llm_router": {
+              "enabled": false,
+              "used": false,
+              "model": null,
+              "error": null,
+              "decision": null,
+              "raw_preview": null
+            },
+            "signals": {
+              "short_message": {
+                "value": false,
+                "token_count": 11
+              },
+              "pending_slots_present": false,
+              "slot_fill_candidate": false,
+              "referential_hit": false,
+              "referential_matches": [],
+              "thin_turn": false,
+              "explicit_topic_change": false,
+              "topic_lock_available": false
+            },
+            "thresholds": {
+              "conf_follow_classifier": 0.55,
+              "conf_break_topic_lock": 0.8,
+              "short_token_limit": 6,
+              "slotfill_token_limit": 10
+            },
+            "decision": {
+              "mode": "NEW_QUESTION",
+              "reason": "new_question",
+              "effective_area": "Laboral",
+              "forced_area_used": true,
+              "forced_area_value": "Laboral",
+              "question_type": "unknown",
+              "merged_query_preview": null
+            },
+            "rejections": [
+              "FOLLOWUP_SLOT_FILL rejected: pending_slots_empty",
+              "FOLLOWUP_REFERENTIAL rejected: referential_hit=false",
+              "topic_lock_fallback skipped: no_topic_lock"
+            ],
+            "state_after": {
+              "topic_lock": "Laboral",
+              "pending_slots": [],
+              "turn_count": 1
+            },
+            "state_diff": {
+              "set": [
+                "base_question",
+                "last_actionable_user_question",
+                "pending_slots",
+                "slot_values",
+                "topic_lock"
+              ],
+              "cleared": [],
+              "pending_set": [],
+              "unchanged": []
+            },
+            "session_id": "ebdf8627-bf0f-4209-abe9-d7385697e98f",
+            "turn_index": 0
+          },
+          "classifier": {
+            "area_detected": "Laboral",
+            "confidence": 1.0,
+            "scores": {
+              "Laboral": 1
+            },
+            "matched_keywords": {
+              "Laboral": [
+                "contrato"
+              ]
+            }
+          },
+          "rag": {
+            "query_expansion": [
+              "?Cu?ndo un contrato art?stico puede ser temporal y qu? l?mites hay?",
+              "Contrato artístico temporal: requisitos y límites legales",
+              "Temporalidad contrato artistas: jurisprudencia y normativa aplicable",
+              "Contrato artístico duración determinada: cuándo y qué restricciones"
+            ],
+            "forced_area": "Laboral",
+            "question_type": "unknown",
+            "retrieval_params": {
+              "max_sources_requested": 10,
+              "max_sources_returned": 3,
+              "area_principal": "Laboral"
+            },
+            "top_sources": [
+              {
+                "id": "BOE-A-1985-17303",
+                "title": "Real Decreto 1435/1985, relación laboral especial de artistas",
+                "score": 0.83172060846134,
+                "naturaleza": "Normativa"
+              },
+              {
+                "id": "BOE-A-1996-8930",
+                "title": "Texto refundido de la Ley de propiedad intelectual (RDL 1/1996)",
+                "score": 0.8119225975090569,
+                "naturaleza": "Normativa"
+              },
+              {
+                "id": "BOE-A-2022-4583",
+                "title": "Real Decreto-ley 5/2022, de mejora de la protección del colectivo artístico",
+                "score": 0.792831133817094,
+                "naturaleza": "Normativa"
+              }
+            ],
+            "cited_ids": [
+              "BOE-A-1985-17303",
+              "BOE-A-1996-8930",
+              "BOE-A-2022-4583"
+            ],
+            "additional_ids": [],
+            "abstain": {
+              "abstained": false,
+              "reason": null
+            }
+          },
+          "persistence": {
+            "save_called": true,
+            "save_success": true,
+            "db_commit_success": true,
+            "messages": [
+              {
+                "id": "f54333aa-fe4e-41c2-a629-08c8fe8ac9ff",
+                "role": "user",
+                "session_id": "ebdf8627-bf0f-4209-abe9-d7385697e98f",
+                "metadata_size": 29
+              },
+              {
+                "id": "be6cf0cd-3d67-47e0-840c-e2dd0eecd561",
+                "role": "assistant",
+                "session_id": "ebdf8627-bf0f-4209-abe9-d7385697e98f",
+                "metadata_size": 8105
+              }
+            ],
+            "assistant_contains_cited_ids": true
+          },
+          "pending_slots_extraction": {
+            "ran": true,
+            "written": false
+          }
+        }
+      }
+    }
+  }
+}

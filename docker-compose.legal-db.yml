@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: legal-graphrag-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: localdev123
+      POSTGRES_DB: legal_graphrag_local
+    ports:
+      - "5434:5432"
+    volumes:
+      - legal_graphrag_postgres_data:/var/lib/postgresql/data
+      # Minimal init: only creates pgvector extension, Django handles tables
+      - ./scripts/init-pgvector.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: legal-graphrag-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@legal.dev
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5051:80"
+    volumes:
+      - legal_graphrag_pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+volumes:
+  legal_graphrag_postgres_data:
+    name: legal_graphrag_postgres_data
+  legal_graphrag_pgadmin_data:
+    name: legal_graphrag_pgadmin_data

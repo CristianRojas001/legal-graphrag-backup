@@ -1,0 +1,17 @@
+Total turns: 6
+Abstain mismatches: 0
+Citation misses: 4
+Follow-up failures: 0
+Short answers (<250 chars, non-abstained): 0
+Latency avg ms: 16440
+Latency p95 ms: 18592
+
+By area:
+- Fiscal: 3
+- Laboral: 2
+- Propiedad Intelectual: 1
+
+Most missed expected docs:
+- BOE-A-2006-20764: 2
+- BOE-A-1985-17303: 1
+- BOE-A-2009-173: 1

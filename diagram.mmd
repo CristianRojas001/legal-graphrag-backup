@@ -1,0 +1,30 @@
+flowchart TD
+    A["answer_query(query, area_principal, max_sources)"] --> B{Meta query?}
+    B -- Yes --> B1["Build meta response"] --> B2["Return meta answer"]
+    B -- No --> C["Intent classification"]
+    C --> D["Retrieve sources v1_1"]
+
+    subgraph R["Retrieval v1_1"]
+        D --> R1["Exact reference resolver"]
+        R1 --> R2["Query expansion"]
+        R2 --> R3["Hybrid search per query"]
+        R3 --> R4["Apply reference boost"]
+        R4 --> R5["Split by naturaleza"]
+        R5 --> R6["Dedup + rank"]
+        R6 --> R7["Area filter"]
+        R7 --> R8["Authority pack (if needed)"]
+        R8 --> R9["Trace + counts"]
+    end
+
+    R9 --> E{"Abstain?"}
+    E --> F["Build prompt"]
+    F --> G["LLM generate (or fallback)"]
+    G --> H["Validation: drop invalid [ID]"]
+    H --> I["Attach citations: clean CITED_IDS"]
+    I --> J["Extract cited IDs"]
+    J --> K["Format sources + is_cited"]
+    K --> L["Log sources + metadata counts"]
+    L --> M["Judge disabled"]
+    M --> N["Log final answer"]
+    N --> O["Write flow log"]
+    O --> P["Return answer + sources + metadata"]

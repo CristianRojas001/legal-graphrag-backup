@@ -1,5 +1,3 @@
-import re
-
 from apps.legal_graphrag.services.legal_rag_engine import LegalRAGEngine
 
 
@@ -9,12 +7,12 @@ def _fake_source(doc_id: str, text: str):
 
 def test_validator_abstains_on_unsupported_rate():
     engine = LegalRAGEngine()
-    sources = {"normativa": [_fake_source("DOC-1", "Artículo 90 LIVA sin tipos")] }
-    answer = "El tipo aplicable es 15% según la ley."
+    sources = {"normativa": [_fake_source("DOC-1", "Articulo 90 LIVA sin tipos")]}
+    answer = "El tipo aplicable es 15% segun la ley."
 
     validated = engine._validate_answer(answer, sources, area_principal="Fiscal", query="IVA concierto")
 
-    assert "No tengo información" in validated  # abstain fallback
+    assert "Con las fuentes disponibles" in validated
 
 
 def test_validator_allows_supported_rate_and_id():
@@ -24,9 +22,8 @@ def test_validator_allows_supported_rate_and_id():
 
     validated = engine._validate_answer(answer, sources, area_principal="Fiscal", query="IVA general")
 
-    # ID remains and answer not replaced by abstain
     assert "[ID: DOC-IVA]" in validated
-    assert "No tengo información" not in validated
+    assert "Con las fuentes disponibles" not in validated
 
 
 def test_validator_rejects_rate_not_in_sources_text():
@@ -36,4 +33,4 @@ def test_validator_rejects_rate_not_in_sources_text():
 
     validated = engine._validate_answer(answer, sources, area_principal="Fiscal", query="IVA general")
 
-    assert "No tengo información" in validated  # abstain fallback
+    assert "Con las fuentes disponibles" in validated
