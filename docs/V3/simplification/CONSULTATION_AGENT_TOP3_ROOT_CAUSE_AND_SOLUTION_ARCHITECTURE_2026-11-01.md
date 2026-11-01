@@ -94,7 +94,19 @@ Interpretation so far:
 3. **[E] The epistemic vocabulary of the state is too small for the replies users actually give.** The state can record a value, `unknown_by_user`, or nothing. "No puedo responder", "lo busco luego", "creo que en marzo, no estoy seguro" have no faithful representation, so they are either over-promoted to `unknown_by_user` (B02, and the Jev D1 over-reading of UNCLEAR) or lost (B04/B05). **[S]** This is also why Jev D1's 5-class output could not be applied safely: the state applier has only one non-value destination.
 4. **[S] The guard asks the wrong question.** S2's lexicon (and the Jev D1 formulation) ask "does this text express ignorance?". The decision that matters is "which asked proposition does each clause of the reply answer, and how?" — an item-level disposition problem, which D2 only partially approximates via shared-span groups.
 
-### 0.6 Pending (in progress)
+### 0.6 Discovery 4 — H-P3 omission is an issue-framing failure, not a reading failure
+
+Source: E-A diagnostic for `H-P3.00.initial` (read set, search hits, `issue_ops`, conclusions) [E].
+
+- User: "Desde hace tres años coordino de manera continuada, asumiendo yo el riesgo económico, el montaje de exposiciones para varias instituciones…" (an implicit "what am I / what must I do?").
+- The model opened one issue whose `question_es` is purely classificatory: "¿es trabajador por cuenta ajena, trabajador autónomo ordinario o TRADE?".
+- Searches: only two (`TRADE dependencia económica 75%`, `definición trabajador por cuenta ajena…`). Read set: LETA arts. 1, 2, 11, 11 bis; ET art. 1. **LGSS art. 305 (RETA inclusion) was neither searched for, surfaced nor read**; LGSS arts. 317/333 were surfaced and not read.
+- Conclusions (5) are all correct *within the frame*: not employee; TRADE conditional on 75 %; TRADE procedure. The consequence that matters most to the client — mandatory RETA registration and the three-year retroactive exposure — is outside the frame the model set for itself, so research never reached it. The same omission occurred in E-1 (independent run), so it is systematic, not sampling noise.
+- Contrast H-M4.00 (same legal family): the model framed the issue as "consecuencias fiscales y de Seguridad Social (alta en el RETA)", searched for "RETA … artículo 305" and read LGSS art. 305.
+
+Interpretation: **[S]** the decisive-provision miss is caused upstream of retrieval, at *issue framing*: the issue question the model writes for itself defines the research target, and nothing checks that the frame covers the legal consequences (obligations, regime, deadlines) a client in that situation needs. No exception wording, read-time cue (P7-A) or "list alternatives" field (P7-B) acts at that boundary — consistent with E-B finding no gain.
+
+### 0.7 Pending (in progress)
 
 - Code-path tracing of validator → repair → finalize (violation table, repair eligibility, original-vs-repaired handling).
 - Fact path: message → fact op → V8/lexicon/Jev → state → context next turn; status enumeration and the asked-unsettled drop mechanism.
