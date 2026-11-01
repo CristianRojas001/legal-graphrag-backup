@@ -681,6 +681,210 @@ All values are counts, closed codes or hashes; never text. Failures in bookkeepi
 
 ---
 
+## G. Alternatives and architectural decisions
+
+### G.1 Repair (Problem 1)
+
+| Option | Verdict | Reason / evidence |
+|---|---|---|
+| **PR: typed patch + allow-list + anchor preservation + deterministic selection** | **Chosen** | Attacks the confirmed mechanism (whole rewrite, no preservation, no selection). Deterministic guarantees; no check weakened |
+| More accurate checks (F1/F2/F3-style) only | Rejected as sufficient | Already done; changed only UNTRACED; turns with any violation 69→61/102; live repair rate unchanged; F3 location ignored (H-N3) |
+| Stronger "keep all correct content" prompt wording | Rejected | Already in prompt (`system_v1.md` step 5) and in F3 detail; diff shows non-compliance |
+| Skip repair; finalize the first draft directly (annotate everything) | Rejected | Loses the 11+ necessary contract repairs (E-A §6.3) and turns every residual into a client-visible marker |
+| Relax V6/V2 to cut repairs | Rejected | 25 must-reject figures; would pass unsupported claims (non-negotiable) |
+| Diff-and-merge of a full resubmission (keep original where the rewrite changed un-flagged parts) | Rejected | Needs semantic alignment of free text; fragile; the patch makes it unnecessary |
+| Two repair rounds | Rejected | Cost +47 % per repaired turn already; latency gate |
+| Adopt unknown Repair V2 | Undecidable here | Code unavailable (OD-1) |
+
+Costs and risks of PR:
+- One new tool schema.
+- Model compliance with typed patches (risk: SCHEMA errors; mitigated by C0 fallback).
+- Sentence segmentation must match F3's `_sentence_bounds` (`validator.py:158`).
+
+Remaining uncertainty: live compliance rate, and the repair-output token reduction.
+
+### G.2 Facts (Problem 2)
+
+| Option | Verdict | Reason / evidence |
+|---|---|---|
+| **CL: proposition registry + mandatory per-item dispositions + 7-state lifecycle + verifier on non-value kinds** | **Chosen** | Fixes the confirmed missing state and implicit disposition; makes the semantic question checkable |
+| Better ignorance lexicon / paraphrase recall | Rejected | Would promote refusals to `unknown_by_user` (owner policy: refusal = UNCLEAR); E-A B04/B05 cause is a missing state, not recall |
+| Enforce Jev D1+D2 as built | Rejected now | Fails its own AC-1 (0.884) and AC-6 (2.34 %); label definitions overlap (§B.2); gates only proposed ops |
+| Carry-forward only (J `224531f2`) | Necessary, insufficient | Converts silent drop into repeated questions (E-B EA-B04) |
+| Deterministic semantic dedupe of fact keys (string similarity) | Rejected | Semantic correctness must not be regex; the exact-normalised duplicate check only, plus declared relations |
+| Global fact ontology per law | Rejected | Violates "no law-specific runtime programming" |
+
+Costs and risks of CL:
+- A larger submission (one disposition per open item; ≤6 items).
+- One more repair class.
+- A state migration.
+- The verifier calls are cheap (pilot: EUR 6e-05, p95 343 ms).
+
+Remaining uncertainty: model compliance with the coverage invariant; calibration of `reply_disposition/1` (paid).
+
+### G.3 Exceptions and qualifications (Problem 3)
+
+| Option | Verdict | Reason / evidence |
+|---|---|---|
+| **AA: evolve the ADR-6 reviewer into an evidence-span applicability audit with MC1–MC4, feeding the single patch round** | **Chosen (shadow first)** | Acts at the two failing boundaries (consequence binding; frame/action consequence); grounded in already-read text; reuses existing code; bounded |
+| P7-A exception cues at read time | Rejected (E-B) | No gain, +26.5 % latency, +8 leaks; acts at the research stage, which is not the bottleneck |
+| P7-B alternatives field in drafting | Rejected (E-B) | No gain, +41 % latency, +33 markers; same-pass self-critique |
+| More prompt rules on exceptions | Rejected | Prompt §B/§C already say it; a prior pre-registered prompt A/B failed |
+| Mandatory `consequences[]` field in the drafting schema | Rejected | P7-B lesson: drafting schema load raised markers/latency. AA extracts consequences itself |
+| Law-specific exception tables | Rejected | Non-negotiable principle |
+| Unbounded research loop | Rejected | Cost/latency; retrieval is not the bottleneck (E-B core units 34/36) |
+| ADR-6 reviewer as built (post-repair revision) | Rejected as is | Adds a second full rewrite, inheriting Problem 1; defects need no evidence spans; never measured |
+
+Costs and risks of AA:
+- One extra model call per eligible turn (estimate EUR 0.003–0.006, +5–12 s).
+- False positives could push correct answers away. Mitigations: evidence-span requirement, the agent's dismiss right, log-only for unresolved findings, and shadow measurement before `on`.
+
+Remaining uncertainty: AA detection rate and precision. This is **the main unproven element** of the package.
+
+### G.4 Why earlier work did not prove improvement
+
+- **P7-A/P7-B** intervened before or within drafting and added load. The decisive failures (H-P3 frame; H-N1 unbound consequence) are invisible at those points.
+- **F1–F3** improved the accuracy of one check, while the user-facing harm is governed by the repair *protocol*. Measured repair frequency is dominated by genuine violations and by non-number codes.
+- **Jev pilot**: the decision formulation (§B.2 a–d) and the absence of a target state for refusals, not the model's language ability.
+- **JEV triage / Repair V2**: not assessable (absent).
+
+---
+
+## H. Sonnet implementation specification
+
+Base branch (OD-2, owner):
+- Create `impl/top3-reliability-<date>` from a merge of `impl/reliability-eb-20261031` (F1–F3, P7 flags off) and `impl/jev-semantic-fact-verification-v1` (carry-forward, Jev transport).
+- Both descend from `d4304d10`; expected conflicts in `validator.py`, `contracts.py`, `config.py`, `telemetry.py`, `state.py`, `turn_manager.py`.
+- If the owner's local `impl/jev-triage-20261101` exists, merge it too, and reconcile with §D.4 before H2.
+
+Every slice: own commit(s); verification command `cd backend && .venv\Scripts\pytest apps/legal_graphrag/tests/v3/agent -q` plus `ruff check .`; record results in the commit body.
+
+| # | Slice | Files | Required behaviour | Acceptance | Indispensable? |
+|---|---|---|---|---|---|
+| H0 | Integration base | merge only | Resolve conflicts; F1–F3 and J behaviours both present | Full agent suite passes (≥868 R tests + J tests); `test_flag_off_*` byte-identity tests still pass | yes |
+| H1 | Replay/diff instrument | `scripts/e2e_eval_v4/repair_diff.py` (port of this mission's scratch script), `test_repair_diff.py` | First-vs-final diff over a diagnostics dir: read-cited units lost, anchor loss (§E.2 rule 3 regex), conclusions gone, selection | Reproduces §0.3 numbers on E-A (65 repaired; 0 read units lost; 8 turns statute loss) | yes |
+| H2 | ViolationRegistry + DeterministicFixer | `agent/violation_registry.py`, `agent/validator.py` (call fixer after `_normalize`), tests | Registry table §E.1; fixer for QUOTE_FRAGMENT_ORDER, CITATION_UNUSED, DUPLICATE_ITEM, unique MARKER_UNRESOLVED | Static test: every emitted code registered. Replay on E-A/E-B first submissions: fixer-resolved findings counted; 0 prose changes outside tokens; must-reject fixture unchanged | yes |
+| H3 | Patch protocol | `agent/contracts.py` (`RepairPatchV1`, ops, `validation_report/2`), `agent/patch.py` (applier, anchors, selector), `agent/loop.py` (patch round, tool `repair_consultation`, forced tool_choice, C0/C1), `config.py` (`AGENT_REPAIR_MODE`) | §E.2 exactly; `full` mode byte-identical to today | Unit: allow-list (each scope), anchor loss rejection, ordering, selector truth table, C0 fallback on schema/provider error. Offline synthetic: for every repaired E-A/E-B turn, apply a patch that rewrites only flagged sentences → anchor loss outside = 0. `full`-mode transcript byte-identity test | yes |
+| H4 | Clarification ledger | `contracts.py` (`PropositionV1`, `ItemDispositionV1`, `LedgerItemV1`, state v2), `state.py` (lifecycle, migration, remove `replaced` filter if still present), `validator.py` (DISPOSITION_*, PROPOSITION_*, new UNKNOWN_NOT_STATED detail), `context.py` (ledger view), `render.py` (attribution templates), `prompts/system_v1.md` (§D «no lo sé» line → disposition instruction; behind `AGENT_CLARIFICATION_LEDGER`) | §E.3 exactly | Layer-B replays (zero cost) of EA-B02/B04/B05, H-M4, H-N2 with oracle dispositions: no item leaves pending without a terminal status; refused items never re-asked; blanket «No lo sé» on 6 items → 6 × hold, 0 × `unknown_by_user`. Migration test on all 104 E-A `state_after` blobs: loads, round-trips, item counts preserved | yes |
+| H5 | Disposition verifier question | `fact_verifier.py` (`reply_disposition/1`, labels §E.3), `epistemic_policy_v1.json` (new policy version, uncalibrated) | Shadow by default; enforce refused while uncalibrated (existing rule) | Offline: request builder snapshot; parser; mapping table tests; cache key includes question version | yes (shadow) |
+| H6 | Applicability audit | `reviewer.py` → audit mode, `prompts/applicability_audit_v1.md`, contracts §E.4, `loop.py` (call before the patch round; disable old post-repair review when audit on), `config.py` | §E.4 exactly; `shadow` = run and log, no findings to the patch round | Offline (fake LLM): eligibility selection, evidence-span verification, AUDIT_UNGROUNDED, conversion to AA findings, dismiss rule, budget/clock skip | yes (shadow) |
+| H7 | Telemetry | `consultation/telemetry.py`, `ops_report.py`, `TELEMETRY_RUNBOOK.md`, coverage tests | §E.7 keys | `test_consultation_telemetry_coverage.py`, `test_telemetry_enforcement.py` pass; privacy scan passes; fault-injection test | yes |
+| H8 | Docs/env | `.env.example`, `docs/V3/simplification/04_SELECTED_ARCHITECTURE.md` addendum, `05_DATA_CONTRACTS.md` addendum | New flags and contracts documented | Review | yes |
+| H9 | Optional: MC4 research request execution | `loop.py` patch-round tool set (`read_provision`≤2), search pre-execution of `query_es` | §E.4 | Fake-LLM tests | optional (needed for H-P3) |
+| H10 | Optional: unresolved-AA limitation line | `finalize` | OD-3 | — | optional |
+
+Dependency order: H0 → H1 → H2 → H3 → H4 → (H5 ∥ H6) → H7 → H8; H9 after H6.
+
+Feature-flag rollout:
+1. Ship H2–H8 with defaults `full/off/off/off` (byte-identical baseline).
+2. Run offline acceptance.
+3. Owner authorises the live controlled run (§I.3), first with `patch + ledger` and `audit=shadow`.
+4. Then `audit=on` only if the AA gates pass.
+
+Rollback: each flag independently back to its default. The state v2 migration is forward-only but lossless: `asked_log` is still derivable. Keep a v2→v1 export function for rollback reads.
+
+Regression protections (must stay green):
+- the `must_still_reject.json` fixture (25);
+- the EXP-7 mutation suite;
+- the S1–S7 guard tests;
+- `test_flag_off_*` byte-identity;
+- Jev S5 safeguards;
+- the H-P3 "no false usted ya indicó" test.
+
+---
+
+## I. Testing and measurement
+
+### I.1 Contract tests (offline, deterministic, zero cost)
+
+| Area | Tests (minimum) |
+|---|---|
+| Registry | every emitted code registered; severities match §E.1 |
+| Fixer | each fix on recorded E-A/E-B first submissions that carry the code; property test: fixer output differs from input only in the fixed token/field |
+| Patch applier | one test per op × scope; anchor-loss reject (statute pointer, citation token, grounded figure, condition tuple); flagged-anchor exemption; out-of-scope reject; index resolution after insertions |
+| Selector | truth table (blocking/total combos, ties → C0); C0 on schema/provider/budget errors |
+| **Historical damage regressions** | V24.00 (art. 331.1), V28.00 (arts. 82–86, 18, 81.3, 86.2), V45.01 (art. 32.1 rule), V10.00 (arts. 4.Uno/11.Uno), E-B H-N3.01 (arts. 99.2, 76.1.c, 27, 95.2.b, 99.5). Feed the recorded *repaired* text as a patch for the flagged sentences only → the lost pointers are preserved or the op is rejected |
+| **Genuine unsupported claims must still fail** | `must_still_reject.json` (25); category-e UNTRACED spans from `workstream_a/untraced_labels.json`; a CITED_NOT_READ governing citation stays blocking |
+| Ledger | each transition row of §E.3; never-delete invariant (property test over random event sequences, 3 000 trials as in EXP-9); migration of 104 E-A states |
+| **False unknown attribution** | EA-B02 reply «No lo sé.» with 6 open items → 6 holds, no `unknown_by_user`; EA-B04/B05 «no puedo responder…» → `declined`, no re-ask in the next turn; H-N2 `tipo_alumnado_clases` unrelated quote → `not_addressed`, then `withdrawn(max_asks)` |
+| **Paraphrased / ambiguous replies** | Reuse the frozen Jev dataset (`jev114-ab-evaluation-20261031/dataset_frozen.jsonl`, 264 consensus rows). The lexicon gate on its rows must not accept any refusal/temporary-inability row as `unknown_by_user`. The 15 bare multi-question «No lo sé» rows → hold |
+| **Related propositions** | EA-B02 `fecha_entrega` vs `fecha_entrega_aprox`: both registered with distinct `proposition_es` + relation; DUPLICATE_PROPOSITION on an exact duplicate; EA-B05 answer bound to a new key without a disposition for the asked items → DISPOSITION_MISSING |
+| Multi-turn consistency | scripted 4-turn replay (fake LLM): ask → partial → refuse → correction reopens; state and rendered attribution agree each turn |
+| AA (fake LLM) | evidence-span verification; ungrounded drop; dismiss requires evidence; eligibility caps; budget skip |
+| **Citation preservation** | across all patch tests: read-cited unit set of C1 ⊇ C0's unless a `remove_citation` addresses a CITED_NOT_READ/QUOTE finding |
+
+### I.2 Offline replay measurements (zero cost, before any live run)
+
+- **R1:** H1 on E-A + E-B with `AGENT_REPAIR_MODE=full`. The numbers must match §0.3/§0.3b (instrument validity).
+- **R2:** deterministic-fix coverage. Replayed findings resolved by the fixer, and the projected number of turns needing no model round (expected ≈5/65 E-A, ≈7/30 E-B baseline).
+- **R3:** ledger layer-B. Recorded user messages + oracle dispositions (labelled by two annotators on the 26 E-A/E-B turns with open batches) → 0 asked-unsettled, 0 re-ask after declined.
+
+### I.3 Controlled live experiment (requires owner authorisation; not run in this mission)
+
+**Design.** Paired, same cases, same model/route/date.
+- Arms: **A0** = H0 base with flags default; **A1** = `patch + ledger` (verifier shadow, audit shadow); **A2** = A1 + `audit=on`.
+- Cases: the E-B 25 rule-based cases + Cohort B 8 + **12 untouched cases from `eval/gold36-b-20261031`** (unseen; generalisation, not calibration).
+- **3 repeats per case-arm.** E-B showed a ~4/36 flip noise floor with 1 repeat.
+- Cost envelope: about 3 × 45 × 3 × EUR 0.025 ≈ EUR 10. Owner cap required.
+
+**Primary metrics (denominators explicit).**
+
+| Metric | Denominator | Gate (A1 vs A0) |
+|---|---|---|
+| Repaired turns with anchor loss outside flagged spans | repaired turns | A1 = 0 (hard) |
+| Repaired turns with any conclusion text gone | repaired turns | A1 ≤ ½ of A0 |
+| Read-cited units lost by repair | repaired turns | 0 in both (must hold) |
+| Must-reject leakage (unsupported figure/citation in final) | final answers | A1 ≤ A0 (hard: no increase) |
+| Asked-unsettled items (no terminal status, not pending) | asked items | A1 = 0 (hard) |
+| Re-ask after `declined`/`unknown_by_user` | such items | A1 = 0 (hard) |
+| False `unknown_by_user` (human-checked against the message) | `unknown_by_user` events | A1 ≤ A0 and ≤ 2 % |
+| Turn-0 + final CORRECT (as delivered, strict marker rule) | case-repeats | A1 ≥ A0 − noise (non-inferiority, margin 1 case/36 per repeat) |
+| Median latency | turns | A1 ≤ A0 × 1.10; A2 ≤ A0 × 1.25 |
+| Repair output tokens | repaired turns | report (expect A1 < A0) |
+
+**AA gates (A2 vs A1).**
+- AA findings precision ≥ 0.7 (two independent graders + owner/jurist adjudication on disagreements).
+- ≥1 of {H-N1 margin rate, N01 art. 96.4, H-P3 RETA at turn 0} fixed in ≥2/3 repeats.
+- 0 correct conclusions changed to incorrect.
+- P9 leaks not increased.
+
+Retain:
+- diagnostics;
+- `repair_record/1`;
+- ledger snapshots;
+- the AA request/response;
+- blinded outputs;
+- grader TSVs with notes.
+
+### I.4 Adjudication rule
+
+AI graders are triage only. Every gate-deciding disagreement and every claimed AA catch is adjudicated by the owner or a jurist against the statute text. No legal-correctness claim rests on AI grading alone.
+
+---
+
+## J. Final prioritized decisions
+
+| # | Root cause | Proposed solution | Confidence (cause / cure) | Expected gain | Difficulty | Dependencies | Most important acceptance test |
+|---|---|---|---|---|---|---|---|
+| 1 | Whole-submission repair with no unit of change, no preservation, no selection (`loop.py:192/368/386`) | **PR**: registry + deterministic fixes + typed patch + anchor preservation + C0/C1 selection | High / High (by construction) | Repair damage → 0 outside flagged spans; fewer repair tokens; ≈5–8 % fewer model repair rounds | Medium | H0, H1, H2 | Historical damage regressions (V24, V28, V45, V10, H-N3) preserved under patch; must-reject fixture unchanged |
+| 2 | Implicit proposition identity and item disposition; two-state epistemic vocabulary; repair advice deletes; `replaced` drop (`state.py:546-556`) | **CL**: proposition registry, mandatory dispositions, 7-state ledger, new repair advice, ledger-rendered attribution | High / High for state integrity; Medium for model compliance | Eliminates asked-unsettled and re-ask-after-refusal; removes blanket attribution; removes ~⅓ of fact-driven repairs' destructive path | Medium–High (state migration) | H0, H3 | EA-B02/B04/B05/H-N2 layer-B replays: 0 lost items, 0 re-asks after `declined`, 0 broadcast `unknown_by_user` |
+| 3 | Jev task formulation (overlapping labels; gates proposed ops; UNCLEAR sink) | `reply_disposition/1` multi-item question, shadow until calibrated | High / Medium | Semantic check where the deterministic layer cannot decide (H-M4-type binding) | Low–Medium | H4 | Offline mapping tests; later calibration on the frozen dataset + new DECLINED/DEFERRED labels |
+| 4 | No applicability check of consequences against cited text; frame not checked (H-N1, N01, H-P3) | **AA**: evolved ADR-6 reviewer with evidence spans, MC1–MC4, findings into the single patch round | Strongly supported / **Hypothesis** | Catch read-but-misapplied consequences; fix the H-P3 five-run miss | Medium | H3, H6 (+H9 for H-P3) | A2 shadow: AA precision ≥0.7 and ≥1 of the three named misses fixed in ≥2/3 repeats, 0 harmful flips |
+
+**Smallest coherent package likely to produce a substantial improvement across all three problems:** H0 + H1 + H2 + H3 + H4 + H7 (PR + CL + telemetry), with H6 in **shadow**.
+- **Problems 1 and 2:** PR and CL fix them by construction and can be validated mostly offline.
+- **Problem 3:** shadow AA produces the evidence needed to switch it on without risking answers. H-P3 additionally needs H9.
+
+**Genuinely unresolved decisions (owner):**
+- **OD-1:** reconcile with the unavailable `impl/jev-triage-20261101` / `0de2b56a` (code-only triage, Repair V2) before H2/H3. Provide the branch or confirm it is superseded.
+- **OD-2:** integration base = merge of `impl/reliability-eb-20261031` and `impl/jev-semantic-fact-verification-v1` (recommended).
+- **OD-3:** client-visible handling of unresolved AA findings (recommended: log only until AA precision is measured).
+- **OD-4:** live-run budget and authorisation for §I.3 (≈EUR 10 cap) and for verifier calibration labelling.
+- **OD-5:** the attribution templates in §E.3 (wording is a product/legal-UX choice).
+- **Carried:** corpus ingestion (IGIC, IPSI, LAU/CC, TRLGDCU, RGPD, Orden cotización 2026) remains the only lever for H-B2/V22/Cohort B and is outside this package.
+
+---
+
 ## 0. Evidence log (running)
 
 ### 0.1 Repository and evidence verification
