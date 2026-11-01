@@ -103,6 +103,27 @@ Interpretation so far:
 3. **[E] The epistemic vocabulary of the state is too small for the replies users actually give.** The state can record a value, `unknown_by_user`, or nothing. "No puedo responder", "lo busco luego", "creo que en marzo, no estoy seguro" have no faithful representation, so they are either over-promoted to `unknown_by_user` (B02, and the Jev D1 over-reading of UNCLEAR) or lost (B04/B05). **[S]** This is also why Jev D1's 5-class output could not be applied safely: the state applier has only one non-value destination.
 4. **[S] The guard asks the wrong question.** S2's lexicon (and the Jev D1 formulation) ask "does this text express ignorance?". The decision that matters is "which asked proposition does each clause of the reply answer, and how?" — an item-level disposition problem, which D2 only partially approximates via shared-span groups.
 
+### 0.5b Discovery 3b — The asked-unsettled anomalies are produced by guard + repair + pending recomputation together
+
+Source: first vs repaired `fact_ops`, validation report, and `clarification_items` in the E-A diagnostics [E].
+
+| Turn | First submission | Validator | Repaired submission | State result |
+|---|---|---|---|---|
+| EA-B04.01 | `mark_unknown` × 3 (`comunicacion_arrendador_averia`, `quien_asumia_reparaciones_anteriores`, `destino_taller`) quoting "no puedo responder a los demás datos que falten" | `UNKNOWN_NOT_STATED` × 3 (correct: inability/refusal is not ignorance) | the 3 ops deleted; **no `clarification_items`** | 3 items asked, never settled, gone from pending |
+| EA-B05.01 | `mark_unknown` × 5 quoting "no puedo responder a los otros datos…" (quote also slightly mis-copied) | `UNKNOWN_NOT_STATED` + `QUOTE_NOT_IN_USER_MESSAGES` × 5 | 5 ops deleted; no clarification items | 5 items lost |
+| H-N2.02 | `mark_unknown tipo_alumnado_clases` quoting an unrelated sentence ("Sí: unos 15 alumnos…") — the model wants to stop asking | `UNKNOWN_NOT_STATED` | op deleted; no clarification items | item lost |
+| EA-B02.00 | `mark_unknown fecha_aviso_tienda` quoting "ni cuándo avisé a la tienda" | `UNKNOWN_NOT_STATED` (the lexicon needs the "No recuerdo" head of the coordinated clause) | quote widened to the whole sentence | accepted (correct outcome, but a repair round spent on a lexical artefact) |
+
+Causal chain **[E]**:
+1. The main model correctly perceives that the reply disposes of every asked item, and tries to record it.
+2. The only non-value disposition in the contract is `mark_unknown` (= `unknown_by_user`). The guard rightly refuses it for refusal/inability.
+3. The repair detail says "If the client simply did not answer, leave the fact out; it remains askable." The model complies by deleting the ops.
+4. It is *not* actually kept askable: pending is rebuilt from the model's next `clarification_items`, which the repaired submission leaves empty (the model had just been told the client cannot answer). The item vanishes from both "pending" and "settled".
+
+So the anomaly is not a recall failure of the lexicon (as E-A hypothesised) but a **missing state**: "the client declined / cannot answer" has nowhere to go, and the validator's repair advice routes it to deletion. A better lexicon or Jev D1 recall would make this worse, not better, if it promoted refusal to `unknown_by_user` (the owner policy correctly labels refusal UNCLEAR).
+
+Cross-problem link: fact-state codes (`CONCLUSION_FACT_UNKNOWN`, `DECIDED_CONDITION_UNBOUND`, `UNKNOWN_NOT_STATED`, `QUOTE_NOT_IN_USER_MESSAGES`, `FACT_VALUE_UNSUPPORTED`, `SCENARIO_PREMISE_MISSING`) appear in the first report of **21 of 65** repaired E-A turns (8 of them fact-only). Problem 2 is therefore a direct contributor to Problem 1's repair frequency. Other families: number 35 (20 number-only), citation/quote/marker 28, result-shape 10 (overlapping).
+
 ### 0.6 Discovery 4 — H-P3 omission is an issue-framing failure, not a reading failure
 
 Source: E-A diagnostic for `H-P3.00.initial` (read set, search hits, `issue_ops`, conclusions) [E].
