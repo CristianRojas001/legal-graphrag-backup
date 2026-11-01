@@ -67,6 +67,23 @@ Interpretation so far:
 2. **[E] Damage is not confined to number violations.** V28.00 shows a contract-only report producing prose loss: the repair protocol asks the model to resubmit the *entire* submission, so any violation licenses a full rewrite.
 3. **[E] At `d4304d10` the UNTRACED detail carried no location and no value**, so the model scrubbed statute numbers elsewhere. F3 (E-B branch) adds field/sentence/offset location; this addresses one trigger, not the whole-resubmission mechanism.
 
+### 0.3b Discovery 1b — Localised repair details (F3) do not stop the rewrite (E-B, post-fix)
+
+Same diff over the E-B branch run outputs (`reliability_eb_2026-10-31/eb/diagnostics`, `monitor/diagnostics`; validator with F1/F2/F3) [E]:
+
+| Arm | Turns | Repaired | Read-cited unit lost | Turns with conclusion text gone | Turns with fewer figures |
+|---|---|---|---|---|---|
+| E-B baseline | 54 | 30 | 0 | 4 | 13 |
+| E-B P7-A | 50 | 29 | 0 | 0 | 13 |
+| E-B P7-B | 51 | 29 | 0 | 2 | 10 |
+| Monitor (8 E-A cases) | 22 | 19 | 0 | 4 | 11 |
+
+Decisive example, **H-N3.baseline.01.followup**: the report contains one `UNTRACED_NUMBER` whose F3 detail reads "Untraced figure(s) in results.0.conclusions.2.text_es, sentence(s) 1 (characters 215-219). **Change only those spans and keep all other content as it is.**" (plus a `QUOTE_FRAGMENT_ORDER` on a citation). The repaired prose nevertheless loses five statute pointers in other fields: "el artículo 99.2 de la LIRPF" → "la Ley del IRPF"; "el artículo 76.1.c) del Reglamento" → "el Reglamento"; "artículo 27 de la LIRPF y … artículo 95.2.b).1.º del Reglamento" → "la Ley del IRPF y … el Reglamento"; "la previsión del artículo 99.5 de la LIRPF" → "la previsión del mismo precepto".
+
+Interpretation **[E]**: the protocol asks the model to resubmit the *whole* submission. An instruction to change only some spans is advisory; the model regenerates and "plays safe" by stripping anchors that look like numbers. F3 reduced *how often* that happens (fewer UNTRACED turns) but did not change *what a repair is allowed to touch*. Preservation must be enforced structurally, not requested.
+
+Metric caveat: the "article mention" counter also matches citation-token ids that contain an article number (e.g. `[[c:art7lirpf]]` renamed to `[[c:c1]]` in V12.baseline.00 — not damage). Every damage example quoted in this report was read in the diff, not taken from the counter.
+
 ### 0.4 Discovery 2 — Why F1/F2/F3 did not lower repair frequency (from E-B replay data)
 
 `workstream_a/replay_summary.json` on the E-B branch, 102 replayable E-A first submissions [E]:
