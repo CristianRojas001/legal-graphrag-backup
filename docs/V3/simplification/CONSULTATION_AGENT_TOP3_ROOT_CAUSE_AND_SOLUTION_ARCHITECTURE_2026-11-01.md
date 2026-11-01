@@ -64,9 +64,37 @@ Interpretation so far:
 
 - Violation-code counts before → after F1/F2/F3: **only `UNTRACED_NUMBER` changed (67 → 38)**; every other code is identical (UNKNOWN_NOT_STATED 19, CONCLUSION_FACT_UNKNOWN 16, DECIDED_CONDITION_UNBOUND 13, MARKER_UNRESOLVED 12, QUOTE_FRAGMENT_NOT_FOUND 10, QUOTE_NOT_IN_USER_MESSAGES 8, BASIS_AUTHORITY_MISMATCH 8, CITED_NOT_READ 7, CITATION_UNUSED 6, MISSING_RESULT 5, QUOTE_FRAGMENT_ORDER 5, …).
 - Only 8 of 102 first submissions become violation-free.
-- Repair is triggered by **any** violation (one round per turn, whole-submission). Since ~57 of the 65 repaired turns still carry at least one non-UNTRACED violation or a residual UNTRACED span, removing number false positives could, by construction, lower the repair *rate* by at most ~8 turns per 104. The live result (no measurable drop) is consistent with that ceiling plus run-to-run variance. **[S] The repair-rate metric is governed by the binary "any violation ⇒ full resubmission" policy, not by the accuracy of any single check.**
+- Per-turn replay: first submissions with **any** violation fall only from **69 to 61 of 102**.
+- Repair is triggered by **any** violation (one round per turn, whole-submission). Removing number false positives could therefore, by construction, lower the repair *rate* by at most 8 turns per 102 (≈8 percentage points). The live result (no measurable drop) is consistent with that ceiling plus run-to-run variance. **[S] The repair-rate metric is governed by the binary "any violation ⇒ full resubmission" policy, not by the accuracy of any single check.**
 
-### 0.5 Pending (in progress)
+### 0.5 Discovery 3 — Fact-state reconstructions from recorded E-A states (zero cost)
+
+Source: `state_before` / `state_after` (`consultation_agent` block) of each E-A turn file; new `fact_events`, `pending_clarification.items`, `asked_log` per turn [E].
+
+**EA-B02 (blanket «No lo sé»).**
+- Turn 0, user: "No recuerdo la fecha exacta de entrega ni cuándo avisé a la tienda." → `mark_unknown fecha_entrega`, `mark_unknown fecha_aviso_tienda` (correct). The model then **asks** `fecha_entrega_aprox` ("¿podría situar la entrega … en un periodo aproximado?"), plus `destino_horno`, `momento_dano`, `conserva_documentos`, `medio_aviso`, `vendedor_establecimiento`.
+- Reply 1, user: "No lo sé." → **six** `mark_unknown` events, each quoting "No lo sé.", including `destino_horno` (personal vs professional use) and `vendedor_establecimiento`. All six asked items flip to `settled: true`.
+- Follow-up, user: "No he podido comprobar esas fechas. ¿Puedes dejar constancia de que no las sé…?" → `mark_unknown` re-emitted for `fecha_entrega`, `fecha_aviso_tienda` **and** `fecha_entrega_aprox`, quoting "dejar constancia de que no las sé".
+- Observations: (a) the quote is the whole reply, so the S2 quote-containment + lexicon guard is satisfied for every op — the guard verifies *that* ignorance was expressed, never *about which proposition*; (b) two keys coexist for related but different propositions (exact delivery date vs approximate period) — the E-A grader saw them as a duplicate pending line.
+
+**EA-B04 / EA-B05 (paraphrased refusal; asked-unsettled).**
+- EA-B04 reply: "El contrato atribuye al arrendatario el mantenimiento ordinario…; no sé qué causó esta avería y no puedo responder a los demás datos que falten." → `assert contrato_contenido_mantenimiento`, `mark_unknown causa_averia`. The three other asked items (`comunicacion_arrendador_averia`, `quien_asumia_reparaciones_anteriores`, `destino_taller`) get **no event**, stay `settled: false` in `asked_log`, and **disappear from `pending_clarification`** (which becomes empty). In E-B the same case later re-asks those three and the answer text says "Son datos que el cliente conoce".
+- EA-B05 reply: "La entrega fue el 3 de septiembre de 2026; no recuerdo cuándo avisé a la tienda ni puedo responder a los otros datos que falten." → `assert delivery_date`, and `mark_unknown` on a **newly invented key `reclamacion_tienda_fecha`** that was never asked. The five asked keys (`purchase_capacity`, `purchase_date`, `defect_type`, `seller_establishment`, `conserva_prueba_escrita`) receive no event, remain unsettled, and leave pending.
+
+**H-M4 (mis-bound proposition; asked-unsettled).**
+- Turn 0 asks `forma_retribucion`, `otras_rentas`, `importe_colaboracion`.
+- Reply: "La galería me paga 300 euros por tres días… El galerista me dice cada día qué hacer y en qué horario…" → `assert importe_colaboracion = 300` (correct) and **`assert forma_retribucion = "Prestación personal bajo las instrucciones y el horario del galerista…"`** quoting the direction sentence. A remuneration-form proposition was settled with evidence about *subordination/direction* — a different legal proposition, which already has its own key (`direccion_galeria`). `otras_rentas` is never answered and silently leaves pending.
+- Follow-up correction ("en realidad no me pagan nada… organizo yo cómo montarlo") is handled correctly with `correct` ops — the correction path works when the proposition identity is right.
+
+**H-N2 (repeated question on an unrequested issue).** `tipo_alumnado_clases` (relevant only to the IVA exemption the user did not ask about) is asked in turn 0 and again in reply 1; neither reply answers it; after reply 2 it leaves pending with `settled: false` in both asked_log entries.
+
+Interpretation so far:
+1. **[E] Proposition identity is invented by the main model on every turn** (`fact_key` free snake_case). Nothing forces an answer to bind to the asked item's key (EA-B05 `reclamacion_tienda_fecha`), nothing prevents two keys for neighbouring propositions (EA-B02 `fecha_entrega` / `fecha_entrega_aprox`), and nothing checks that the evidence quoted is about the key's proposition (H-M4 `forma_retribucion`).
+2. **[E] The disposition of each asked item is implicit.** A reply settles an item only if the model happens to emit an op for that key. Items with no op neither become unknown nor stay pending — the four asked-unsettled anomalies follow mechanically.
+3. **[E] The epistemic vocabulary of the state is too small for the replies users actually give.** The state can record a value, `unknown_by_user`, or nothing. "No puedo responder", "lo busco luego", "creo que en marzo, no estoy seguro" have no faithful representation, so they are either over-promoted to `unknown_by_user` (B02, and the Jev D1 over-reading of UNCLEAR) or lost (B04/B05). **[S]** This is also why Jev D1's 5-class output could not be applied safely: the state applier has only one non-value destination.
+4. **[S] The guard asks the wrong question.** S2's lexicon (and the Jev D1 formulation) ask "does this text express ignorance?". The decision that matters is "which asked proposition does each clause of the reply answer, and how?" — an item-level disposition problem, which D2 only partially approximates via shared-span groups.
+
+### 0.6 Pending (in progress)
 
 - Code-path tracing of validator → repair → finalize (violation table, repair eligibility, original-vs-repaired handling).
 - Fact path: message → fact op → V8/lexicon/Jev → state → context next turn; status enumeration and the asked-unsettled drop mechanism.
