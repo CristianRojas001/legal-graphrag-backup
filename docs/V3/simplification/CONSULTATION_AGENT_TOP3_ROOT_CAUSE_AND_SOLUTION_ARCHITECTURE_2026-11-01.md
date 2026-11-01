@@ -1,6 +1,10 @@
 # LegalGraphRAG consultation agent — top-3 root cause and solution architecture (2026-11-01)
 
-> **Status: WORK IN PROGRESS.** This file is pushed incrementally at the owner's request. Sections A–J will be filled in as the investigation proceeds. Until the status line reads FINAL, treat every conclusion here as provisional. The running evidence log (§0) records discoveries in the order they were made.
+> **Status: FINAL (investigation and design; no application code changed; no paid calls).** Written incrementally at the owner's request. Sections A–J are the deliverable. §0 at the end is the chronological evidence record that A–J cite.
+>
+> **Scope limits:**
+> - The JEV-triage / Repair V2 campaign (`impl/jev-triage-20261101`, `0de2b56a`) could not be inspected (absent from both remotes); see OD-1.
+> - Three delegated code-tracing subagents were lost when the session environment restarted. All code facts in this report were traced directly by Opus.
 
 Evidence labels used throughout: **[E]** confirmed from code or recorded evidence; **[S]** strongly supported; **[H]** hypothesis; **[P]** proposal/projection.
 
@@ -14,7 +18,7 @@ Evidence labels used throughout: **[E]** confirmed from code or recorded evidenc
 |---|---|---|---|
 | 1 | Correct answers are rewritten, de-specified or occasionally emptied by validation/repair. Repair rate did not fall after the number-validator fix. | **The repair protocol has no unit of change.**<br>• Any violation of any code triggers one *whole-submission* resubmission (`loop.py:192`, `:109-129`, `:368`).<br>• The repaired candidate is accepted wholesale without re-validation or comparison (`loop.py:386-394`).<br>• Deterministic correctors exist (`finalize`, `validator.py:1778`) but run only *after* the rewrite.<br>• "Change only those spans" (F3) is advisory and the model does not follow it (E-B H-N3). | Confirmed (code + exhaustive diff of 65 E-A and 78 E-B/monitor repaired turns) |
 | 2 | Wrong `unknown_by_user`; blanket «No lo sé»; asked questions that vanish; repeated questions; related propositions confused. | **Proposition identity and item disposition are implicit, and the epistemic vocabulary has two states.**<br>• `fact_key` is invented per turn.<br>• A reply settles an asked item only if the model happens to emit an op for that key.<br>• Only `value` or `unknown_by_user` exist.<br>• The ignorance guard tests the quote's wording, not which proposition it answers (`validator.py:1191-1198`, `epistemic_es.py`).<br>• Repair advice routes refusals to deletion; `state.py:546-556` then drops every unanswered item of any issue that received an answer. | Confirmed (state reconstructions + code) |
-| 3 | General rule found but a decisive exception, precondition, consequence or alternative qualification missed. | **The analysis contract checks citations, not applicability.** Nothing binds each operative consequence (rate, amount, obligation, regime) to the provision that establishes it *for this actor and transaction*. Nothing checks that the issue frame the model sets itself covers the action-relevant consequences. Exceptions rely on prompt text only (§B/§C of `system_v1.md`). Retrieval is *not* the bottleneck (E-B: 34/36 gold core units read; all flagged non-corpus misses had the text found). | Strongly supported (E-B grader flags × read sets; H-P3 five-run miss; H-N1 anatomy). Mechanism of the cure: hypothesis until measured |
+| 3 | General rule found but a decisive exception, precondition, consequence or alternative qualification missed. | **The analysis contract checks citations, not applicability.** Nothing binds each operative consequence (rate, amount, obligation, regime) to the provision that establishes it *for this actor and transaction*. Nothing checks that the issue frame the model sets itself covers the action-relevant consequences. Exceptions rely on prompt text only (§B/§C of `system_v1.md`). Retrieval is *not* the bottleneck (E-B: 34/36 gold core units read; every flagged non-corpus miss except H-P3 had the decisive text read; H-P3's was excluded by the model's own issue frame). | Strongly supported (E-B grader flags × read sets; H-P3 five-run miss; H-N1 anatomy). Mechanism of the cure: hypothesis until measured |
 
 ### A.2 Shared architectural cause
 
@@ -55,7 +59,7 @@ The causal links between the problems are evidenced, not assumed (§C):
 | Claim | Status |
 |---|---|
 | PR removes out-of-scope rewrites: no anchor outside a violated sentence can change | **By construction** (deterministic applier); verifiable offline with recorded first submissions + synthetic patches |
-| PR reduces repair *harm* (8/65 E-A and 7/30 E-B-baseline turns lost statute pointers; 10/65 and 4/30 lost conclusion text) to ~0 | Projected from the diff; requires live confirmation |
+| PR reduces repair *harm* to ~0. Baseline harm: 8/65 E-A repaired turns lost statute pointers across the whole answer, and 10/65 lost conclusion text. In E-B baseline the per-result counter flags up to 7/30 and 4/30; that is an upper bound, because it also counts citation-token renames and re-keyed results. H-N3.01 is a diff-verified genuine case | Projected from the diff; requires live confirmation |
 | Deterministic pre-repair fixes remove a model round in 5/65 (E-A) and 7/30 (E-B baseline) repaired turns | Projected from recorded first-report codes |
 | Repair *frequency* falls substantially | **Not claimed.** E-B replay shows most remaining violations are genuine. The target metric is changed to "harm per repaired turn" and "repair output tokens" |
 | CL eliminates the four asked-unsettled anomalies and the EA-B04 re-ask | By construction (coverage invariant + `declined` state); requires live confirmation of model compliance |
@@ -425,6 +429,7 @@ CandidateSelector (`agent/patch.py`):
 ```
 v0 = validate(C0) ; v1 = validate(C1)   # C0 = deterministically fixed original
 blocking(x) = count of blocking-class findings ; total(x) = all findings (validator + unresolved audit)
+# audit findings dismissed by a valid dismiss_finding op count as resolved in v1
 select C1 iff  blocking(v1) <= blocking(v0)
            and total(v1)    <  total(v0)
            and no PATCH_ANCHOR_LOSS was *accepted*   (always true by rule 3)
@@ -487,7 +492,7 @@ Validator rules (V8, FACT_DISPOSITION class):
 | Rule | Code |
 |---|---|
 | `{d.fact_key}` must equal the set of open items at turn start (status `open`, including `hold`) | DISPOSITION_MISSING (missing) / invalid (extra) |
-| answered* ⇒ `fact_ops[fact_op_index].fact_key == d.fact_key` and that op passes the existing quote/value checks | DISPOSITION_KEY_MISMATCH (would reject EA-B05 `reclamacion_tienda_fecha` and H-M4 `forma_retribucion` bound from direction evidence **only if** the quote check fails, see note) |
+| answered* ⇒ `fact_ops[fact_op_index].fact_key == d.fact_key` and that op passes the existing quote/value checks | DISPOSITION_KEY_MISMATCH. EA-B05 would fail with DISPOSITION_MISSING: its five open items received no disposition, and the new key `reclamacion_tienda_fecha` is allowed only with `proposition_es`. H-M4 passes this rule (same key, verbatim quote); see note |
 | `mark_unknown` on an open item requires a disposition `unknown_by_user` for the same key | DISPOSITION_KEY_MISMATCH |
 | `unknown_by_user` ⇒ `states_ignorance(user_quote)` (lexicon) when the verifier is not enforcing | UNKNOWN_NOT_STATED (existing code, **new detail**, below) |
 | The same `user_quote` span used by >1 `unknown_by_user` disposition | committed as `hold` unless verifier-confirmed broadcast (not a violation) |
@@ -707,7 +712,7 @@ Remaining uncertainty: live compliance rate, and the repair-output token reducti
 
 | Option | Verdict | Reason / evidence |
 |---|---|---|
-| **CL: proposition registry + mandatory per-item dispositions + 7-state lifecycle + verifier on non-value kinds** | **Chosen** | Fixes the confirmed missing state and implicit disposition; makes the semantic question checkable |
+| **CL: proposition registry + mandatory per-item dispositions + 8-state lifecycle + verifier on non-value kinds** | **Chosen** | Fixes the confirmed missing state and implicit disposition; makes the semantic question checkable |
 | Better ignorance lexicon / paraphrase recall | Rejected | Would promote refusals to `unknown_by_user` (owner policy: refusal = UNCLEAR); E-A B04/B05 cause is a missing state, not recall |
 | Enforce Jev D1+D2 as built | Rejected now | Fails its own AC-1 (0.884) and AC-6 (2.34 %); label definitions overlap (§B.2); gates only proposed ops |
 | Carry-forward only (J `224531f2`) | Necessary, insufficient | Converts silent drop into repeated questions (E-B EA-B04) |
@@ -825,7 +830,7 @@ Regression protections (must stay green):
 - Arms: **A0** = H0 base with flags default; **A1** = `patch + ledger` (verifier shadow, audit shadow); **A2** = A1 + `audit=on`.
 - Cases: the E-B 25 rule-based cases + Cohort B 8 + **12 untouched cases from `eval/gold36-b-20261031`** (unseen; generalisation, not calibration).
 - **3 repeats per case-arm.** E-B showed a ~4/36 flip noise floor with 1 repeat.
-- Cost envelope: about 3 × 45 × 3 × EUR 0.025 ≈ EUR 10. Owner cap required.
+- Cost envelope: E-B cost ≈ EUR 0.054 per case-arm (EUR 3.72 / 69 case-arms), so 45 cases × 3 arms × 3 repeats ≈ 405 case-arms ≈ EUR 22, plus AA calls in A2 (≈ EUR 1–2). Owner cap required (suggest EUR 25).
 
 **Primary metrics (denominators explicit).**
 
@@ -866,8 +871,8 @@ AI graders are triage only. Every gate-deciding disagreement and every claimed A
 
 | # | Root cause | Proposed solution | Confidence (cause / cure) | Expected gain | Difficulty | Dependencies | Most important acceptance test |
 |---|---|---|---|---|---|---|---|
-| 1 | Whole-submission repair with no unit of change, no preservation, no selection (`loop.py:192/368/386`) | **PR**: registry + deterministic fixes + typed patch + anchor preservation + C0/C1 selection | High / High (by construction) | Repair damage → 0 outside flagged spans; fewer repair tokens; ≈5–8 % fewer model repair rounds | Medium | H0, H1, H2 | Historical damage regressions (V24, V28, V45, V10, H-N3) preserved under patch; must-reject fixture unchanged |
-| 2 | Implicit proposition identity and item disposition; two-state epistemic vocabulary; repair advice deletes; `replaced` drop (`state.py:546-556`) | **CL**: proposition registry, mandatory dispositions, 7-state ledger, new repair advice, ledger-rendered attribution | High / High for state integrity; Medium for model compliance | Eliminates asked-unsettled and re-ask-after-refusal; removes blanket attribution; removes ~⅓ of fact-driven repairs' destructive path | Medium–High (state migration) | H0, H3 | EA-B02/B04/B05/H-N2 layer-B replays: 0 lost items, 0 re-asks after `declined`, 0 broadcast `unknown_by_user` |
+| 1 | Whole-submission repair with no unit of change, no preservation, no selection (`loop.py:192/368/386`) | **PR**: registry + deterministic fixes + typed patch + anchor preservation + C0/C1 selection | High / High (by construction) | Repair damage → 0 outside flagged spans; fewer repair tokens; model round avoided in 5/65 E-A and 7/30 E-B-baseline repaired turns (projection) | Medium | H0, H1, H2 | Historical damage regressions (V24, V28, V45, V10, H-N3) preserved under patch; must-reject fixture unchanged |
+| 2 | Implicit proposition identity and item disposition; two-state epistemic vocabulary; repair advice deletes; `replaced` drop (`state.py:546-556`) | **CL**: proposition registry, mandatory dispositions, 8-state ledger, new repair advice, ledger-rendered attribution | High / High for state integrity; Medium for model compliance | Eliminates asked-unsettled and re-ask-after-refusal; removes blanket attribution; routes the fact-family findings present in 21/65 E-A repaired turns to dispositions instead of deletion | Medium–High (state migration) | H0, H3 | EA-B02/B04/B05/H-N2 layer-B replays: 0 lost items, 0 re-asks after `declined`, 0 broadcast `unknown_by_user` |
 | 3 | Jev task formulation (overlapping labels; gates proposed ops; UNCLEAR sink) | `reply_disposition/1` multi-item question, shadow until calibrated | High / Medium | Semantic check where the deterministic layer cannot decide (H-M4-type binding) | Low–Medium | H4 | Offline mapping tests; later calibration on the frozen dataset + new DECLINED/DEFERRED labels |
 | 4 | No applicability check of consequences against cited text; frame not checked (H-N1, N01, H-P3) | **AA**: evolved ADR-6 reviewer with evidence spans, MC1–MC4, findings into the single patch round | Strongly supported / **Hypothesis** | Catch read-but-misapplied consequences; fix the H-P3 five-run miss | Medium | H3, H6 (+H9 for H-P3) | A2 shadow: AA precision ≥0.7 and ≥1 of the three named misses fixed in ≥2/3 repeats, 0 harmful flips |
 
@@ -879,13 +884,13 @@ AI graders are triage only. Every gate-deciding disagreement and every claimed A
 - **OD-1:** reconcile with the unavailable `impl/jev-triage-20261101` / `0de2b56a` (code-only triage, Repair V2) before H2/H3. Provide the branch or confirm it is superseded.
 - **OD-2:** integration base = merge of `impl/reliability-eb-20261031` and `impl/jev-semantic-fact-verification-v1` (recommended).
 - **OD-3:** client-visible handling of unresolved AA findings (recommended: log only until AA precision is measured).
-- **OD-4:** live-run budget and authorisation for §I.3 (≈EUR 10 cap) and for verifier calibration labelling.
+- **OD-4:** live-run budget and authorisation for §I.3 (≈EUR 25 cap) and for verifier calibration labelling.
 - **OD-5:** the attribution templates in §E.3 (wording is a product/legal-UX choice).
 - **Carried:** corpus ingestion (IGIC, IPSI, LAU/CC, TRLGDCU, RGPD, Orden cotización 2026) remains the only lever for H-B2/V22/Cohort B and is outside this package.
 
 ---
 
-## 0. Evidence log (running)
+## 0. Evidence log (chronological discovery record)
 
 ### 0.1 Repository and evidence verification
 
@@ -1086,10 +1091,3 @@ Interpretation:
   - (a) the issue frame is set by the model with no check that it covers what the client must *do* or *owe*;
   - (b) a conclusion's operative consequences (rate, amount, deadline, regime, obligation) are not individually bound to the provision that fixes them, so an unbound consequence can be inherited from a neighbouring conclusion.
 - **[S]** E-B's own metric "gold CORE units read 34/36" already shows retrieval is not the bottleneck. More research (P7-A cues on every read: median 18 sentences per turn) adds noise at the wrong stage.
-
-### 0.7 Pending (in progress)
-
-- Code-path tracing of validator → repair → finalize (violation table, repair eligibility, original-vs-repaired handling).
-- Fact path: message → fact op → V8/lexicon/Jev → state → context next turn; status enumeration and the asked-unsettled drop mechanism.
-- Exception path: contracts for conditions/alternatives, prompt §D, read/related tools, P7-A/P7-B mechanism, E-B grader flags vs read sets.
-- Sections A–J.
