@@ -6,6 +6,233 @@ Evidence labels used throughout: **[E]** confirmed from code or recorded evidenc
 
 ---
 
+## A. Executive diagnosis
+
+### A.1 The three problems and their root causes
+
+| # | Problem (observed) | Primary root cause | Confidence |
+|---|---|---|---|
+| 1 | Correct answers are rewritten, de-specified or occasionally emptied by validation/repair. Repair rate did not fall after the number-validator fix. | **The repair protocol has no unit of change.**<br>• Any violation of any code triggers one *whole-submission* resubmission (`loop.py:192`, `:109-129`, `:368`).<br>• The repaired candidate is accepted wholesale without re-validation or comparison (`loop.py:386-394`).<br>• Deterministic correctors exist (`finalize`, `validator.py:1778`) but run only *after* the rewrite.<br>• "Change only those spans" (F3) is advisory and the model does not follow it (E-B H-N3). | Confirmed (code + exhaustive diff of 65 E-A and 78 E-B/monitor repaired turns) |
+| 2 | Wrong `unknown_by_user`; blanket «No lo sé»; asked questions that vanish; repeated questions; related propositions confused. | **Proposition identity and item disposition are implicit, and the epistemic vocabulary has two states.**<br>• `fact_key` is invented per turn.<br>• A reply settles an asked item only if the model happens to emit an op for that key.<br>• Only `value` or `unknown_by_user` exist.<br>• The ignorance guard tests the quote's wording, not which proposition it answers (`validator.py:1191-1198`, `epistemic_es.py`).<br>• Repair advice routes refusals to deletion; `state.py:546-556` then drops every unanswered item of any issue that received an answer. | Confirmed (state reconstructions + code) |
+| 3 | General rule found but a decisive exception, precondition, consequence or alternative qualification missed. | **The analysis contract checks citations, not applicability.** Nothing binds each operative consequence (rate, amount, obligation, regime) to the provision that establishes it *for this actor and transaction*. Nothing checks that the issue frame the model sets itself covers the action-relevant consequences. Exceptions rely on prompt text only (§B/§C of `system_v1.md`). Retrieval is *not* the bottleneck (E-B: 34/36 gold core units read; all flagged non-corpus misses had the text found). | Strongly supported (E-B grader flags × read sets; H-P3 five-run miss; H-N1 anatomy). Mechanism of the cure: hypothesis until measured |
+
+### A.2 Shared architectural cause
+
+All three share one defect. **The main model's single free-form submission is the only carrier of meaning, and the deterministic layer can only accept it, annotate it, delete parts of it, or demand that it be regenerated in full.** There is no smaller, typed channel through which the system can:
+- ask for or apply *one* correction (Problem 1);
+- record *one* disposition per asked question (Problem 2);
+- check *one* consequence against the text that should establish it (Problem 3).
+
+The causal links between the problems are evidenced, not assumed (§C):
+- fact-state violations trigger 21 of 65 E-A repair rounds;
+- the repair advice for refusals manufactures the asked-unsettled anomalies;
+- a mis-bound fact (H-M4 `forma_retribucion`) produced an unsupported "contraprestación — se cumple" line.
+
+### A.3 Recommended solution (one package, three parts)
+
+1. **Patch repair with preservation and candidate selection (PR).**
+   - A violation registry classifies every code as `DETERMINISTIC_FIX`, `PATCH`, `FACT_DISPOSITION` or `STRUCTURAL`.
+   - Deterministic fixes run before any model call.
+   - The model repairs through a typed `repair_patch/1` limited to the violated paths.
+   - The applier enforces the path allow-list and an anchor-preservation invariant, then re-validates.
+   - The controller chooses deterministically between "original + deterministic finalisation" and "patched + finalisation".
+2. **Clarification ledger with explicit item dispositions (CL).**
+   - A per-case proposition registry (`fact_key` + `proposition_es` + relations).
+   - Each asked item has a closed lifecycle: `open`, `answered`, `unknown_by_user`, `declined`, `deferred_by_user`, `withdrawn_by_agent`, `superseded`, `conflicted`.
+   - The submission must disposition every open item exactly once.
+   - Non-value dispositions are verified (Jev reformulated as one multi-item disposition decision, shadow until calibrated).
+   - Attribution text comes from the ledger, never from model narration.
+3. **Applicability audit with a material-completeness standard (AA).**
+   - One bounded structured pass over the finished draft's decisive conclusions, against the full text of the units they cite (already read).
+   - It checks that each operative consequence is established *for these facts* (MC1).
+   - It checks that no clause of the governing text that excludes or conditions it is left unreflected (MC2).
+   - It checks that explicit cross-references the consequence depends on are resolved (MC3).
+   - For qualification issues, it checks that the action-relevant consequence is stated or scoped out (MC4, with one bounded research-again step).
+   - Findings feed the *same single* patch round as validator violations, so the turn never gets a second model rewrite.
+
+### A.4 Expected impact — evidenced vs projected
+
+| Claim | Status |
+|---|---|
+| PR removes out-of-scope rewrites: no anchor outside a violated sentence can change | **By construction** (deterministic applier); verifiable offline with recorded first submissions + synthetic patches |
+| PR reduces repair *harm* (8/65 E-A and 7/30 E-B-baseline turns lost statute pointers; 10/65 and 4/30 lost conclusion text) to ~0 | Projected from the diff; requires live confirmation |
+| Deterministic pre-repair fixes remove a model round in 5/65 (E-A) and 7/30 (E-B baseline) repaired turns | Projected from recorded first-report codes |
+| Repair *frequency* falls substantially | **Not claimed.** E-B replay shows most remaining violations are genuine. The target metric is changed to "harm per repaired turn" and "repair output tokens" |
+| CL eliminates the four asked-unsettled anomalies and the EA-B04 re-ask | By construction (coverage invariant + `declined` state); requires live confirmation of model compliance |
+| CL removes blanket broadcast attribution (EA-B02) | Projected from the Jev pilot (D2 0/15 broadcasts accepted) and the shared-span rule; verifier enforcement remains gated on calibration |
+| AA catches H-N1-type unbound consequences and N01-type omitted sub-rules | **Hypothesis**; first test is a small paid shadow run (not authorised in this mission) |
+| AA/MC4 fixes H-P3 frame omission | **Hypothesis**; H-P3 is the designated discriminating case (five-run baseline miss) |
+
+---
+
+## B. Evidence and execution-path reconstruction
+
+The chronological discovery record is in §0 below; this section is its structured summary per problem.
+
+### B.1 Problem 1 — validation and repair
+
+**Execution path (R = `impl/reliability-eb-20261031`; identical control flow at `d4304d10`).**
+```
+AgentLoop.run (loop.py:170)
+ └─ model calls submit_consultation(full SubmissionV1)          # tool desc loop.py:192; all fields required :121
+     ├─ SubmissionV1.model_validate (loop.py:352) ─ fail → SCHEMA_INVALID report (one retry)
+     ├─ validate_fn → validator.validate (validator.py:1472) → _Checks.run (:737)
+     │    sources V2/V3/V4 (:746) · markers V5 (:821) · calculations V7 (:862) · numbers V6 (:916)
+     │    authority V9 (:1103) · conversation V8 (:1123)
+     ├─ report and not repaired (loop.py:368) → send report; repaired=True; tool_choice forced to submit
+     └─ second submission → NOT re-validated for selection → finalize_fn (loop.py:386)
+          └─ validator.finalize (:1778): re-check; annotate V2/V5/V6/V7, relabel V9, drop facts/results
+             first submission reused only if repair has no results (loop.py:388-394)
+```
+
+**Contracts.**
+- Input: `SubmissionV1` (issue_ops, context_ops, fact_ops, scenario_ops, results[sections, conclusions[conditions, cite_ids], clarification_items, gaps], citations[cite_id, unit_id, version_id, pinpoint_es, quote_fragments, role], calculations, confirm_target).
+- Output of validation: `validation_report/1` {ok, violations[{check, code, path, detail}], instruction "Corrija las infracciones y vuelva a enviar la consulta una sola vez."}.
+- All violations share one severity.
+
+**Representative failures.** All are diff-verified (§0.3, §0.3b):
+- V24.00: "artículo 331.1 de la LGSS" removed (UNTRACED only).
+- V28.00: arts. 82–86, 18, 81.3, 86.2 removed during a *contract* repair.
+- V45.01: the art. 32.1 rule statement removed.
+- V10.00: "(art. 4.Uno y art. 11.Uno LIVA)" removed.
+- E-B H-N3.01: five pointers removed despite F3's "change only characters 215-219".
+
+**Root-cause chain.**
+1. Any violation leads to a full rewrite.
+2. The model regenerates every field and strips number-like anchors to be safe.
+3. There is no preservation check.
+4. The rewrite is accepted wholesale.
+5. Residuals are annotated, producing markers on what remains.
+
+**Historical interventions.**
+
+| Intervention | Outcome | Why it did not move the user outcome |
+|---|---|---|
+| S5 (N1–N5 provenance) | UNTRACED rose to 26/83 Cohort A turns; markers not reduced | Receipt-literal grounding broke (RC1); detail had no location |
+| F1/F2/F3 (E-B Workstream A) | Replay: UNTRACED spans 146→61, turns 67→38, cifra markers 41→11, 0 must-reject regressions | Only UNTRACED changed; turns with any violation 69→61/102, so the repair rate can fall by ≤8 pp. Live: 20/22 vs 19/22 repaired. F3 location is advisory: H-N3 still de-specified |
+| JEV triage + Repair V2 (`impl/jev-triage-20261101`, `0de2b56a`) | **Not inspectable** (absent from both remotes) | Unknown. The brief says code-only triage plus a disabled Repair V2; no claim is made here about what it solves |
+
+**Uncertain.**
+- Exact live repair-harm rate under a patch protocol.
+- Whether DeepSeek reliably emits a typed patch (compliance).
+- What the unavailable Repair V2 already implements. If it is a patch protocol, PR should be reconciled with it rather than duplicated (§J open decision OD-1).
+
+### B.2 Problem 2 — semantic fact management
+
+**Execution path.**
+```
+user message ─► main model (prompt §A.2, §D "«no lo sé» → mark_unknown … Do not ask it again")
+  └─ fact_ops[{op: assert|correct|retract|mark_unknown, fact_key (free), value, user_quote, issue_refs}]
+     clarification_items[{fact_key, question_es, answer_shape, choices, depends_on, …}]
+validator V8 (validator.py:1123-1383)
+  ├─ QUOTE_NOT_IN_USER_MESSAGES (:1177), FACT_VALUE_UNSUPPORTED (:1201)
+  ├─ mark_unknown: states_ignorance(user_quote) (epistemic_es regex) and no assert quote inside (:1191-1198)
+  └─ CONCLUSION_FACT_UNKNOWN (:1343), DECIDED_CONDITION_UNBOUND (:1341), UNKNOWN_FACT_REASKED (:1317)…
+repair (whole submission) — detail for UNKNOWN_NOT_STATED: "If the client simply did not answer, leave the fact out; it remains askable."
+StateUpdater (state.py)
+  ├─ FactEventV1 per op (J adds .verification; enforce requires it)
+  └─ pending recompute (state.py:545-558): old item survives iff key ∉ settled∪new AND issue ∉ replaced AND issue ∉ parked
+       replaced = issues with any non-NOT_ADDRESSED result this turn  ← silent drop   (removed in J, 224531f2)
+context next turn: facts with quotes, pending items, asked_log
+Jev (J, off by default): records only for ops the model proposed + pending items;
+  D1 fact_response/2 five labels (fact_verifier.py:23-36); D2 general_reply_scope noul (:39-47)
+```
+
+**Representative failures** (§0.5, §0.5b):
+
+| Case | What happened |
+|---|---|
+| EA-B02 | Blanket «No lo sé.» produced six `unknown_by_user` events. `fecha_entrega` and `fecha_entrega_aprox` coexist. |
+| EA-B04, EA-B05 | Refusal was proposed as `mark_unknown`, correctly rejected, deleted on repair, and the items dropped. EA-B05 also invented the never-asked key `reclamacion_tienda_fecha`. |
+| H-M4 | `forma_retribucion` was settled with evidence about direction/subordination; `otras_rentas` was dropped. |
+| H-N2 | `tipo_alumnado_clases` was asked twice, then the model tried to "close" it via `mark_unknown` with an unrelated quote; it was rejected and dropped. |
+| E-B monitor | EA-B04 re-asks the declined items and says "Son datos que el cliente conoce". |
+
+**Root-cause chain.**
+1. The proposition is identified only by a model-invented key.
+2. The reply-to-item binding is a side effect of op emission.
+3. The only non-value state is `unknown_by_user`.
+4. The guard rightly rejects non-ignorance.
+5. The repair advice says "leave it out".
+6. The pending recompute drops the item (R), or carry-forward re-asks it forever (J).
+7. The answer text narrates a status that the state does not hold.
+
+**Jev experiment — what was wrong with the formulation, not with Jev.**
+- (a) **Label overlap.** `STATES_NOT_KNOWN` includes "have not been able to check" (temporary inability, which the owner policy classes as UNCLEAR) and "a general statement that … plainly covers every open question" (the D2 question). D1 was instructed to make the broadcast decision, and did: it accepted all 15 bare «No lo sé» replies, while D2 accepted 0/15.
+- (b) **The wrong decision boundary.** Jev gates an op DeepSeek already proposed ("accept this `mark_unknown`?"). It is not asked "what is the disposition of each open question?", so items for which no op was proposed are never examined.
+- (c) **`UNCLEAR` is a sink.** It merges refusal, deferral, vagueness and contradiction. Its only consequence is "abstain → fact absent", which then hits the drop or re-ask defect.
+- (d) **Too little context in the label set.** The label set cannot express "answered approximately" separately from hedging, so hedged values become NOT_KNOWN (3 false accepts).
+
+These are formulation defects. Jev's language understanding was strong: recall 0.977, and D2 0 false broadcasts.
+
+**Historical interventions.**
+- S2 G1 lexicon (precision-first): it eliminated E-1's false "usted ya indicó", but has recall 0.547 and cannot express refusal.
+- S4 IT-3 pending-from-batch: it created the drop.
+- J carry-forward: it fixes the drop and exposes re-ask.
+- Jev D1+D2 pilot: precision 0.884 (AC-1 fail) and stability 2.34 % (AC-6 fail). Not enforce-ready under its own gates.
+
+**Uncertain.**
+- DeepSeek compliance with a mandatory per-item disposition list.
+- Calibration of a reformulated Jev decision (needs annotated data; paid).
+
+### B.3 Problem 3 — exceptions and competing qualifications
+
+**Execution path.**
+```
+prompt §B (read completely; look for exceptions, related provisions cited_by/cites; "Check for exceptions first")
+prompt §C (rule → requirements → facts → result; conditions satisfied/not/unknown/assumed; LEGAL_AMBIGUITY)
+model: issue_ops.open{title_es, question_es}  ← self-set frame (H-P3: classification only)
+tools: search_law, read_provision, get_related_provisions, get_document_outline, list_corpus_documents (0 calls in 104 E-A turns)
+submission: conclusions{kind, basis, conditions[{description_es, fact_key, status, cite_ids}], cite_ids}
+validator: V2 cited-read, V4 quote fragments, V9 binding_law needs ≥1 read normativa citation (any)
+           — no check that a consequence is established by the cited text for this actor/transaction
+```
+
+**Representative failures** (§0.6, §0.6b):
+- **H-P3**: classificatory frame, LGSS art. 305 never read at turn 0 in five independent runs, and read in every reply turn.
+- **H-N1.01**: REBU arts. 135–138 and art. 91 read; the margin is taxed at the author's 10 % by an unstated, uncited consequence.
+- **N01**: art. 96 read, sub-rule 96.4 omitted.
+- **H-M4** (E-A): unsupported "contraprestación — se cumple" line built on a mis-bound fact.
+
+**Root-cause chain.**
+- Frame set by the model without a coverage check → research targets the frame → frame-external decisive provision unread (H-P3).
+- Or: the conclusion's regime conditions are well-bound, but its operative consequence (rate/amount) is implicit and inherited → validator only checks "some read normativa is cited" → error passes (H-N1).
+
+**Historical interventions.**
+- Prompt hardening: an earlier pre-registered A/B failed (P1–P13 report).
+- P7-A exception cues at read time: median 18 cue sentences per turn, no CORRECT gain, +26.5 % latency, +8 identifier leaks.
+- P7-B alternatives field on every application conclusion: no gain, +41 % latency, +33 markers from malformed citation tokens, +4 leaks.
+
+Why they could not work:
+- **P7-A** acts *before* reasoning, lexically, on every read. It increases context noise at the research stage, which E-B showed was not the bottleneck.
+- **P7-B** asks the *drafting* model to self-critique in the same pass, enlarging the schema. That is the same pass and the same blind spot, with more output to get wrong.
+- Neither acts at the two failing boundaries: frame coverage and consequence-to-text binding.
+
+**Uncertain.**
+- Whether a separate audit pass detects H-N1/N01-type defects at useful precision.
+- Whether MC4 (frame coverage) avoids increasing scope drift (H-N2, P8).
+- Both need a small paid shadow run.
+
+---
+
+## C. Root-cause interaction analysis
+
+| Link | Evidence | Status |
+|---|---|---|
+| P2 → P1: fact-state defects create repair rounds | Fact-family codes (`CONCLUSION_FACT_UNKNOWN`, `DECIDED_CONDITION_UNBOUND`, `UNKNOWN_NOT_STATED`, `QUOTE_NOT_IN_USER_MESSAGES`, `FACT_VALUE_UNSUPPORTED`, `SCENARIO_PREMISE_MISSING`) in the first report of 21/65 repaired E-A turns (8 fact-only); 7/19 monitor repaired turns | Confirmed |
+| P1 → P2: repair advice destroys fact information | EA-B04, EA-B05, H-N2: the ops are deleted on repair, then the items drop | Confirmed |
+| P2 → P3: a mis-bound fact yields an unsupported legal line | H-M4: `forma_retribucion` settled from direction evidence; turn-0 structured line "Obtención de una contraprestación — se cumple" unsupported (E-A grade P) | Strongly supported (a single case) |
+| P2 → scope drift: unresolved items keep unrequested issues alive | H-N2: `tipo_alumnado_clases` (only relevant to the unrequested IVA issue) asked twice; reply turns drift into IVA | Strongly supported |
+| P1 → P3: repair de-specification hides the provision basis | V28, V45, H-N3: anchors removed; legal polarity unchanged in every inspected case | Confirmed as a verifiability loss; **not** a cause of missed exceptions |
+| P1 ↔ P3 accidental correction | H-N1 E-A: the repair deleted legally wrong figures | Confirmed: repair effects are uncontrolled in both directions |
+| P3 → P1 | No evidence that missed exceptions trigger violations: they pass validation | Confirmed absence (that is the problem) |
+
+**Implication for sequencing.**
+- PR and CL must ship together. CL changes the fact codes (new dispositions replace deletions), and PR is what keeps those corrections local.
+- AA depends on PR, because its findings must be applied through the same bounded patch round, or it would reintroduce a second full rewrite (the P7 latency failure mode).
+
+---
+
 ## 0. Evidence log (running)
 
 ### 0.1 Repository and evidence verification
