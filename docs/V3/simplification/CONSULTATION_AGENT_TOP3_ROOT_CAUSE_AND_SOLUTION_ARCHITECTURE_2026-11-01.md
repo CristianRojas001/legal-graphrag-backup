@@ -233,6 +233,454 @@ Why they could not work:
 
 ---
 
+## D. Recommended target architecture
+
+### D.1 Principles kept
+
+These are unchanged:
+- one drafting agent (DeepSeek via OpenRouter), its tools, prompt structure and `SubmissionV1`;
+- deterministic validator checks V1–V9 (none weakened);
+- `finalize` residual policies;
+- S1–S7 guards and F1–F3;
+- hypothetical scenarios (S3);
+- the Jev transport, ledger and budget code (J);
+- the reviewer hook (ADR-6).
+
+What changes is *the channels* between model and deterministic layer, not who decides. LLMs interpret meaning; deterministic code enforces identity, coverage, allow-lists, preservation and selection.
+
+### D.2 Turn data flow (new elements marked ★)
+
+```
+ user message
+     │
+     ▼
+ ContextBuilder ── ★ ledger view: propositions + open items (with batch, asks, hold) + closed items with status
+     │
+     ▼
+ Drafting agent (research tools, unchanged) ──► submit_consultation(SubmissionV1 ★ + item_dispositions)
+     │
+     ▼
+ normalize (existing _normalize, S6) ─► ★ DeterministicFixer (registry class DETERMINISTIC_FIX)
+     │
+     ▼
+ validate (V1–V9, ★ CL checks: coverage, key binding, proposition registration)
+     │
+     ├─► ★ DispositionVerifier (Jev reply_disposition/1; off|shadow|enforce)   [only if non-value dispositions]
+     ├─► ★ ApplicabilityAudit (evolved reviewer; off|shadow|on)                [only eligible conclusions]
+     ▼
+ findings = violations ∪ audit findings ∪ verifier disagreements
+     │ empty ─────────────────────────────────────────────┐
+     ▼ non-empty                                          │
+ ★ PatchRound (one model call, tool repair_consultation,   │
+   ≤2 read_provision only if a finding requests it)       │
+     ▼                                                    │
+ ★ PatchApplier (allow-list, anchor preservation) ─► C1   │  C0 = fixed original
+     ▼                                                    ▼
+ validate(C1)  ─────────► ★ CandidateSelector (C0 vs C1, deterministic)
+                                   │
+                                   ▼
+                     finalize (existing residual policies)
+                                   │
+                                   ▼
+             StateUpdater ★ ClarificationLedger commit (no silent drops)
+                                   │
+                                   ▼
+             render ★ attribution/status lines from ledger, not model prose
+```
+
+### D.3 Component responsibilities
+
+| Component | Owns | Must not |
+|---|---|---|
+| Drafting agent | legal research, interpretation, conclusions, proposing fact ops and item dispositions, patch content | decide what state an item is in without a disposition; rewrite outside a patch scope |
+| ViolationRegistry (★, static table) | class, severity and patch scope of every code | contain semantic logic |
+| DeterministicFixer (★) | mechanical corrections with unique, provable results (fragment order, unused citations, unambiguous marker tokens, duplicate items) | change any prose word other than the token it fixes |
+| Validator (existing + CL checks) | structural/provenance/epistemic-evidence checks | rewrite meaning |
+| DispositionVerifier (★, Jev reformulated) | semantic check of non-value dispositions and broadcasts | create dispositions; enforce while uncalibrated |
+| ApplicabilityAudit (★, evolves `reviewer.py`) | MC1–MC4 findings with verbatim evidence from read units | block publication; rewrite; use outside knowledge without a research request |
+| PatchRound + PatchApplier (★) | one bounded correction; enforce allow-list and preservation | accept full resubmissions |
+| CandidateSelector (★) | choose C0 vs C1 by a fixed rule | use model judgement |
+| finalize (existing) | residual annotate/relabel/drop on the selected candidate | — |
+| ClarificationLedger (★, in StateUpdater) | proposition registry, item lifecycle, re-ask policy | drop items; infer dispositions |
+| Renderer (existing + ★) | client-visible attribution and status lines from the ledger | print raw identifiers or model-narrated status |
+
+### D.4 What remains, changes, is replaced, stays disabled
+
+| Mechanism | Decision |
+|---|---|
+| Whole-submission repair (`loop.py:192`, `:368-394`) | **Replaced** by PatchRound behind `AGENT_REPAIR_MODE=patch`; `full` kept as rollback |
+| `finalize` | **Kept**; runs on the selected candidate |
+| F1/F2/F3 | **Kept**. F3 locations become the patch scope (sentence indices) |
+| S2 lexicon `states_ignorance` | **Kept** as the deterministic precondition for `unknown_by_user` when the verifier is off/shadow. Its *repair advice* changes (no "leave it out") |
+| `state.py:546-556` `replaced` filter | **Removed** (as in J `224531f2`) and superseded by the ledger lifecycle |
+| J carry-forward | **Kept**, constrained by the re-ask policy (max 2 asks, never after `declined`/`unknown_by_user`) |
+| Jev D1 `fact_response/2` + D2 `general_reply_scope` | **Replaced** by `reply_disposition/1` (one multi-item question). Transport, ledger, cache, bands code reused |
+| Reviewer ADR-6 (`reviewer.py`, `reviewer_v1.md`) | **Evolved** into ApplicabilityAudit: evidence spans, MC kinds, findings routed to the patch round, runs before (not after) repair |
+| P7-A / P7-B flags | **Stay disabled** (rejected by E-B). Not reused |
+| Unknown JEV-triage / Repair V2 (`0de2b56a`) | **Owner reconciliation required** (OD-1): if it is a code-only triage, it maps onto the ViolationRegistry; if Repair V2 is a patch protocol, PR adopts its transport and keeps this spec's invariants |
+
+### D.5 Decision boundaries (who decides what)
+
+- **Is the answer legally right?** The drafting agent. The audit can only raise evidence-grounded findings; the agent may dismiss a finding with a reason and evidence (recorded).
+- **What did the user's reply do to each open question?** The drafting agent proposes; the verifier checks non-value dispositions; deterministic code enforces coverage and binding. Uncertainty resolves to `open` + `hold` (ask to confirm), never to `unknown_by_user`.
+- **What may a repair change?** Deterministic: only the registry scope of each addressed finding.
+- **Which version ships?** Deterministic `CandidateSelector`.
+- **Research again?** Only through an audit `research_request` or a `CITED_NOT_READ` patch, with ≤2 reads, inside the same patch round.
+
+---
+
+## E. Implementation-ready data contracts
+
+All contracts are Pydantic `ContractModel`s in `agent/contracts.py` unless stated. New schema strings are versioned. "R" means required, "O" optional.
+
+### E.1 ViolationRegistry (`agent/violation_registry.py`, new, static)
+
+```python
+ViolationClass = Literal["DETERMINISTIC_FIX", "PATCH", "FACT_DISPOSITION", "STRUCTURAL"]
+Severity      = Literal["blocking", "degradable"]
+PatchScope    = Literal["token", "sentence", "citation", "conclusion", "result", "fact_op", "disposition", "item"]
+
+class RegistryEntry(NamedTuple):
+    code: str; check: str; cls: ViolationClass; severity: Severity; scope: PatchScope
+```
+
+| Code(s) | Class | Severity | Scope | Deterministic fix / note |
+|---|---|---|---|---|
+| QUOTE_FRAGMENT_ORDER | DETERMINISTIC_FIX | degradable | citation | reorder fragments by first offset in unit text |
+| CITATION_UNUSED | DETERMINISTIC_FIX | degradable | citation | drop citation not referenced anywhere |
+| DUPLICATE_ITEM | DETERMINISTIC_FIX | degradable | item | keep first |
+| MARKER_UNRESOLVED | DETERMINISTIC_FIX **iff** a unique mapping exists, else PATCH | degradable | token | unique mapping rules: the token equals a cite_id after case-fold/strip; or `[[c:N]]` where exactly one cite_id ends in `-N`/`N`. Never map a calc id to a cite id |
+| UNTRACED_NUMBER, CALC_UNKNOWN, CALC_MISMATCH | PATCH | degradable | sentence | F3 sentence indices define the scope |
+| QUOTE_FRAGMENT_NOT_FOUND, VERSION_MISMATCH, UNIT_NOT_RESOLVABLE | PATCH | degradable | citation | — |
+| CITED_NOT_READ | PATCH | **blocking** when the citation is the only governing support of a binding_law conclusion, else degradable | citation (+ markers that reference it) | patch may read (≤2) |
+| NOT_VALID_AT_LEGAL_DATE, TERRITORY_MISMATCH, BASIS_AUTHORITY_MISMATCH | PATCH | blocking | conclusion | — |
+| MISSING_RESULT, OUTCOME_SHAPE, ISSUE_REF_INVALID, SCENARIO_PREMISE_MISSING | STRUCTURAL | blocking | result | — |
+| UNKNOWN_NOT_STATED, QUOTE_NOT_IN_USER_MESSAGES, FACT_VALUE_UNSUPPORTED, ASSERT_ON_KNOWN_KEY, DUPLICATE_FACT_KEY | FACT_DISPOSITION | blocking | fact_op / disposition | — |
+| KNOWN_FACT_ASKED, UNKNOWN_FACT_REASKED, REPEAT_WITHOUT_REASON, QUESTION_CEILING, QUESTION_NOT_FACT_GAP | FACT_DISPOSITION | degradable | item | — |
+| CONCLUSION_FACT_UNKNOWN, DECIDED_CONDITION_UNBOUND | FACT_DISPOSITION | blocking | conclusion | — |
+| ★ DISPOSITION_MISSING, DISPOSITION_KEY_MISMATCH, PROPOSITION_UNREGISTERED, DUPLICATE_PROPOSITION | FACT_DISPOSITION | blocking | disposition | §E.3 |
+| ★ AA_CONSEQUENCE_NOT_ESTABLISHED, AA_UNREFLECTED_CLAUSE, AA_UNRESOLVED_REFERENCE, AA_ACTION_CONSEQUENCE_MISSING | PATCH | degradable | conclusion / result | §E.4 |
+
+Invariants:
+- Every code the validator can emit has exactly one entry; a unit test enumerates `self.add("V…", "<CODE>"` literals in `validator.py` and fails on a missing entry.
+- **Blocking** means that, if unresolved after the patch round, `finalize` must remove or relabel the offending element (existing drop/relabel policies). **Degradable** means `finalize` may annotate.
+- No code is downgraded from its current finalize action. The registry adds routing only; it weakens no check.
+
+### E.2 Repair patch (`repair_patch/1`) and selection
+
+Validation report gains finding ids (backward-compatible field):
+```json
+{"schema":"validation_report/2","ok":false,
+ "findings":[{"id":"v-1","source":"validator","check":"V6","code":"UNTRACED_NUMBER",
+              "path":"results.0.sections.answer_es","scope":{"kind":"sentence","field":"results.0.sections.answer_es","sentence_indices":[2]},
+              "detail":"…F3 text…"},
+             {"id":"a-1","source":"audit","code":"AA_CONSEQUENCE_NOT_ESTABLISHED","path":"results.0.conclusions.1",
+              "scope":{"kind":"conclusion","path":"results.0.conclusions.1"},
+              "detail":"…","evidence":[{"unit_id":"BOE-A-1992-28740::art-91","quote":"…"}]}],
+ "instruction":"Corrija solo los elementos indicados mediante repair_consultation. No reenvíe la consulta completa."}
+```
+
+Tool `repair_consultation` (forced `tool_choice` in the patch round). Arguments `RepairPatchV1`:
+```json
+{"schema":"repair_patch/1",
+ "ops":[
+  {"op":"replace_sentence","field":"results.0.sections.answer_es","sentence_index":2,"text_es":"…","addresses":["v-1"]},
+  {"op":"set_field","path":"results.0.conclusions.4.basis","value":"interpretive","addresses":["v-5"]},
+  {"op":"set_conclusion_text","conclusion_path":"results.0.conclusions.1","text_es":"…","addresses":["a-1"]},
+  {"op":"add_condition","conclusion_path":"results.0.conclusions.1","condition":{"…ConditionV1"},"addresses":["a-1"]},
+  {"op":"set_condition","path":"results.0.conclusions.1.conditions.0","condition":{"…"},"addresses":["v-7"]},
+  {"op":"add_conclusion","result_path":"results.0","after_conclusion_id":"c2","conclusion":{"…ConclusionV1"},"answer_sentence_es":"…","addresses":["a-2"]},
+  {"op":"add_citation","citation":{"…CitationV1"},"addresses":["v-3"]},
+  {"op":"remove_citation","cite_id":"c3","addresses":["v-3"]},
+  {"op":"set_quote_fragments","cite_id":"c3","fragments":["…"],"addresses":["v-4"]},
+  {"op":"add_calculation","calculation":{"…"},"addresses":["v-1"]},
+  {"op":"set_fact_op","index":3,"fact_op":{"…FactOpV1"} ,"addresses":["v-8"]},
+  {"op":"set_disposition","fact_key":"destino_taller","disposition":{"…ItemDispositionV1"},"addresses":["v-9"]},
+  {"op":"add_result","result":{"…IssueResultV1"},"addresses":["v-10"]},
+  {"op":"dismiss_finding","finding_id":"a-1","reason_es":"…","evidence":[{"unit_id":"…","quote":"…"}]}
+ ]}
+```
+Field semantics and rules (PatchApplier, `agent/patch.py`, new):
+1. **Addressing.** Every op except `dismiss_finding` has `addresses` ⊆ report finding ids (R, non-empty). `dismiss_finding` is allowed only for `source=="audit"` findings and requires ≥1 verbatim evidence quote from a read unit (checked with the V4 matcher).
+2. **Allow-list.** An op's target must lie inside the `scope` of at least one addressed finding:
+   - `sentence`: `replace_sentence` on that field and index only.
+   - `citation`: citation ops on that cite_id, plus `replace_sentence` for sentences containing its marker.
+   - `conclusion`: `set_conclusion_text`, conditions, `add_conclusion` after it, citation additions it references, and one `replace_sentence` per answer section that mentions the conclusion.
+   - `result`: `add_result`/`set_field` under that result.
+   - `fact_op`/`disposition`: the indexed fact op or the named item.
+
+   Anything else is rejected with `PATCH_OP_OUT_OF_SCOPE`.
+3. **Anchor preservation.** Let `anchors(s)` be the multiset of:
+   - (a) statute pointers: the regex `\b(?:art(?:[íi]culo)?s?\.?|disposici[óo]n\s+(?:adicional|transitoria|final))\s*[\dºª.]+(?:\.[A-Za-z]+)*(?:\s*(?:,|y|a)\s*[\dºª.]+)*` plus `Ley \d+/\d{4}` and `Real Decreto(?: Legislativo)? \d+/\d{4}`, matched only outside `[[…]]` tokens;
+   - (b) citation tokens `[[c:id]]` resolved to `unit_id`;
+   - (c) figures that the V6 tracer grounds;
+   - (d) `(conclusion_id, kind, basis)`;
+   - (e) `(conclusion_id, condition fact_key, status)`.
+
+   For each accepted text op, every anchor of the original target text must also appear in the new text, **except** anchors that are the subject of an addressed finding (the untraced figure span, the removed cite id, the changed basis). On failure the op is rejected with `PATCH_ANCHOR_LOSS` and the original text kept. Anchors outside any op target are untouched by construction.
+4. **Ordering.** Ops are applied in list order on the deterministically fixed original (C0 source). Index-based ops are resolved against the original before any insertion.
+5. **Result.** C1 = the patched submission, re-parsed with `SubmissionV1`. If parsing fails, C1 is discarded.
+
+CandidateSelector (`agent/patch.py`):
+```
+v0 = validate(C0) ; v1 = validate(C1)   # C0 = deterministically fixed original
+blocking(x) = count of blocking-class findings ; total(x) = all findings (validator + unresolved audit)
+select C1 iff  blocking(v1) <= blocking(v0)
+           and total(v1)    <  total(v0)
+           and no PATCH_ANCHOR_LOSS was *accepted*   (always true by rule 3)
+otherwise C0.  Ties → C0.
+```
+Then `finalize(selected)`. The existing `empty_repair` rule is subsumed (an empty C1 can never have fewer blocking findings than a non-empty C0 with results).
+
+Persisted record (`ResidualV1`-adjacent, in `LoopOutcomeV1`; JSON-safe):
+```json
+{"schema":"repair_record/1","mode":"patch","first_submission_sha256":"…","findings":12,
+ "deterministic_fixes":[{"code":"QUOTE_FRAGMENT_ORDER","path":"citations.2"}],
+ "ops_total":7,"ops_accepted":6,"ops_rejected":[{"index":4,"reason":"PATCH_ANCHOR_LOSS"}],
+ "dismissed_findings":["a-2"],"selected":"patched","blocking_before":2,"blocking_after":0,"total_before":5,"total_after":1}
+```
+Invalid states:
+- `selected=="patched"` with `blocking_after > blocking_before`;
+- an accepted op with empty `addresses`;
+- `mode=="patch"` with a second `submit_consultation` in the same turn.
+
+### E.3 Clarification ledger
+
+**Proposition registry** (state field `propositions`, new):
+```python
+class PropositionRelationV1(ContractModel):
+    kind: Literal["narrower_of", "broader_of", "alternative_to", "derived_from"]
+    fact_key: str
+class PropositionV1(ContractModel):
+    fact_key: str                    # R, FACT_KEY_PATTERN, unique per case
+    proposition_es: str              # R, 8–240 chars, the statement whose value/truth is sought; immutable
+    answer_shape: Literal["yes_no","choice","number","money","date","text","territory"]  # R
+    introduced_turn: int             # R
+    introduced_by: Literal["question", "assertion", "migration"]  # R
+    relations: list[PropositionRelationV1] = []
+```
+Submission additions (all O at schema level; validator enforces when applicable):
+- `ClarificationItemV1.proposition_es` (R by validator for a new key);
+- `FactOpV1.proposition_es` (R by validator when the op introduces a new key);
+- `FactOpV1.relations` (O).
+
+Rules:
+- PROPOSITION_UNREGISTERED: a new key without `proposition_es`.
+- DUPLICATE_PROPOSITION: a new key whose `casefold`-normalised `proposition_es` equals an existing one's. That is the only deterministic duplicate test; semantic overlap is declared by the model through `relations`, and the renderer groups related keys.
+- `proposition_es` is never changed; a changed meaning needs a new key with `derived_from`.
+
+**Item disposition** (new submission field `item_dispositions: list[ItemDispositionV1]`):
+```python
+DispositionKind = Literal["answered", "answered_approx", "unknown_by_user", "declined",
+                          "deferred_by_user", "not_addressed", "withdrawn"]
+class ItemDispositionV1(ContractModel):
+    fact_key: str                         # R: an item open at turn start
+    batch_id: str                         # R: its batch
+    kind: DispositionKind                 # R
+    user_quote: str | None                # R unless kind in {"not_addressed","withdrawn"}; verbatim from CURRENT message
+    fact_op_index: int | None             # R iff kind in {"answered","answered_approx"}: index of an assert/correct on the SAME fact_key
+    withdraw_reason: Literal["no_longer_material","issue_parked","answered_by_other_fact"] | None  # R iff kind=="withdrawn"
+    answered_by_fact_key: str | None      # R iff withdraw_reason=="answered_by_other_fact"
+```
+Validator rules (V8, FACT_DISPOSITION class):
+
+| Rule | Code |
+|---|---|
+| `{d.fact_key}` must equal the set of open items at turn start (status `open`, including `hold`) | DISPOSITION_MISSING (missing) / invalid (extra) |
+| answered* ⇒ `fact_ops[fact_op_index].fact_key == d.fact_key` and that op passes the existing quote/value checks | DISPOSITION_KEY_MISMATCH (would reject EA-B05 `reclamacion_tienda_fecha` and H-M4 `forma_retribucion` bound from direction evidence **only if** the quote check fails, see note) |
+| `mark_unknown` on an open item requires a disposition `unknown_by_user` for the same key | DISPOSITION_KEY_MISMATCH |
+| `unknown_by_user` ⇒ `states_ignorance(user_quote)` (lexicon) when the verifier is not enforcing | UNKNOWN_NOT_STATED (existing code, **new detail**, below) |
+| The same `user_quote` span used by >1 `unknown_by_user` disposition | committed as `hold` unless verifier-confirmed broadcast (not a violation) |
+| `declined`/`deferred_by_user` ⇒ `user_quote` contained in the current message | QUOTE_NOT_IN_USER_MESSAGES |
+
+Note on H-M4: whether `forma_retribucion = "prestación bajo instrucciones…"` answers the remuneration proposition is semantic. CL makes it *checkable* (proposition_es is explicit and the verifier sees it). The deterministic layer cannot and must not decide it.
+
+New detail for UNKNOWN_NOT_STATED (replaces "If the client simply did not answer, leave the fact out; it remains askable."):
+> "The quoted words do not say the client does not know this item. Choose the disposition that matches: `declined` if they cannot or will not provide it, `deferred_by_user` if they will check later, `answered_approx` if they gave an approximate value, `not_addressed` if the reply does not concern it. Do not delete the item."
+
+**Ledger item** (replaces `AskedItemV1` in state; `asked_log` becomes a derived view):
+```python
+LedgerStatus = Literal["open", "answered", "unknown_by_user", "declined", "deferred_by_user",
+                       "withdrawn", "superseded", "conflicted"]
+class LedgerItemV1(ContractModel):
+    fact_key: str; batch_id: str; issue_ids: list[str]
+    asked_turns: list[int]                       # ≥1
+    status: LedgerStatus
+    status_turn: int
+    hold: Literal["broadcast_unconfirmed", "verifier_ambiguous"] | None = None   # only with status "open"
+    quote: str | None = None                     # disposition quote
+    verification: FactVerificationV1 | None = None   # existing J contract
+    withdraw_reason: str | None = None
+```
+Transitions (deterministic, StateUpdater):
+
+| From | Event | To |
+|---|---|---|
+| (none) | item asked | open |
+| open | `answered`/`answered_approx` + accepted assert/correct same key | answered (value precision recorded) |
+| open | `unknown_by_user` accepted (lexicon, or verifier per mode) | unknown_by_user |
+| open | `unknown_by_user` sharing a span with others, broadcast unconfirmed | open, hold=broadcast_unconfirmed |
+| open | `declined` | declined |
+| open | `deferred_by_user` | deferred_by_user (re-askable once, next turn) |
+| open | `not_addressed` | open (no new ask counted unless re-asked) |
+| open | asked again | open, asked_turns += turn |
+| open | `len(asked_turns) == 2` and `not_addressed` again | withdrawn(`max_asks`) (controller) |
+| open | `withdrawn` (model) | withdrawn |
+| any closed | later assert/correct on the key | answered (supersedes; FE-3 reopen rule satisfied by the explicit event) |
+| answered | conflicting assert without `correct` | conflicted (FactViewV1 `conflicted` already exists) + one auto confirmation item |
+| any | key superseded via a `derived_from` relation and the model withdraws | superseded |
+
+Invariants:
+- Items are never deleted. `pending_clarification.items` = ledger items with status `open` (and due `deferred_by_user`).
+- Re-asking an item with status `unknown_by_user`, `declined` or `withdrawn` raises `UNKNOWN_FACT_REASKED`/`REPEAT_WITHOUT_REASON` unless reopened by a later user statement.
+- Legal conditions on a key whose status ≠ `answered` must have status `unknown` or `assumed` (existing DECIDED_CONDITION_UNBOUND covers this once it reads ledger status).
+
+**Attribution rendering** (renderer, from ledger only):
+
+| Status | Client-visible phrase (Spanish, fixed templates) |
+|---|---|
+| unknown_by_user | "Ha indicado que no conoce: {proposition_es}." |
+| declined | "No ha podido facilitar: {proposition_es}." |
+| deferred_by_user | "Queda pendiente que confirme: {proposition_es}." |
+| open + hold | (existing J S6 scope-confirmation line) "Entiendo que no dispone de {list}; si conoce alguno, indíquelo." |
+| withdrawn/no_longer_material | nothing |
+
+The prompt instructs the model not to narrate these statuses in prose. A soft telemetry probe counts model prose phrases "usted (ya) indicó"/"ha indicado"/"datos que el cliente conoce" (not a validator rule).
+
+**Disposition verifier** (`fact_verifier.py`, question `reply_disposition/1`; replaces D1/D2 for asked items; D1 kept only for `mark_unknown` on *unasked* keys):
+- One request per turn with ≥1 non-value disposition or any shared quote span.
+- Context: the previous assistant message, numbered open questions (each with `proposition_es`), and the current message.
+- One `choice` question per open item.
+- Labels (mutually exclusive):
+  - `ANSWERED` — affirms a value for *this* question;
+  - `ANSWERED_APPROX` — an approximate or hedged value ("creo que en marzo");
+  - `NOT_KNOWN` — says they do not know or remember *this* item, explicitly or by a collective expression that names a set including it ("ninguno de esos datos"). A bare «No lo sé» after several questions is **not** NOT_KNOWN;
+  - `DECLINED` — cannot or will not provide it; no claim about knowing;
+  - `DEFERRED` — will check or look it up later;
+  - `NOT_ADDRESSED`;
+  - `HYPOTHETICAL_ONLY`;
+  - `AMBIGUOUS` — cannot tell which question is meant, or self-contradictory.
+- Mapping: agreement → commit. Model `unknown_by_user` with verifier `DECLINED`/`DEFERRED`/`ANSWERED_APPROX` → commit the verifier's kind if `enforce`, else commit the model's kind and log a disagreement. Verifier `AMBIGUOUS`/`NOT_ADDRESSED` against a model non-value kind → `open` + `hold=verifier_ambiguous` in `enforce`.
+- Bands reuse `choice_band` with a new policy version. Enforcement requires the owner calibration gates from the Jev design (AC-1 precision Wilson-lower ≥0.95 on `NOT_KNOWN`; stability ≤2 %).
+
+### E.4 Applicability audit (`agent/reviewer.py` evolved; prompt `prompts/applicability_audit_v1.md`)
+
+Eligibility (deterministic):
+- Conclusions with `basis == "binding_law"` and `kind ∈ {"application","conditional","calculation_result"}`, ordered by (has figure, has conditions, position).
+- Max 8 conclusions and max 8 units per turn.
+- Unit text is the full read text from the read set/provision store, capped at 12 000 chars per unit, with the cited pinpoint segment guaranteed included.
+- Skip when the turn outcome is clarification-only, or when the remaining turn budget is below the patch-round reserve.
+
+Request `applicability_audit_request/1`:
+```json
+{"schema":"applicability_audit_request/1","legal_date":"2026-10-15",
+ "issues":[{"issue_ref":"issue-1","question_es":"…","client_messages_es":["…"]}],
+ "facts":[{"fact_key":"…","proposition_es":"…","status":"answered|unknown_by_user|declined|open|…","value_display_es":"…"}],
+ "conclusions":[{"conclusion_id":"c2","issue_ref":"issue-1","kind":"application","text_es":"…",
+                 "conditions":[{"description_es":"…","fact_key":"…","status":"satisfied","cite_ids":["c4"]}],"cite_ids":["c4","c5"]}],
+ "units":[{"unit_id":"BOE-A-1992-28740::art-91","label_es":"…","text_es":"…"}]}
+```
+Response (forced tool `submit_audit`) `applicability_audit/1`:
+```json
+{"findings":[{"conclusion_id":"c2",
+  "kind":"consequence_not_established|unreflected_limiting_clause|unresolved_cross_reference|action_consequence_missing",
+  "consequence_es":"tipo aplicable al margen del revendedor",
+  "evidence":[{"unit_id":"…","quote":"≤400 chars verbatim"}],
+  "affected_fact_keys":["…"],
+  "proposed_resolution":"add_condition|add_branch|correct_consequence|read_reference|state_or_scope_out",
+  "research_request":{"query_es":"…","reason_es":"…"} }]}
+```
+Deterministic post-check:
+- `conclusion_id` exists.
+- Evidence quotes are verbatim in the supplied unit text (V4 matcher). They are required for the first three kinds.
+- `action_consequence_missing` requires `research_request`.
+- Failures → `AUDIT_UNGROUNDED` (logged, finding dropped).
+- Surviving findings become `AA_*` findings (registry §E.1) with `source:"audit"`.
+
+**Material-completeness standard** (what the audit checks; what "complete" means):
+- **MC1 Consequence binding.** Each operative consequence a conclusion states (qualification, regime, rate, amount, deadline, obligation, right, prohibition) is established by a supplied unit *for this actor, transaction and time*.
+- **MC2 Limiting clauses.** Every clause in the cited units that, on the case facts, excludes, limits or conditions that consequence (exception, exclusion, precondition, threshold, time limit) is reflected as a condition or branch, or is ruled out by a stated fact.
+- **MC3 Dependent references.** An explicit cross-reference in a cited unit on which the consequence depends ("en los términos del artículo X", "lo dispuesto en…") is read, or recorded as `UNRESOLVED_REQUIRED_REFERENCE`.
+- **MC4 Action consequence (qualification issues only).** When a conclusion classifies the client (worker, taxpayer, contract type, regime), the principal legal consequence requiring client action (registration, filing, withholding, formalisation) is stated, or explicitly scoped out in `limitations`. It is found through ≤1 research request.
+- **Out of scope by definition:** exceptions not textually connected to cited units or their explicit references, and doctrine not in the corpus. The agent is not expected to discover these.
+
+Patch-round handling: the agent may correct, add a condition or branch, read ≤2 units (only for `read_reference`/`action_consequence_missing`), or `dismiss_finding` with evidence. If an `AA_*` finding is unresolved after selection, v1 behaviour is **log only** (no client-visible marker) until AA precision is measured (OD-3).
+
+### E.5 Controller transitions and limits
+
+```
+DRAFT ─schema invalid→ SCHEMA_RETRY(1) ─invalid→ salvage(schema_retry) as today
+DRAFT ─ok→ FIX → VALIDATE → [VERIFY] → [AUDIT] → findings?
+   none → FINALIZE(C0) → COMMIT → RENDER                              outcome as drafted
+   some → PATCH_ROUND(1 call; tools: repair_consultation, read_provision≤2 if requested)
+           ├ provider error / budget denial / wall-clock → SELECT=C0 (salvage reason recorded)
+           ├ patch schema invalid → SELECT=C0
+           └ ok → APPLY → VALIDATE(C1) → SELECT → FINALIZE → COMMIT → RENDER
+```
+Limits:
+- ≤1 patch round per turn;
+- ≤2 extra reads;
+- the AA call counts against `turn_budget_eur` and wall-clock (`check_clock` before the call; skip AA if it could overrun).
+
+The reviewer's old post-repair revision (`loop.py`, the `reviewed` branch) is disabled when `AGENT_AUDIT_MODE != off`, so there is at most one model rewrite.
+
+### E.6 Backward compatibility, migration, flags
+
+| Item | Rule |
+|---|---|
+| State schema | `consultation_agent_state/2`: adds `propositions`, `ledger` (replaces `asked_log`). Lazy migration on load: each `AskedItemV1` → `LedgerItemV1` (settled ⇒ status from the latest fact event for the key: assert/correct→answered, mark_unknown→unknown_by_user; unsettled ⇒ `open`); propositions from the first item `question_es` or the first event `display_es` (`introduced_by:"migration"`). `asked_log` stays as a derived read-only view for telemetry and old tooling |
+| SubmissionV1 | new optional fields only (`item_dispositions`, `proposition_es`, `relations`); old fixtures parse unchanged |
+| Validation report | `validation_report/2` adds `findings[].id/scope/source`; `validation_report/1` kept when `AGENT_REPAIR_MODE=full` |
+| Flags (config.py + `.env.example` + docs) | `AGENT_REPAIR_MODE=full\|patch` (default `full` until acceptance); `AGENT_CLARIFICATION_LEDGER=off\|on` (default `off`); `AGENT_FACT_VERIFIER` (existing J flag: off\|shadow\|enforce) with question version `reply_disposition/1`; `AGENT_AUDIT_MODE=off\|shadow\|on`; `AGENT_AUDIT_MODEL`; `AGENT_AUDIT_MAX_CONCLUSIONS=8`. `AGENT_REVIEWER_ENABLED` becomes an alias of `AGENT_AUDIT_MODE=on` for one release, then removed |
+| Mutual exclusion | `AGENT_AUDIT_MODE=on` requires `AGENT_REPAIR_MODE=patch` (config validation error otherwise) |
+
+### E.7 Telemetry (CLAUDE.md permanent rule)
+
+New turn-metric keys (export in `consultation/telemetry.py` `turn_metrics`, aggregate in `ops_report.py`, document in `TELEMETRY_RUNBOOK.md`, add to `REQUIRED_TURN_KEYS` in `tests/v3/test_consultation_telemetry_coverage.py`):
+- `repair_mode`;
+- `det_fixes_count`;
+- `patch_ops_total`, `patch_ops_accepted`;
+- `patch_ops_rejected_by_reason` (closed codes `PATCH_OP_OUT_OF_SCOPE`, `PATCH_ANCHOR_LOSS`, `PATCH_SCHEMA`);
+- `candidate_selected` (`original|patched`);
+- `blocking_before`, `blocking_after`;
+- `anchor_count_first`, `anchor_count_final`;
+- `ledger_items_open_start`, `dispositions_by_kind`, `disposition_coverage_ok`, `ledger_holds`;
+- `verifier_disagreements_by_pair`;
+- `items_withdrawn_max_asks`;
+- `audit_mode`, `audit_conclusions`, `audit_findings_by_kind`, `audit_ungrounded`, `audit_dismissed`, `audit_resolved`;
+- `research_again_reads`.
+
+All values are counts, closed codes or hashes; never text. Failures in bookkeeping are swallowed (fault-injection test).
+
+---
+
+## F. Failure handling and safety
+
+| Situation | Behaviour | Outcome class |
+|---|---|---|
+| LLM produces inconsistent interpretations (draft says X, patch says not-X) | Selector picks by blocking/total counts only; both candidates are logged (`repair_record`). Polarity change of a conclusion is allowed only via an op addressing an AA or blocking finding | answer from the selected candidate |
+| Validator uncertain whether a figure/claim is supported | No new uncertainty band: V6/V2/V9 stay binary and conservative (must-reject fixture of 25 stays). Uncertainty is handled by *where* the fix may happen (patch scope), not by relaxing the check | answer with a residual marker if unrepaired |
+| A repair would delete previously supported material | `PATCH_ANCHOR_LOSS` rejects the op; original text kept; finding falls to `finalize` | answer (original content + residual) |
+| Patch introduces new violations | Counted in `total(v1)`; the selector prefers C0 unless strictly better | answer |
+| Two user statements conflict | Ledger `conflicted`; both events retained; conditions on the key forced to `unknown`; one confirmation item auto-generated (bypasses the max-ask rule once) | conditional answer + clarification |
+| One answer ambiguously applies to several questions | Shared-span `unknown_by_user` → `open + hold` (no attribution, scope-confirmation line). Verifier `AMBIGUOUS` → same | conditional answer + confirmation line |
+| User refuses / cannot answer | `declined`: no re-ask; conditions `unknown`; neutral attribution | conditional answer |
+| User will check later | `deferred_by_user`: one re-ask next turn | conditional answer |
+| Item ignored twice | `withdrawn(max_asks)`; conditions `unknown` | conditional answer |
+| Material exception unresolved (AA finding remains) | v1: logged only; the agent's answer stands (ADR-6 principle: the reviewer cannot block). Owner decision OD-3 after measurement: optional limitation line | answer |
+| Corpus lacks decisive evidence | Unchanged: `CORPUS_INSUFFICIENCY` gap; no figure from memory; AA `research_request` may run ≤2 reads but cannot add memory claims | partial answer / abstention on that point |
+| Provider failure or budget exhaustion during AA | AA skipped (`audit_skipped_reason`); the patch round proceeds with validator findings only | as without AA |
+| Provider failure or budget exhaustion during the patch round | C0 selected and finalized (same as today's salvage semantics, but from the *original*, not a partial rewrite) | answer with residuals |
+| Verifier unavailable | `off`/degraded: lexicon gate + shared-span hold; never promotes to `unknown_by_user` on uncertainty | as specified |
+
+**When the system answers, clarifies, researches again or abstains:**
+- *Answer* whenever at least one supported conclusion exists (conditional if any decisive fact ≠ `answered`).
+- *Clarify* only items that are open, not re-ask-blocked, and changing a conclusion (existing §D policy, enforced by the ledger).
+- *Research again* only via `CITED_NOT_READ` or an audit `research_request`, inside the single patch round, ≤2 reads.
+- *Abstain* on a point only with a classified gap (unchanged).
+
+---
+
 ## 0. Evidence log (running)
 
 ### 0.1 Repository and evidence verification
