@@ -57,7 +57,7 @@ Conclusion-level damage (all 10 turns where a conclusion's text has no ≥0.8 ma
 - V28.00: "procedimiento general del Reglamento del IRPF (arts. 82 a 86)" → "…de retenciones del Reglamento del IRPF"; "reducciones del art. 18 de la Ley" → "reducciones por rendimientos irregulares"; "porque el art. 81.3 lo excluye cuando rige el tipo mínimo del art. 86.2" → "porque la norma que lo regula lo excluye…".
 - V45.01 (code UNTRACED_NUMBER only): "El límite de cita del artículo 32.1 exige, acumulativamente: …" (the rule statement) removed; "decaería la cobertura del artículo 32.3 y se debilitaría la del 32.1" → "decaería la cobertura del límite de ilustración … y se debilitaría la del límite de cita".
 - V10.00 (UNTRACED only): "(art. 4.Uno y art. 11.Uno LIVA)" removed from the conclusion.
-- **H-N1.01** (MARKER_UNRESOLVED + UNTRACED): "margen = 230 €; base = 230 ÷ 1,10 = 209,09 €; cuota = 20,91 €" → the base and quota figures are removed entirely ("la cuota … queda comprendida en el precio"). The removed figures were arithmetically correct. This is a loss of a decisive answer element, not only a pointer.
+- **H-N1.01** (MARKER_UNRESOLVED + UNTRACED): "margen = 230 €; base = 230 ÷ 1,10 = 209,09 €; cuota = 20,91 €" → the base and quota figures are removed entirely ("la cuota … queda comprendida en el precio"). **Correction (see §0.6b):** these figures are arithmetically consistent but apply the author's 10 % rate to the gallery's REBU margin, which the gold scores as wrong (general rate). Here the repair *accidentally* removed a legal error. This shows that repair outcomes are uncontrolled in both directions; it is not an example of correct content lost.
 - H-N4.01: "dividiendo el precio entre 1,21" → "deshaciendo el impuesto incluido".
 - EA-B02.02 / EA-B04.02 / EA-B05.02: state-summary conclusions rewritten (no legal loss; EA-B05 gained a Código de Comercio art. 342 reference).
 None of the 10 changed a legal conclusion's polarity. The harm is lower precision and verifiability, and occasionally a missing answer figure.
@@ -177,6 +177,36 @@ Source: E-A diagnostic for `H-P3.00.initial` (read set, search hits, `issue_ops`
 - Contrast H-M4.00 (same legal family): the model framed the issue as "consecuencias fiscales y de Seguridad Social (alta en el RETA)", searched for "RETA … artículo 305" and read LGSS art. 305.
 
 Interpretation: **[S]** the decisive-provision miss is caused upstream of retrieval, at *issue framing*: the issue question the model writes for itself defines the research target, and nothing checks that the frame covers the legal consequences (obligations, regime, deadlines) a client in that situation needs. No exception wording, read-time cue (P7-A) or "list alternatives" field (P7-B) acts at that boundary — consistent with E-B finding no gain.
+
+### 0.6b Discovery 6 — E-B grader flags against read sets (Problem 3)
+
+Source: `reliability_eb_2026-10-31/grading/{aa..ad}_{X,Y}.tsv` + `eb/BLIND_KEY.jsonl` + per-turn `read_set` from `eb/diagnostics` [E].
+
+Every case-arm a grader flagged for `missed_exc`, `exc_over` or `unsupported` falls into one of four classes:
+
+| Class | Cases (arm) | Decisive text read? | Stage |
+|---|---|---|---|
+| Technical failure (503) | N03 ×3, V47 ×3, H-B3 (p7a, p7b) | n/a | provider |
+| Corpus gap | H-B2 ×3 (IGIC rates / franquicia) | not in corpus | corpus |
+| **Frame omission** | **H-P3** — grader: "T0 never names RETA" (p7b) | LGSS art. 305 **not read at turn 0 in any of the 3 arms**; read in the reply turn of all 3 arms | issue framing |
+| **Consequence not bound to a rule** | **H-N1 turn 1** (baseline, p7a): gallery margin taxed at 10 % ("revendedor exclusion missed") | LIVA arts. 135–138 and 91 **read** in both arms | application |
+| Sub-rule omitted within a read unit | N01 (p7b): "art 96.4 omitted" | LIRPF art. 96 **read** in all arms | application |
+| Contested qualification | V12 (p7a): "classifies rendimiento del trabajo, not in gold" | arts. 7/17/33 LIRPF read in all arms (E-B RESULTS) | needs jurist |
+
+**H-P3 is now a five-run systematic miss.** It occurred at turn 0 in E-1, E-A, E-B baseline, E-B P7-A and E-B P7-B, each time with the same classificatory frame, and each time the reply turn (where the user mentions alta/RETA-adjacent facts) reads art. 305. It is not variance. Neither P7 arm changed it, because neither acts on the frame.
+
+**H-N1 anatomy** (`H-N1.baseline.01.reply1`).
+- The model writes two well-structured application conclusions: (1) the author's delivery at 10 % (art. 91.Uno.4 governing, conditions satisfied, correct); (2) the gallery's resale under REBU (arts. 135–138, conditions satisfied: habitual reseller, acquired at reduced rate, no election of the general regime).
+- Conclusion (2) then states "base … 209,09 €, con una cuota de 20,91 €", i.e. 230/1,10. That is the **10 % rate silently carried over from conclusion (1)**.
+- The rate applicable to the margin is a decisive legal consequence. It is **not stated as a proposition, has no condition and no citation**. V9 is satisfied because the conclusion cites *some* normativa (arts. 135–138), and V6 is satisfied because 1,10 is grounded by F1 rate constants from the cited art. 91.
+- The structure *rule → requirements → result* covers whether the regime applies, but not *which rule fixes each consequence*.
+
+Interpretation:
+- **[E]** Apart from corpus gaps and provider failures, every flagged legal miss in E-B involves provisions that were found. Two had the decisive text read and misapplied (H-N1, N01). One (H-P3) is a systematic frame omission at turn 0.
+- **[S]** The two general mechanisms are:
+  - (a) the issue frame is set by the model with no check that it covers what the client must *do* or *owe*;
+  - (b) a conclusion's operative consequences (rate, amount, deadline, regime, obligation) are not individually bound to the provision that fixes them, so an unbound consequence can be inherited from a neighbouring conclusion.
+- **[S]** E-B's own metric "gold CORE units read 34/36" already shows retrieval is not the bottleneck. More research (P7-A cues on every read: median 18 sentences per turn) adds noise at the wrong stage.
 
 ### 0.7 Pending (in progress)
 
