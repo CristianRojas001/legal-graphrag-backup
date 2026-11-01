@@ -141,6 +141,31 @@ So the anomaly is not a recall failure of the lexicon (as E-A hypothesised) but 
 
 Cross-problem link: fact-state codes (`CONCLUSION_FACT_UNKNOWN`, `DECIDED_CONDITION_UNBOUND`, `UNKNOWN_NOT_STATED`, `QUOTE_NOT_IN_USER_MESSAGES`, `FACT_VALUE_UNSUPPORTED`, `SCENARIO_PREMISE_MISSING`) appear in the first report of **21 of 65** repaired E-A turns (8 of them fact-only). Problem 2 is therefore a direct contributor to Problem 1's repair frequency. Other families: number 35 (20 number-only), citation/quote/marker 28, result-shape 10 (overlapping).
 
+### 0.5c Discovery 5 — Code-level mechanisms (traced directly)
+
+Code read at `origin/impl/reliability-eb-20261031` (R; validator identical to `d4304d10` except F1–F3) and `origin/impl/jev-semantic-fact-verification-v1` (J). Path prefix `backend/apps/legal_graphrag/services/v3/agent/` [E].
+
+**Repair protocol (`loop.py`).**
+- `loop.py:192`: the `submit_consultation` tool description says "Submit the COMPLETE consultation for validation, including unchanged fields after repair. Never send a partial update." `loop.py:109-129` (`submission_tool_schema`) makes every property required, so a partial/delta repair cannot be expressed.
+- `loop.py:368`: `if report is not None and not repaired:` — only the **first** submission's report triggers a repair. The repaired submission's validation report is not used to decide anything; the candidate goes straight to `finalize_fn` (`loop.py:386`).
+- `loop.py:388-394`: the first submission is reused **only** when the repair has no results at all (`salvaged='empty_repair'`). There is no comparison of first vs repaired content and no preservation check.
+- Consequence: exactly one model round per violated turn; the repaired candidate is accepted wholesale; anything it deleted is lost; anything still wrong is annotated or dropped by `finalize`.
+
+**Finalisation (`validator.py:1778-2117`, `finalize`).** It re-runs the checks on the accepted candidate and applies residual policies:
+- annotate (V2/V5 "(referencia no verificada)", V6 "(cifra no localizada en las fuentes consultadas)", V7 "(cálculo no verificado)"; table `_ANNOTATIONS` at `validator.py:48-54`);
+- relabel (V9 "(criterio interpretativo, no norma)");
+- drop (fact ops, results under D-1);
+- normalize (cite ids, conditions).
+These are the deterministic correctors that already exist. They are applied only **after** the model rewrite, never **instead of** it.
+
+**Violation catalogue (emission lines in `validator.py`).** V2 `CITED_NOT_READ` 762, `UNIT_NOT_RESOLVABLE` 770, `VERSION_MISMATCH` 778; V3 `NOT_VALID_AT_LEGAL_DATE` 793, `TERRITORY_MISMATCH` 805; V5 `MARKER_UNRESOLVED` 751, `CITATION_UNUSED` 860; V6 `UNTRACED_NUMBER` (`numbers`, 916-1102; detail builder `_untraced_detail` 168); V7 `CALC_UNKNOWN` 881, `CALC_MISMATCH` 902; V8 `SCENARIO_PREMISE_MISSING` 1156, `QUOTE_NOT_IN_USER_MESSAGES` 1177, `OUTCOME_SHAPE` 1182, `UNKNOWN_NOT_STATED` 1198, `FACT_VALUE_UNSUPPORTED` 1201, `ASSERT_ON_KNOWN_KEY` 1209, `DUPLICATE_FACT_KEY` 1216, `QUESTION_NOT_FACT_GAP` 1295, `KNOWN_FACT_ASKED` 1302, `UNKNOWN_FACT_REASKED` 1317, `REPEAT_WITHOUT_REASON` 1322, `DUPLICATE_ITEM` 1324, `QUESTION_CEILING` 1327, `DECIDED_CONDITION_UNBOUND` 1341, `CONCLUSION_FACT_UNKNOWN` 1343, `MISSING_RESULT` 1347; V9 `BASIS_AUTHORITY_MISMATCH` 1121; V4 quote-fragment codes in `sources` (746-820). All codes share one severity: any of them triggers the single whole-submission repair.
+
+**Ignorance guard.** `validator.py:1191-1198`: a `mark_unknown` passes iff `states_ignorance(op.user_quote)` and the quote does not contain another op's assert quote. `epistemic_es.py` (`EPISTEMIC_LEXICON_VERSION='1'`) is a regex cue list applied **to the quote only**. It knows nothing about which proposition is meant. It also accepts cues the owner policy classes as UNCLEAR: hedging ("no estoy seguro") and temporary inability ("tendría que consultar").
+
+**Pending recomputation — the silent-drop line.** `state.py:545-558` (R and `d4304d10`): old pending items survive only `if i.fact_key not in settled_keys | new_keys and i.issue_ref not in replaced and i.issue_ref not in parked`. Here `replaced` (`state.py:546`) is every issue that received any non-`NOT_ADDRESSED` result this turn. **Any new answer on an issue silently deletes that issue's unanswered questions.** This is exactly the H-M4 / H-N2 / EA-B04 / EA-B05 drop.
+- J (commit `224531f2` "preserve unanswered clarification items") removes the `replaced` filter, so unanswered items carry forward. This fixes the silent drop, but on its own it turns refused items into **repeated questions**: there is still no "declined" state. That is exactly the E-B monitor observation that "EA-B04 asks again for 3 facts after the client refused".
+- J also adds `FactEventV1.verification` and `require_verification` (`state.py`, StateUpdater): in Jev enforce mode a `mark_unknown` without a verifier record raises `fact_verification_missing`. Jev enforce is off by default (uncalibrated snapshot ⇒ runs as shadow).
+
 ### 0.6 Discovery 4 — H-P3 omission is an issue-framing failure, not a reading failure
 
 Source: E-A diagnostic for `H-P3.00.initial` (read set, search hits, `issue_ops`, conclusions) [E].
