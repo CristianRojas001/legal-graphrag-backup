@@ -53,6 +53,15 @@ Representative damage (first → repaired):
 - **H-N2.02**: "sujeta al IVA por el artículo 4.Uno de la Ley del IVA" → "sujeta al IVA".
 - **V09.00**: arts. 90/91 pointers removed (already reported by E-A).
 
+Conclusion-level damage (all 10 turns where a conclusion's text has no ≥0.8 match after repair were read) [E]. The dominant pattern is **de-specification**: the conclusion survives but loses its verifiable anchor.
+- V28.00: "procedimiento general del Reglamento del IRPF (arts. 82 a 86)" → "…de retenciones del Reglamento del IRPF"; "reducciones del art. 18 de la Ley" → "reducciones por rendimientos irregulares"; "porque el art. 81.3 lo excluye cuando rige el tipo mínimo del art. 86.2" → "porque la norma que lo regula lo excluye…".
+- V45.01 (code UNTRACED_NUMBER only): "El límite de cita del artículo 32.1 exige, acumulativamente: …" (the rule statement) removed; "decaería la cobertura del artículo 32.3 y se debilitaría la del 32.1" → "decaería la cobertura del límite de ilustración … y se debilitaría la del límite de cita".
+- V10.00 (UNTRACED only): "(art. 4.Uno y art. 11.Uno LIVA)" removed from the conclusion.
+- **H-N1.01** (MARKER_UNRESOLVED + UNTRACED): "margen = 230 €; base = 230 ÷ 1,10 = 209,09 €; cuota = 20,91 €" → the base and quota figures are removed entirely ("la cuota … queda comprendida en el precio"). The removed figures were arithmetically correct. This is a loss of a decisive answer element, not only a pointer.
+- H-N4.01: "dividiendo el precio entre 1,21" → "deshaciendo el impuesto incluido".
+- EA-B02.02 / EA-B04.02 / EA-B05.02: state-summary conclusions rewritten (no legal loss; EA-B05 gained a Código de Comercio art. 342 reference).
+None of the 10 changed a legal conclusion's polarity. The harm is lower precision and verifiability, and occasionally a missing answer figure.
+
 Interpretation so far:
 1. **[E] Repair damage is a prose phenomenon, not a citation-structure phenomenon.** The structured citation layer is protected; the free-text rewriting the model performs during a whole-submission resubmission is not.
 2. **[E] Damage is not confined to number violations.** V28.00 shows a contract-only report producing prose loss: the repair protocol asks the model to resubmit the *entire* submission, so any violation licenses a full rewrite.
